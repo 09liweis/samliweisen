@@ -26,3 +26,4 @@ https://api.mapbox.com/geocoding/v5/mapbox.places/17%20ingram%20road.json?access
 
 
 API: https://animechan.vercel.app
+World Time/holiday: http://www.shijian.cc

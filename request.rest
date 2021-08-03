@@ -207,6 +207,3 @@ GET http://localhost:8081/api/places/update_random HTTP/1.1
 
 ###
 GET http://localhost:8081/api/places HTTP/1.1
-
-###
-GET https://ml1.realmaster.cc/list/test1@realmaster.cc HTTP/1.1

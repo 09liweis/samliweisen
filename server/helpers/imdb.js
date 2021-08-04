@@ -14,8 +14,8 @@ exports.getImdbSummary = (imdb_id,cb) => {
     }
     var imdbObj = {};
     imdbObj.imdb_title = $('.title_wrapper h1').text().trim();
-    imdbObj.imdb_rating = $('span[itemprop="ratingValue"]').text();
-    imdbObj.imdb_rating_count = $('span[itemprop="ratingCount"]').text();
+    imdbObj.imdb_rating = $('span[itemprop="ratingValue"]').text() || 0;
+    imdbObj.imdb_rating_count = $('span[itemprop="ratingCount"]').text() || 0;
     imdbObj.poster = $('.poster a img').attr('src');
     cb(null, imdbObj);
   });

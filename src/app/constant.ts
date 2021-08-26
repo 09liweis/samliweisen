@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 
-const API = 'https://samliweisen.herokuapp.com/api/';
+const API = 'http://samliweisen.herokuapp.com/api/';
 // const API = 'http://localhost:8081/api/'
 function genAPI(endpoint) {
   let apiUrl = API + endpoint + '&origin=localhost';

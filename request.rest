@@ -1,4 +1,12 @@
 ###
+POST http://localhost:8081/sysdata HTTP/1.1
+Content-Type: application/json
+
+{
+}
+
+
+###
 POST http://localhost:8081/api/user/login HTTP/1.1
 Content-Type: application/json
 

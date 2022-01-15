@@ -120,7 +120,7 @@ POST http://localhost:8081/api/visuals/summary HTTP/1.1
 content-type: application/json
 
 {
-  "douban_id": "34845781"
+  "douban_id": "26933210"
 }
 //25907124
 ###

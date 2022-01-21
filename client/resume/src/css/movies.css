@@ -77,7 +77,7 @@
   transition: 0.3s;
 }
 .visual:hover {
-  transform: translateX(2px);
+  transform: scale(1.06);
 }
 @media (min-width: 426px) {
   .visual {

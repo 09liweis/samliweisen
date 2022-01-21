@@ -24,7 +24,6 @@
   vertical-align: middle;
   border-radius: 5px 5px 0px 0px;
   display: inline-block;
-  min-height: 290px;
 }
 .visual__detail {
   width: 65%;
@@ -85,6 +84,7 @@
   }
   .visual__image {
     width: 100%;
+    min-height: 290px;
   }
   .visual__detail {
     width: 100%;

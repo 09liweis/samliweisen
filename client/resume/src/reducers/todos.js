@@ -1,7 +1,11 @@
 const todos = (state = {items:[],loading:true}, action) => {
   switch (action.type) {
     case 'GET_TODOS':
-      return {items:action.ex,loading:false};
+      var todos = []
+      if (Array.isArray(action.ex)) {
+        todos = action.ex;
+      }
+      return {items:todos,loading:false};
     case 'ADD_TODO':
       var items = [action.ex,...state.items];
       return {items};

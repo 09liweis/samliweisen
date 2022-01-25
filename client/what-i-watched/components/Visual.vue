@@ -1,7 +1,7 @@
 <template>
   <div class="visual">
     <div class="tablet">
-      <img class="visual__poster" :src="v.poster" referrerpolicy ="never" />
+      <img class="visual__poster" :src="'https://images.weserv.nl/?url='+v.poster" referrerpolicy ="never" />
     </div>
     <div class="visual__col title">
       <h3 class="visual__title">{{v.title}} <a v-if="v.website" :href="getWebsite(v.website)" target="_blank">Website</a></h3>

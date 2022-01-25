@@ -158,8 +158,9 @@ export default {
 	margin-right: 5px;
 	border: 1px solid #ff4081;
 	cursor: pointer;
+	transition: 0.3s;
 }
-.pagination__link.active {
+.pagination__link.active,.pagination__link:hover {
 	background: #ff4081;
 	color: #ffffff;
 }

@@ -10,7 +10,7 @@ exports.getImdbSummary = (imdb_id,cb) => {
   var url = getImdbUrl(imdb_id);
   sendRequest({url},function(err,{$,body}) {
     if (err) {
-      return cb(err,null);
+      return cb(err,{});
     }
     var imdbObj = {};
     imdbObj.imdb_title = $('.TitleHeader__TitleText-sc-1wu6n3d-0').text().trim();

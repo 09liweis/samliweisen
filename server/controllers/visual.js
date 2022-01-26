@@ -281,6 +281,9 @@ exports.getSummary = (req,resp)=>{
     }
     //handle scraping imdb data
     getImdbSummary(imdb_id, (err, imdbObj) => {
+      if (err) {
+        console.error(err);
+      }
       visual = Object.assign(visual,imdbObj);
       return sendResp(resp,visual);
     })

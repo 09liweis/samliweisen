@@ -152,7 +152,9 @@ export default {
         const douban = res.body;
         this.loading = false;
         for (const [key, value] of Object.entries(this.visual)) {
-          this.visual[key] = douban[key];
+          if (douban[key]) {
+            this.visual[key] = douban[key];
+          }
         }
         if (douban.episodes > 1) {
           this.visual.visual_type = 'tv';

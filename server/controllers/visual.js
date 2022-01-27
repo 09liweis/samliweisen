@@ -292,5 +292,10 @@ exports.getSummary = (req,resp)=>{
 
 const UPSERT_VISUAL_API = 'https://what-i-watched.herokuapp.com/api/visual/submit'
 exports.upsertVisual = (req,resp) => {
-  
+  //35376457
+  var visualBody = req.body;
+  sendRequest({url:UPSERT_VISUAL_API,method:'post',body:visualBody},function(err,{$,body}) {
+    console.log(err);
+    return sendResp(resp,body);
+  });
 }

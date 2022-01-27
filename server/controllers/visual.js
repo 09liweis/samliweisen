@@ -289,3 +289,8 @@ exports.getSummary = (req,resp)=>{
     })
   });
 }
+
+const UPSERT_VISUAL_API = 'https://what-i-watched.herokuapp.com/api/visual/submit'
+exports.upsertVisual = (req,resp) => {
+  
+}

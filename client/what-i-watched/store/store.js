@@ -12,7 +12,7 @@ const state = {
   api: {
     visualList: whatIWatched + 'api/visuals',
     visualDetail: whatIWatched + 'api/visual/',
-    visualSubmit: whatIWatched + 'api/visual/submit',
+    visualSubmit: '/api/visuals/upsert',//whatIWatched + 'api/visual/submit',
     visualImdb: whatIWatched + 'api/get_imdb_id',
     visualCheck: whatIWatched + 'api/visual/check',
     increaseEpisode: whatIWatched + 'api/visual/increase_episode',

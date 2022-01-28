@@ -36,7 +36,7 @@
     <div class="visual__col actions">
       <div class="visual__action">
         <router-link :to="{ name: 'edit', params: { id: v.id }}">Edit</router-link>
-        <a class="visual__increaseepisode" v-if="v.episodes != v.current_episode" v-on:click="increaseEpisode(v)">+ 1 ep</a>
+        <a class="visual__increaseepisode" v-if="v.episodes != v.current_episode" v-on:click="increaseEpisode(v)">+1 ep</a>
       </div>
     </div>
   </div>
@@ -116,5 +116,9 @@ export default {
 }
 .mu-linear-progress-determinate {
   background: #57c263;
+}
+.visual__increaseepisode {
+  border: 1px solid pink;
+  padding: 5px;
 }
 </style>

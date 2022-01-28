@@ -118,7 +118,9 @@ export default {
   background: #57c263;
 }
 .visual__increaseepisode {
+  cursor: pointer;
   border: 1px solid pink;
   padding: 5px;
+  border-radius: 5px;
 }
 </style>

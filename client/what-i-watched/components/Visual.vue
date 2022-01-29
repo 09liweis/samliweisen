@@ -122,5 +122,10 @@ export default {
   border: 1px solid pink;
   padding: 5px;
   border-radius: 5px;
+  transition: 0.3s;
+}
+.visual__increaseepisode:hover {
+  color: #fff;
+  background-color: pink;
 }
 </style>

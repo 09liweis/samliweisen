@@ -154,11 +154,13 @@ export default {
 }
 .pagination__link {
 	display: inline-block;
-	padding: 10px;
+	padding: 2px 5px;
 	margin-right: 5px;
 	border: 1px solid #ff4081;
+	border-radius: 5px;
 	cursor: pointer;
 	transition: 0.3s;
+	margin-bottom: 5px;
 }
 .pagination__link.active,.pagination__link:hover {
 	background: #ff4081;

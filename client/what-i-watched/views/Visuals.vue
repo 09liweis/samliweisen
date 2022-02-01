@@ -85,7 +85,7 @@ export default {
 				page: this.page,
 				limit: this.limit
 			};
-			this.$http.get(this.$store.state.api.visualList, {params: params}).then(res => {
+			this.$http.get(this.$store.state.api.visualList, {params}).then(res => {
 				this.list = res.body.results;
 				this.total = res.body.total;
 				this.totalPages = Math.ceil(this.total/this.limit);

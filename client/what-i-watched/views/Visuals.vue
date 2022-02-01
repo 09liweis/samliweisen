@@ -18,7 +18,7 @@
       </div>
       <Visual v-for="v in resultVisuals" :key="v.id" v-bind:v="v" v-bind:getVisuals="getVisuals"></Visual>
     </div>
-		<transition-group v-if="list.length > 0" name="visual" class="" appear>
+		<transition-group v-if="visualList.length > 0" name="visual" class="" appear>
 		</transition-group>
 		<div class="paginations" v-if="total != 0">
 			<router-link class="pagination__link" v-bind:class="{ active: page == p }" v-for="p in totalPages" :key="p" :to="{ name: 'page', params: { pageId: p }}">{{p}}</router-link>
@@ -38,7 +38,7 @@ export default {
 			page: 1,
 			total: 0,
 			totalPages: 0,
-			list: [],
+			visualList: [],
 			filters: [],
 			loading: true,
 			admin: window.localStorage.getItem('admin') || false
@@ -47,7 +47,7 @@ export default {
 	computed: {
 		resultVisuals() {
 			if (this.filters.length != 0) {
-				return this.list.filter((v) => {
+				return this.visualList.filter((v) => {
 					if (this.filters.indexOf('not_start') != -1) {
 						return v.current_episode == 0;
 					} else {
@@ -55,7 +55,7 @@ export default {
 					}
 				});
 			} else {
-				return this.list;   
+				return this.visualList;   
 			}
 		}
 	},
@@ -86,7 +86,7 @@ export default {
 				limit: this.limit
 			};
 			this.$http.get(this.$store.state.api.visualList, {params}).then(res => {
-				this.list = res.body.results;
+				this.visualList = res.body.results;
 				this.total = res.body.total;
 				this.totalPages = Math.ceil(this.total/this.limit);
 				this.loading = false;
@@ -95,14 +95,14 @@ export default {
 		search() {
 			this.$http.get('https://what-i-watched.herokuapp.com/api/search?keyword=' + this.searchText).then(res=>{
 				if (res.ok) {
-					this.list = res.body.results;
+					this.visualList = res.body.results;
 				}
 			});
 		},
 		filter() {
 			this.$http.get('https://what-i-watched.herokuapp.com/api/visuals?type=not_start').then(res=>{
 				if (res.ok) {
-					this.list = res.body.results;
+					this.visualList = res.body.results;
 				}
 			});
 		}

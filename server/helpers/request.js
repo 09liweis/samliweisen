@@ -1,4 +1,4 @@
-var request = require('request');
+var axios = require('axios');
 var cheerio = require('cheerio');
 
 exports.getCheerio = getCheerio = (body) => {
@@ -16,24 +16,22 @@ const headers = {
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'
 };
 
-exports.sendRequest = ({url,method='GET'},cb) => {
-  if (method == 'POST'){
-    // opt.json = {douban_id}
-    // json:{
-    //   douban_id
-    // }
+exports.sendRequest = ({url,method='GET',body},cb) => {
+  requestOpt = {url,method,headers};
+  if (body){
+    requestOpt.data = body;
     //for post method
   }
-  request({url,method,headers}, function (error, response, body) {
+  axios(requestOpt).then((resp) => {
+    var body = resp.data;
     var statusCode = 200;
-    if (response) {
-      statusCode = response.statusCode;
-    }
-    if (error) {
-      return cb(error,null);
+    if (resp) {
+      statusCode = resp.status;
     }
     var $ = getCheerio(body);
     return cb(null,{statusCode,$,body});
+  }).catch((err) => {
+    return cb(err,{});
   });
 }
 

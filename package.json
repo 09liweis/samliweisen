@@ -44,6 +44,7 @@
     "@angular/router": "^6.0.0",
     "@cloudinary/angular-5.x": "^1.0.1",
     "angular2-tinymce": "^3.0.0",
+    "axios": "^0.25.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.18.2",
     "cheerio": "^1.0.0-rc.2",

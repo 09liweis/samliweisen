@@ -26,7 +26,7 @@ const Casts = styled.div`
 `;
 
 const Movie = (props) => {
-  const [visual,setVisual] = useState({casts:[],id:props.id});
+  const [visual,setVisual] = useState({casts:[],id:props.match.params.id});
   const [loading,setLoading] = useState(true);
   function getSummary(douban_id,cb) {
     axios.post('/api/visuals/summary',{douban_id}).then((res) => {

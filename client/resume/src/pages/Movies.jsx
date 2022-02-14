@@ -3,7 +3,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import {getMovies} from '../actions/movie';
 import {Box, BoxTitle, BoxBody} from '../components/style.jsx';
 import Movie from '../components/Movie.jsx';
-import MoviePage from './Movie.jsx';
+// import MoviePage from './Movie.jsx';
 
 import '../css/movies.css';
 
@@ -27,7 +27,7 @@ const Movies = (props) => {
     dispatch(getMovies({limit:15,page}));
   }
   const handleVisualClick = (id) => {
-    setMovieId(id);
+    // setMovieId(id);
   }
   const visuals = items.map((v) => {
     return (
@@ -38,12 +38,12 @@ const Movies = (props) => {
   });
   return (
     <Box id="movies">
-      {movieId?
+      {/* {movieId?
         <React.Fragment>
           <span className="fa fa-times movie_detail_close" onClick={()=>setMovieId(0)}></span>
           <MoviePage id={movieId} />
         </React.Fragment>
-      :''}
+      :''} */}
       <BoxTitle>
         <i className="boxIcon fa fa-film" aria-hidden="true"></i>
         <span>What I Watched</span>

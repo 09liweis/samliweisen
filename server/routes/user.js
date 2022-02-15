@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const {router} = require('../helpers/router');
 const {verify} = require('../helpers/verifyToken');
 
 const {list,register,login,detail} = require('../controllers/user.js');

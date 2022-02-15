@@ -1,5 +1,4 @@
-var express = require('express');
-var router = express.Router();
+const {router} = require('../helpers/router');
 const {verify} = require('../helpers/verifyToken');
 
 const {findList,create,category_list,detail,update,remove} = require('../controllers/transaction.js');

@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const {router} = require('../helpers/router');
 
 var request = require('request');
 var cheerio = require('cheerio');

@@ -1,5 +1,4 @@
-var express= require('express');
-var router = express.Router();
+const {router} = require('../helpers/router');
 
 const {getList,updateRandom,upsert,getDetail} = require('../controllers/place.js');
 

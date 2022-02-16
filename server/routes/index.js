@@ -1,5 +1,4 @@
-var express = require('express');
-var router = express.Router();
+const {router} = require('../helpers/router');
 
 router.route('/').get(function(req, resp) {
   resp.status(200).json('Resume site comming soon');

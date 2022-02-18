@@ -1,4 +1,5 @@
-const {router} = require('../helpers/router');
+const express = require('express');
+const router = express.Router();
 const {verify} = require('../helpers/verifyToken');
 
 const {findList,create,category_list,detail,update,remove} = require('../controllers/transaction.js');

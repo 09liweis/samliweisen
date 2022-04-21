@@ -31,6 +31,10 @@ const Status = () => {
           {isCharging ? <span className="fa fa-bolt"></span> : null}
           <div className="battery__level">{level * 100}%</div>
         </div>
+        <div className="languages">
+          <span>English</span>
+          <span>中文</span>
+        </div>
       </div>
     </header>
   );

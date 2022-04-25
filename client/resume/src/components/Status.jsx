@@ -18,7 +18,7 @@ const Status = () => {
       });
       battery.addEventListener('levelchange',function() {
         var {level} = battery;
-        setLevel(level);
+        setLevel(Math.ceil(level*100)+'%');
       });
     });
   }
@@ -29,7 +29,7 @@ const Status = () => {
       <div className="rightContainer">
         <div className={`battery ${isCharging?'charging':''}`}>
           {isCharging ? <span className="fa fa-bolt"></span> : null}
-          <div className="battery__level">{level * 100}%</div>
+          <div className="battery__level">{level}</div>
         </div>
         <div className="languages">
           <span className="language">English</span>

@@ -3,6 +3,9 @@ import React,{useState} from 'react';
 const Status = () => {
   const [level, setLevel] = useState(0);
   const [isCharging, setCharging] = useState(false);
+  const getFormatLevel = (level) => {
+    return Math.ceil(level*100)+'%';
+  }
   const getBatteryStatus = () => {
     var batteryManager = navigator.getBattery;
     if (typeof batteryManager == 'undefined') {
@@ -11,14 +14,14 @@ const Status = () => {
     navigator.getBattery().then(function(battery){
       var {level, charging} = battery;
       setCharging(charging);
-      setLevel(level);
+      setLevel(getFormatLevel(level));
       battery.addEventListener('chargingchange',function() {
         var {charging} = battery;
         setCharging(charging);
       });
       battery.addEventListener('levelchange',function() {
         var {level} = battery;
-        setLevel(Math.ceil(level*100)+'%');
+        setLevel(getFormatLevel(level));
       });
     });
   }

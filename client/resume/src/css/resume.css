@@ -139,21 +139,6 @@ ul li:hover {
   z-index: 1;
   height: 100vh;
 }
-.home {
-  display: flex;
-  flex-wrap: wrap;
-}
-@media (min-width: 768px) {
-  .home > div {
-    width: 50%
-  }
-}
-
-@media (min-width: 992px) {
-  .home > div {
-    width: 33%
-  }
-}
 
 .experience,
 .project {

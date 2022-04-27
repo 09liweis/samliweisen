@@ -29,15 +29,20 @@ Particle.prototype.update = function() {
   this.y += this.directionY;
   this.draw();
 }
+const COLORS = ['E03131','F4604C','FFC001','5DB75D','428BCA','0C0C0C'];
+const randomNumber = () => { 
+  return Math.floor(Math.random() * (COLORS.length - 1) + 1);
+} 
 function init() {
   particleArray = [];
-  for (let i = 0; i < 25; i++) {
-    let size = Math.random() * 20;
+  for (let i = 0; i < 30; i++) {
+    let size = Math.random() * 15;
     let x = Math.random() * (innerWidth - size * 2);
     let y = Math.random() * (innerHeight - size * 2);
     let directionX = (Math.random() * .4) - .2;
     let directionY = (Math.random() * .4) - .2;
-    let color = 'white';
+    let color = '#'+COLORS[randomNumber()];
+    console.log(color);
 
     particleArray.push(new Particle(x,y,directionX,directionY,size,color));
   }

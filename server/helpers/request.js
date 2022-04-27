@@ -28,6 +28,9 @@ exports.sendRequest = ({url,method='GET',body},cb) => {
     if (resp) {
       statusCode = resp.status;
     }
+    if (body.data && typeof body.data == 'object') {
+      return cb(null,{body:body.data});
+    }
     var $ = getCheerio(body);
     return cb(null,{statusCode,$,body});
   }).catch((err) => {

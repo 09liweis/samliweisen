@@ -1,4 +1,5 @@
-const {router} = require('../helpers/router');
+const express = require('express');
+const router = express.Router();
 
 const {findList,add,findDetail,update,remove} = require('../controllers/blog.js');
 

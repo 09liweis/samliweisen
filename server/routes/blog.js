@@ -1,7 +1,7 @@
-const {router} = require('../helpers/router');
+var express = require('express');
+var router = express.Router();
 
 const {findList,add,findDetail,update,remove} = require('../controllers/blog.js');
-
 router.route('/')
 .get(findList)
 .post(add);

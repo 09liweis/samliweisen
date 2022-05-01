@@ -39,7 +39,7 @@ export default class Comments extends React.Component {
     this.getComments();
   }
   getComments() {
-    axios.get(this.state.domain + '/api/comments').then((res) => {
+    axios.get('/api/comments').then((res) => {
       if (res.status == 200) {
         this.setState({
           comments: res.data

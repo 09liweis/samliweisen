@@ -59,7 +59,7 @@ export default class Comments extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const comment = this.state.comment;
-    axios.post(this.state.domain + '/api/comments', comment).then((res) => {
+    axios.post('/api/comments', comment).then((res) => {
       if (res.status == 200) {
         this.getComments();
         this.setState({
@@ -77,7 +77,7 @@ export default class Comments extends React.Component {
       <Box className="comments container">
         <BoxTitle>
           <i className="boxIcon fa fa-comments" aria-hidden="true"></i>
-          <span>Comments</span>
+          <span>来啦各位帅哥美女，留个言吧，给小弟一些意见</span>
         </BoxTitle>
         <BoxBody>
           {comments.map((c) => 
@@ -88,9 +88,9 @@ export default class Comments extends React.Component {
           )}
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div>
-              <input style={{'width': '100%', 'padding': '10px', 'marginBottom': '10px', 'fontSize': '16px'}} type="text" name="name" placeholder="Name" value={comment.name} onChange={this.handleChange.bind(this)} />
+              <input style={{'width': '100%', 'padding': '10px', 'marginBottom': '10px', 'fontSize': '16px'}} type="text" name="name" placeholder="请输入你的大名" value={comment.name} onChange={this.handleChange.bind(this)} />
             </div>
-            <textarea style={{'width': '100%', 'height': '200px', 'padding': '10px'}} placeholder="Leave a Comment" name="content" value={comment.content} onChange={this.handleChange.bind(this)}></textarea>
+            <textarea style={{'width': '100%', 'height': '200px', 'padding': '10px'}} placeholder="请留下你的足印，随便说说" name="content" value={comment.content} onChange={this.handleChange.bind(this)}></textarea>
             <Button>Submit</Button>
           </form>
         </BoxBody>

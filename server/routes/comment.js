@@ -4,7 +4,7 @@ var router = express.Router();
 const Comment = require('../models/comment');
 
 router.get('/', (req, res, next) => {
-  Comment.find({}).exec((err, comments) => {
+  Comment.find({}).sort('-created_at').exec((err, comments) => {
     if (err) throw err;
     res.send(comments);
   });

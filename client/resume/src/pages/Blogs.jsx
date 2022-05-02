@@ -14,7 +14,7 @@ const Blogs = () => {
   const lst = blogs.map((b) => {
     return (
       <article className="blog" key={b._id}>
-        <h3 className="blog__title">{b.title}</h3>
+        <h1 className="blog__title">{b.title}</h1>
         <div className="blog__attr">
           <span className="blog__date">{b.created_at.substr(0, 10) }</span>
           <span className="blog__category">{b.category}</span>
@@ -22,7 +22,7 @@ const Blogs = () => {
         {b.image ?
         <img className="blog__image" src={b.image} />
         : null}
-        <section dangerouslySetInnerHTML={{ __html:'' }}></section>
+        <section dangerouslySetInnerHTML={{ __html:b.content }}></section>
       </article>
     );
   });

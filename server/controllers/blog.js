@@ -1,4 +1,4 @@
-const {sendResp} = require('../helpers/request');
+const {sendResp, sendErr} = require('../helpers/request');
 const Blog = require('../models/blog');
 
 exports.findList = (req, resp) => {

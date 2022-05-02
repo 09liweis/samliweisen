@@ -26,8 +26,6 @@ export default class Comments extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //domain: 'https://where-we-work-a09liweis.c9users.io',
-      domain: 'https://samliweisen.herokuapp.com',
       comments: [],
       comment: {
         name: '',

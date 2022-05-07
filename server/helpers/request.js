@@ -28,8 +28,9 @@ exports.sendRequest = ({url,method='GET',body},cb) => {
     if (resp) {
       statusCode = resp.status;
     }
-    if (body.data && typeof body.data == 'object') {
-      return cb(null,{body:body.data});
+    //handle json api result
+    if (body && typeof body == 'object') {
+      return cb(null,{body});
     }
     var $ = getCheerio(body);
     return cb(null,{statusCode,$,body});

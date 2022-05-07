@@ -68,7 +68,7 @@ exports.getSubjects = (req, resp) => {
   const page_start = ((page - 1) || 0) * page_limit;
   const url = `${DOUBAN_SITE_API}search_subjects?sort=${sort}&type=${type}&tag=${tag}&page_limit=${page_limit}&page_start=${page_start}`;
   sendRequest({url}, (err,{body}) => {
-    var visuals = JSON.parse(body).subjects;
+    var visuals = body.subjects;
     for (let i = 0; i < visuals.length; i++) {
       const {cover,rate,id,episodes_info} = visuals[i];
       visuals[i].poster = cover;

@@ -285,6 +285,7 @@ exports.getSummary = (req,resp)=>{
         console.error(err);
       }
       visual = Object.assign(visual,imdbObj);
+      visual.poster = douban_poster;
       return sendResp(resp,visual);
     })
   });

@@ -5,9 +5,16 @@ import styled from 'styled-components';
 
 const Comment = styled.div`
   margin-bottom: 10px;
-  border: 1px solid #06A763;
+  background-color: #06A763;
+  color: #fff;
   padding: 10px;
   border-radius: 10px;
+  .nm {
+    text-transform: capitalize;
+  }
+  p {
+    margin: 5px 0;
+  }
 `;
 
 const Input = styled.input`
@@ -17,6 +24,9 @@ const Input = styled.input`
   padding: 5px;
   border: 1px solid #06A763;
   outline: none;
+  .name {
+    border-color: red;
+  }
 `;
 
 const Button = styled.button`
@@ -36,6 +46,7 @@ const Comments = () => {
   const newComment = {name:'',content:''};
   const [comment, setComment] = useState(newComment);
   const [comments, setComments] = useState([]);
+  const [error, setError] = useState('');
   useEffect(()=>{
     getComments();
   },[]);
@@ -55,10 +66,19 @@ const Comments = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!comment.name) {
+      setError('name');
+      return;
+    }
+    if (!comment.content) {
+      setError('content');
+      return;
+    }
     axios.post('/api/comments', comment).then((res) => {
       if (res.status == 200) {
         getComments();
         setComment(newComment);
+        setError('');
       }
     });
   }
@@ -70,13 +90,13 @@ const Comments = () => {
       </BoxTitle>
       <BoxBody>
         <form onSubmit={(e)=>handleSubmit(e)}>
-          <Input name="name" placeholder="请输入你的大名" value={comment.name} onChange={(e)=>handleChange(e)} />
-          <Input placeholder="请留下你的足印，随便说说" name="content" value={comment.content} onChange={(e) => handleChange(e)} />
+          <Input className={error} name="name" placeholder="请输入你的大名" value={comment.name} onChange={(e)=>handleChange(e)} />
+          <Input className={error} placeholder="请留下你的足印，随便说说" name="content" value={comment.content} onChange={(e) => handleChange(e)} />
           <Button>Submit</Button>
         </form>
         {comments.map((c) => 
           <Comment key={c._id}>
-            <span>{c.name} - {c.created_at}</span>
+            <span className="nm">{c.name} - {c.created_at}</span>
             <p>{c.content}</p>
           </Comment>
         )}

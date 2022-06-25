@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import axios from 'axios';
 import {Box, BoxTitle, BoxBody} from '../components/style.jsx';
 import styled from 'styled-components';
@@ -22,77 +22,58 @@ const Button = styled.button`
   }
 `;
 
-export default class Comments extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      comments: [],
-      comment: {
-        name: '',
-        content: ''
-      }
-    };
-  }
-  UNSAFE_componentWillMount() {
-    this.getComments();
-  }
-  getComments() {
+const Comments = () => {
+  const newComment = {name:'',content:''};
+  const [comment, setComment] = useState(newComment);
+  const [comments, setComments] = useState([]);
+  useEffect(()=>{
+    getComments();
+  },[]);
+  const getComments = () => {
     axios.get('/api/comments').then((res) => {
       if (res.status == 200) {
-        this.setState({
-          comments: res.data
-        });
+        setComments(res.data);
       }
     });
   }
-  handleChange(e) {
+  const handleChange = (e) => {
     const v = e.target.value;
     const p = e.target.name;
-    let comment = this.state.comment;
-    comment[p] = v;
-    this.setState({
-      comment: comment
-    });
+    let curComment = Object.assign({},comment);
+    curComment[p] = v;
+    setComment(curComment);
   }
-  handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const comment = this.state.comment;
     axios.post('/api/comments', comment).then((res) => {
       if (res.status == 200) {
-        this.getComments();
-        this.setState({
-          comment: {
-            name: '',
-            content: ''
-          }
-        });
+        getComments();
+        setComment(newComment);
       }
     });
   }
-  render() {
-    const {comment, comments} = this.state;
-    return(
-      <Box className="comments container">
-        <BoxTitle>
-          <i className="boxIcon fa fa-comments" aria-hidden="true"></i>
-          <span>来啦各位帅哥美女，留个言吧，给小弟一些意见</span>
-        </BoxTitle>
-        <BoxBody>
-          {comments.map((c) => 
-            <Comment key={c._id}>
-              <span>{c.name} - {c.created_at}</span>
-              <p>{c.content}</p>
-            </Comment>
-          )}
-          <form onSubmit={this.handleSubmit.bind(this)}>
-            <div>
-              <input style={{'width': '100%', 'padding': '10px', 'marginBottom': '10px', 'fontSize': '16px'}} type="text" name="name" placeholder="请输入你的大名" value={comment.name} onChange={this.handleChange.bind(this)} />
-            </div>
-            <textarea style={{'width': '100%', 'height': '200px', 'padding': '10px'}} placeholder="请留下你的足印，随便说说" name="content" value={comment.content} onChange={this.handleChange.bind(this)}></textarea>
-            <Button>Submit</Button>
-          </form>
-        </BoxBody>
-      </Box>
-    );
-  }
+  return(
+    <Box className="comments container">
+      <BoxTitle>
+        <i className="boxIcon fa fa-comments" aria-hidden="true"></i>
+        <span>来啦各位帅哥美女，留个言吧，给小弟一些意见</span>
+      </BoxTitle>
+      <BoxBody>
+        {comments.map((c) => 
+          <Comment key={c._id}>
+            <span>{c.name} - {c.created_at}</span>
+            <p>{c.content}</p>
+          </Comment>
+        )}
+        <form onSubmit={(e)=>handleSubmit(e)}>
+          <div>
+            <input style={{'width': '100%', 'padding': '10px', 'marginBottom': '10px', 'fontSize': '16px'}} type="text" name="name" placeholder="请输入你的大名" value={comment.name} onChange={(e)=>handleChange(e)} />
+          </div>
+          <textarea style={{'width': '100%', 'height': '200px', 'padding': '10px'}} placeholder="请留下你的足印，随便说说" name="content" value={comment.content} onChange={(e) => handleChange(e)}></textarea>
+          <Button>Submit</Button>
+        </form>
+      </BoxBody>
+    </Box>
+  );
 }
+export default Comments;

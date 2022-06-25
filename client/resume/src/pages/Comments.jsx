@@ -10,13 +10,23 @@ const Comment = styled.div`
   border-radius: 10px;
 `;
 
+const Input = styled.input`
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #06A763;
+  outline: none;
+`;
+
 const Button = styled.button`
   border: none;
   background-color: #06A763;
   padding: 10px;
   color: #ffffff;
   cursor: pointer;
-  transition: 0.5 ease;
+  margin-bottom: 10px;
+  transition: 0.5s ease;
   &:hover {
     background-color: #06B763;
   }
@@ -59,19 +69,17 @@ const Comments = () => {
         <span>来啦各位帅哥美女，留个言吧，给小弟一些意见</span>
       </BoxTitle>
       <BoxBody>
+        <form onSubmit={(e)=>handleSubmit(e)}>
+          <Input name="name" placeholder="请输入你的大名" value={comment.name} onChange={(e)=>handleChange(e)} />
+          <Input placeholder="请留下你的足印，随便说说" name="content" value={comment.content} onChange={(e) => handleChange(e)} />
+          <Button>Submit</Button>
+        </form>
         {comments.map((c) => 
           <Comment key={c._id}>
             <span>{c.name} - {c.created_at}</span>
             <p>{c.content}</p>
           </Comment>
         )}
-        <form onSubmit={(e)=>handleSubmit(e)}>
-          <div>
-            <input style={{'width': '100%', 'padding': '10px', 'marginBottom': '10px', 'fontSize': '16px'}} type="text" name="name" placeholder="请输入你的大名" value={comment.name} onChange={(e)=>handleChange(e)} />
-          </div>
-          <textarea style={{'width': '100%', 'height': '200px', 'padding': '10px'}} placeholder="请留下你的足印，随便说说" name="content" value={comment.content} onChange={(e) => handleChange(e)}></textarea>
-          <Button>Submit</Button>
-        </form>
       </BoxBody>
     </Box>
   );

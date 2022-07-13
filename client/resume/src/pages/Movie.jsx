@@ -26,7 +26,7 @@ const Casts = styled.div`
 `;
 
 const Movie = (props) => {
-  const [visual,setVisual] = useState({casts:[],id:props.match.params.id});
+  const [visual,setVisual] = useState({id:props.match.params.id});
   const [loading,setLoading] = useState(true);
   function getSummary(douban_id,cb) {
     axios.post('/api/visuals/summary',{douban_id}).then((res) => {
@@ -38,7 +38,7 @@ const Movie = (props) => {
       const {douban_id} = res.data.result;
       let v = res.data.result;
       getSummary(douban_id,(res)=> {
-        if (res && res.data && res.data.douban_rating) {
+        if (res && res.data && res.data.douban_id) {
           v = Object.assign(v,res.data);
         }
         setVisual(v);
@@ -61,6 +61,7 @@ const Movie = (props) => {
             <div>{visual.release_date} {visual.duration}min</div>
             <div className="visual__rating">{visual.douban_rating}</div>
             <p>{visual.summary}</p>
+            {visual.casts?
             <Casts>
               {visual.casts.map((c)=>
                 <div className="cast" key={c.id}>
@@ -70,11 +71,15 @@ const Movie = (props) => {
                 </div>
               )}
             </Casts>
+            :null}
+            {visual.comments?
             <div className="comments">
               {visual.comments.map((c)=>
                 <div className="comment" key={c.author}>{c.author}: {c.text}</div>
               )}
             </div>
+            :null}
+            {visual.reviews?
             <div className="reviews">
               {visual.reviews.map((r)=>
                 <div className="review" key={r.title}>
@@ -83,6 +88,7 @@ const Movie = (props) => {
                 </div>
               )}
             </div>
+            :null}
           </div>
         </div>
         }

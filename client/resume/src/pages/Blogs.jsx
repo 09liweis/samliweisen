@@ -16,7 +16,7 @@ const Blogs = () => {
       <article className="blog" key={b._id}>
         <h1 className="blog__title">{b.title}</h1>
         <div className="blog__attr">
-          <span className="blog__date">{b.created_at.substr(0, 10) }</span>
+          <span className="blog__date">{b.created_at}</span>
           <span className="blog__category">{b.category}</span>
         </div>
         {b.image ?

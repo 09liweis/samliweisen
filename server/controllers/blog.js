@@ -4,6 +4,9 @@ const Blog = require('../models/blog');
 exports.findList = (req, resp) => {
   Blog.find({}, '_id title url content image category published created_at',{limit:10}).sort('-created_at').exec((err, blogs) => {
     handleError(resp, err);
+    blogs.forEach((blog)=>{
+      blog.content = blog.content.substr(0,100) + ' ...';
+    });
     return sendResp(resp,blogs);
   });
 };

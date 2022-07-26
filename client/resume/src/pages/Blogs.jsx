@@ -14,7 +14,7 @@ const Blogs = () => {
   const lst = blogs.map((b) => {
     return (
       <article className="blog" key={b._id}>
-        <h1 className="blog__title">{b.title}</h1>
+        <h1 className="blog__title text-color">{b.title}</h1>
         <div className="blog__attr">
           <span className="blog__date">{b.created_at}</span>
           <span className="blog__category">{b.category}</span>

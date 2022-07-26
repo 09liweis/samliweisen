@@ -57,7 +57,7 @@ const Nav = (props) => {
     setActiveNav(Object.assign(activeNav,ret));
   }
   const links = navs.map((nav)=> {
-    let navClass = 'navItem';
+    let navClass = 'navItem text-color';
     if (nav.tl == tl) {
       navClass += ' active';
     }

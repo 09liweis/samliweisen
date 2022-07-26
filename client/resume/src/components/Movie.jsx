@@ -7,8 +7,6 @@ const ReleaseDate = styled.div`
   top: 0;
   right: 0;
   padding: 2px 3px;
-  color: #fff;
-  background-color: #308541;
 `;
 const VisualContainer = styled.div`
   border-radius: 5px;
@@ -18,7 +16,6 @@ const VisualContainer = styled.div`
 `;
 const VisualTitle = styled.h3`
   margin: 0;
-  color: #4b8a2c;
   font-size: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -57,13 +54,13 @@ export default class Movie extends React.Component {
     return (
       <VisualContainer>
         <span className={`visual__status ${status}`}>{v.current_episode}/{v.episodes}</span>
-        <ReleaseDate>{v.release_date.substr(0,4)}</ReleaseDate>
+        <ReleaseDate className='bg-color'>{v.release_date.substr(0,4)}</ReleaseDate>
         <Link to={movieHref}>
           <img className="visual__image" src={'https://images.weserv.nl/?url='+v.poster} alt={v.original_title} onError={(e)=>this.handleErrorImg(e)} />
         </Link>
         {/* <img className="visual__image" src={'https://images.weserv.nl/?url='+v.poster} alt={v.original_title} onError={(e)=>this.handleErrorImg(e)} /> */}
         <div className="visual__detail">
-          <VisualTitle>{v.title}</VisualTitle>
+          <VisualTitle className='text-color'>{v.title}</VisualTitle>
           <div className="visual__ratings">
             <a className="visual__rating" target="_blank" onClick={(e)=>this.handleLink(e)} href={'https://movie.douban.com/subject/' + v.douban_id}>
               <img className="visual__rating-icon" src={doubanIcon} alt="" />

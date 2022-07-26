@@ -5,7 +5,6 @@ import Experiences from '../components/home/Experiences.jsx';
 import Skills from '../components/home/Skills.jsx';
 import Projects from '../components/home/Projects.jsx';
 
-import '../css/resume.css';
 // const Home  = ({characters}) => 
 const Home = () => {
   const dispatch = useDispatch();

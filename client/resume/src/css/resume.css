@@ -12,6 +12,9 @@ h1,h2,h3,h4 {
   margin: 0;
   font-family: 'Josefin Sans', sans-serif;
 }
+.text-color {
+  color: #06A763;
+}
 .list {
   padding-left: 20px;
 }

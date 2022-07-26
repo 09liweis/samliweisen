@@ -7,7 +7,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import reducer from './reducers';
 // import { getCharacters } from './reducer/characters/actions';
-
+import './css/resume.css';
 import Status from './components/Status.jsx';
 import Nav from './components/Nav.jsx';
 

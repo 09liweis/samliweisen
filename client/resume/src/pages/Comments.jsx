@@ -5,8 +5,6 @@ import styled from 'styled-components';
 
 const Comment = styled.div`
   margin-bottom: 10px;
-  background-color: #06A763;
-  color: #fff;
   padding: 10px;
   border-radius: 10px;
   .nm {
@@ -95,7 +93,7 @@ const Comments = () => {
           <Button>Submit</Button>
         </form>
         {comments.map((c) => 
-          <Comment key={c._id}>
+          <Comment className='bg-color' key={c._id}>
             <span className="nm">{c.name} - {c.created_at}</span>
             <p>{c.content}</p>
           </Comment>

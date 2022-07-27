@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {Box, BoxTitle, BoxBody} from '../components/style.jsx';
 
 import '../css/movie.css';
+import {updateDocumentTitle} from '../helpers';
 
 const Poster = styled.img`
   width: 180px;
@@ -42,6 +43,7 @@ const Movie = (props) => {
           v = Object.assign(v,res.data);
         }
         setVisual(v);
+        updateDocumentTitle(v.title);
         setLoading(false);
       });
     });

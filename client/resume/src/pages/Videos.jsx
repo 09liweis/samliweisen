@@ -2,10 +2,12 @@ import React, {useState,useEffect} from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import {getVideos} from '../actions/video';
 import {Box, BoxTitle, BoxBody} from '../components/style.jsx';
+import {updateDocumentTitle} from '../helpers';
 
 import '../css/videos.css';
 
 const Movies = () => {
+  updateDocumentTitle('Vlogs');
   var [page,setPage] = useState(1);
   const {items,loading} = useSelector(state => state.videos);
   const dispatch = useDispatch();

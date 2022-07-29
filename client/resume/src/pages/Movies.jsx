@@ -3,6 +3,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import {getMovies} from '../actions/movie';
 import {Box, BoxTitle, BoxBody} from '../components/style.jsx';
 import Movie from '../components/Movie.jsx';
+import {updateDocumentTitle} from '../helpers';
 // import MoviePage from './Movie.jsx';
 
 import '../css/movies.css';
@@ -14,6 +15,7 @@ const Movies = (props) => {
   const {items,loading} = useSelector(state => state.movies);
   const dispatch = useDispatch();
   useEffect(() => {
+    updateDocumentTitle('Movies');
     if (items.length == 0) {
       dispatch(getMovies({limit:15,page}));
     }

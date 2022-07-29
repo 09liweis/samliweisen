@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react';
 import axios from 'axios';
 import {Box, BoxTitle, BoxBody} from '../components/style.jsx';
 import styled from 'styled-components';
+import {updateDocumentTitle} from '../helpers';
 
 const Comment = styled.div`
   margin-bottom: 10px;
@@ -41,6 +42,7 @@ const Button = styled.button`
 `;
 
 const Comments = () => {
+  updateDocumentTitle('Comments');
   const newComment = {name:'',content:''};
   const [comment, setComment] = useState(newComment);
   const [comments, setComments] = useState([]);

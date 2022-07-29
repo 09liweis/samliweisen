@@ -2,10 +2,12 @@ import React from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import {Box, BoxTitle, BoxBody} from '../components/style.jsx';
 import {getBlogs} from '../actions/blog';
+import {updateDocumentTitle} from '../helpers';
 
 import '../css/blogs.css';
 
 const Blogs = () => {
+  updateDocumentTitle('Blogs');
   const dispatch = useDispatch();
   const blogs = useSelector(state => state.blogs);
   if (blogs && blogs.length === 0) {

@@ -3,10 +3,12 @@ import { useSelector,useDispatch } from 'react-redux';
 import {CSSTransition,TransitionGroup} from 'react-transition-group';
 
 import {getTodos, addTodo, editTodo, deleteTodo} from '../actions/todo';
+import {updateDocumentTitle} from '../helpers';
 
 import '../css/todo.css';
 
 const Todo = () => {
+  updateDocumentTitle('Todos');
   const emptyTodo = {name:'',date:'',status:'pending',steps:[]};
   const [showForm,setShowForm] = useState(false);
   const [curTodo, setCurTodo] = useState(emptyTodo)

@@ -33,9 +33,9 @@ const Movies = (props) => {
   }
   const visuals = items.map((v) => {
     return (
-      <div className="visual" key={v.id} onClick={()=>handleVisualClick(v.id)}>
+      <article className="visual" key={v.id} onClick={()=>handleVisualClick(v.id)}>
         <Movie v={v} />
-      </div>
+      </article>
     );
   });
   return (
@@ -51,9 +51,9 @@ const Movies = (props) => {
         <span>What I Watched</span>
       </BoxTitle>
       <BoxBody>
-        <div className="visual__list">
+        <section className="visual__list">
           {loading ?<div className="lds-hourglass"></div>:visuals}
-        </div>
+        </section>
         <div className="visual__loadmore" onClick={()=>handleLoadmore()}>Load More</div>
       </BoxBody>
     </Box>

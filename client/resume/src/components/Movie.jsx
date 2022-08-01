@@ -11,7 +11,6 @@ const ReleaseDate = styled.div`
 const VisualContainer = styled.div`
   border-radius: 5px;
   background-color: #FFFFFF;
-  box-shadow: 0 1px 6px rgba(0,0,0,.117647), 0 1px 4px rgba(0,0,0,.117647);
   position: relative;
 `;
 const VisualTitle = styled.h3`
@@ -52,7 +51,7 @@ export default class Movie extends React.Component {
     }
     const movieHref = "/movie/" + v.id;
     return (
-      <VisualContainer>
+      <VisualContainer className='box-shadow'>
         <span className={`visual__status ${status}`}>{v.current_episode}/{v.episodes}</span>
         <ReleaseDate className='bg-color'>{v.release_date.substr(0,4)}</ReleaseDate>
         <Link to={movieHref}>

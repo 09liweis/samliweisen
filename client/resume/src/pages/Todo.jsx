@@ -52,9 +52,9 @@ const Todo = () => {
   }
   const todoForm = (
     <div className="todo__form">
-      <input className="todo__input" name="name" placeholder="title" value={curTodo.name} onChange={(e)=>handleChange(e)} />
-      <input type="date" className="todo__input" name="date" placeholder="date" value={curTodo.date} onChange={(e)=>handleChange(e)} />
-      <input className="todo__input" name="status" placeholder="status" value={curTodo.status} onChange={(e)=>handleChange(e)} />
+      <input className="todo__input box-shadow" name="name" placeholder="title" value={curTodo.name} onChange={(e)=>handleChange(e)} />
+      <input type="date" className="todo__input box-shadow" name="date" placeholder="date" value={curTodo.date} onChange={(e)=>handleChange(e)} />
+      <input className="todo__input box-shadow" name="status" placeholder="status" value={curTodo.status} onChange={(e)=>handleChange(e)} />
       {curTodo.steps.length?
         <div className="">
           {curTodo.steps.map((s,i)=>

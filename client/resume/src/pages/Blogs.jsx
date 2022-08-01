@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector,useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {Box, BoxTitle, BoxBody} from '../components/style.jsx';
 import {getBlogs} from '../actions/blog';
 import {updateDocumentTitle} from '../helpers';
@@ -16,7 +17,7 @@ const Blogs = () => {
   const lst = blogs.map((b) => {
     return (
       <article className="blog" key={b._id}>
-        <h1 className="blog__title text-color">{b.title}</h1>
+        <Link className="blog__title text-color" to={`/blog/${b._id}`}>{b.title}</Link>
         <div className="blog__attr">
           <span className="blog__date">{b.created_at}</span>
           <span className="blog__category">{b.category}</span>

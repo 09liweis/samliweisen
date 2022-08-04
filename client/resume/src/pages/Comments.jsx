@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react';
 import axios from 'axios';
 import {Box, BoxTitle, BoxBody} from '../components/style.jsx';
 import styled from 'styled-components';
+import {CSSTransition,TransitionGroup} from 'react-transition-group';
 import {updateDocumentTitle} from '../helpers';
 
 const Comment = styled.div`
@@ -94,12 +95,16 @@ const Comments = () => {
           <Input className={error} placeholder="请留下你的足印，随便说说" name="content" value={comment.content} onChange={(e) => handleChange(e)} />
           <Button>Submit</Button>
         </form>
+        <TransitionGroup>
         {comments.map((c) => 
+          <CSSTransition key={c._id} timeout={500} classNames="todoAnimation">
           <Comment className='bg-color' key={c._id}>
             <span className="nm">{c.name} - {c.created_at}</span>
             <p>{c.content}</p>
           </Comment>
+          </CSSTransition>
         )}
+        </TransitionGroup>
       </BoxBody>
     </Box>
   );

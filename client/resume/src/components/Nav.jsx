@@ -6,7 +6,7 @@ const navs = [
   {url:'/blogs',ch:'博客',tl:'blogs',icon:'fa fa-rss'},
   {url:'/videos',ch:'视频',tl:'vlog',icon:'fa fa-film'},
   {url:'/todo',ch:'计划',tl:'todos',icon:'fa fa-list-ol'},
-  {url:'/comments',ch:'',tl:'comments',icon:'fa fa-comments'},
+  {url:'/comments',ch:'评论',tl:'comments',icon:'fa fa-comments'},
 ];
 
 const getNavClientRect = (id) => {
@@ -54,7 +54,7 @@ const Nav = (props) => {
   });
   const handleNav = (id, isClick) => {
     var ret = getNavElementData(id,isClick);
-    setActiveNav(Object.assign(activeNav,ret));
+    setActiveNav(ret);
   }
   const links = navs.map((nav)=> {
     let navClass = 'navItem text-color';
@@ -71,7 +71,7 @@ const Nav = (props) => {
   );
   return(
     <nav id="nav" className="box-shadow" onMouseLeave={()=>handleNav(activeNav.highLightPosId,1)}>
-      <div id="navHighlight" style={{left:activeNav.highLightPosLeft,width:activeNav.highLightPosWidth}}></div>
+      <div id="navHighlight" className='bg-color' style={{left:activeNav.highLightPosLeft,width:activeNav.highLightPosWidth}}></div>
       {links}
     </nav>
   );

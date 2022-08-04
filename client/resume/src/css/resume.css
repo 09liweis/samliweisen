@@ -51,7 +51,6 @@ ul li:hover {
   position: absolute;
   height:2px;
   bottom:5px;
-  background-color: #155810;
   transition: 0.3s;
 }
 @media (min-width: 768px) {

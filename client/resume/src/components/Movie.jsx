@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const ReleaseDate = styled.div`
+  background: #fff;
+  color: #000;
   position: absolute;
   top: 0;
   right: 0;
   padding: 2px 3px;
+  mix-blend-mode:screen;
 `;
 const VisualContainer = styled.div`
   border-radius: 5px;
@@ -53,11 +56,10 @@ export default class Movie extends React.Component {
     return (
       <VisualContainer className='box-shadow'>
         <span className={`visual__status ${status}`}>{v.current_episode}/{v.episodes}</span>
-        <ReleaseDate className='bg-color'>{v.release_date.substr(0,4)}</ReleaseDate>
+        <ReleaseDate>{v.release_date.substr(0,4)}</ReleaseDate>
         <Link to={movieHref}>
           <img className="visual__image" src={'https://images.weserv.nl/?url='+v.poster} alt={v.original_title} onError={(e)=>this.handleErrorImg(e)} />
         </Link>
-        {/* <img className="visual__image" src={'https://images.weserv.nl/?url='+v.poster} alt={v.original_title} onError={(e)=>this.handleErrorImg(e)} /> */}
         <div className="visual__detail">
           <VisualTitle className='text-color'>{v.title}</VisualTitle>
           <div className="visual__ratings">

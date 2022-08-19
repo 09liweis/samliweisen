@@ -12,7 +12,6 @@ const ReleaseDate = styled.div`
   mix-blend-mode:screen;
 `;
 const VisualContainer = styled.div`
-  border-radius: 5px;
   background-color: #FFFFFF;
   position: relative;
 `;
@@ -54,11 +53,11 @@ export default class Movie extends React.Component {
     }
     const movieHref = "/movie/" + v.id;
     return (
-      <VisualContainer className='box-shadow'>
-        <span className={`visual__status ${status}`}>{v.current_episode}/{v.episodes}</span>
-        <ReleaseDate>{v.release_date.substr(0,4)}</ReleaseDate>
+      <VisualContainer className='box-shadow border-radius'>
+        <span className={`visual__status border-radius-top-left ${status}`}>{v.current_episode}/{v.episodes}</span>
+        <ReleaseDate className='border-radius-top-right'>{v.release_date.substr(0,4)}</ReleaseDate>
         <Link to={movieHref}>
-          <img className="visual__image" src={'https://images.weserv.nl/?url='+v.poster} alt={v.original_title} onError={(e)=>this.handleErrorImg(e)} />
+          <img className="visual__image border-radius-top" src={'https://images.weserv.nl/?url='+v.poster} alt={v.original_title} onError={(e)=>this.handleErrorImg(e)} />
         </Link>
         <div className="visual__detail">
           <VisualTitle className='text-color'>{v.title}</VisualTitle>

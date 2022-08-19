@@ -35,6 +35,9 @@ h1,h2,h3,h4 {
 .border-radius-top-right {
   border-top-right-radius: 5px;
 }
+.text-center {
+  text-align: center;
+}
 .list {
   padding-left: 20px;
 }

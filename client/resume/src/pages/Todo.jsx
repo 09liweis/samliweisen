@@ -82,10 +82,10 @@ const Todo = () => {
   return (
     <div className="container">
       {showForm?todoForm:''}
-      <h2 className="todos__title">Todo List</h2>
-      <div className="todos__container">
+      <h2 className="todos__title text-center">Todo List</h2>
+      <div className="todos__container text-center">
         <a className="todo__btn" onClick={()=>setShowForm(true)}>Add New</a>
-        <div className="todo__statics">
+        <div className="todo__statics text-center">
           <span className="done">Done</span>
           <span className="working">In Progress</span>
           <span className="pending">Pending</span>

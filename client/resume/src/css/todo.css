@@ -1,5 +1,4 @@
 .todos__title {
-  text-align: center;
   font-size: 2em;
   width: 100%;
   margin-bottom: 20px;
@@ -9,7 +8,6 @@
   max-width: 624px;
   margin: auto;
   padding: 0 15px;
-  text-align:center;
 }
 .todos_error {
   text-align: center;
@@ -47,7 +45,6 @@
   transform: translateX(0);
 }
 .todo__statics {
-  text-align: center;
   margin-top: 15px;
 }
 .todo__statics span {

@@ -18,7 +18,6 @@ const Casts = styled.div`
   .cast {
     width: 90px;
     margin-right: 10px;
-    text-align: center;
     img {
       width: 100%;
       border-radius: 10px;
@@ -66,7 +65,7 @@ const Movie = (props) => {
             {visual.casts?
             <Casts>
               {visual.casts.map((c)=>
-                <div className="cast" key={c.id}>
+                <div className="cast text-center" key={c.id}>
                   <img src={'https://images.weserv.nl/?url='+c.avt} />
                   <span>{c.name}</span>
                   <span>{c.role}</span>

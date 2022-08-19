@@ -57,7 +57,7 @@ const Nav = (props) => {
     setActiveNav(ret);
   }
   const links = navs.map((nav)=> {
-    let navClass = 'navItem text-color';
+    let navClass = 'navItem text-color transition';
     if (nav.tl == tl) {
       navClass += ' active';
     }
@@ -71,7 +71,7 @@ const Nav = (props) => {
   );
   return(
     <nav id="nav" className="box-shadow" onMouseLeave={()=>handleNav(activeNav.highLightPosId,1)}>
-      <div id="navHighlight" className='bg-color' style={{left:activeNav.highLightPosLeft,width:activeNav.highLightPosWidth}}></div>
+      <div id="navHighlight" className='bg-color transition' style={{left:activeNav.highLightPosLeft,width:activeNav.highLightPosWidth}}></div>
       {links}
     </nav>
   );

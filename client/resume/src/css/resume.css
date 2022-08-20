@@ -12,6 +12,18 @@ h1,h2,h3,h4 {
   margin: 0;
   font-family: 'Josefin Sans', sans-serif;
 }
+.display-flex {
+  display: flex;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-justify-content-space-around {
+  justify-content: space-around;
+}
+.flex-align-items-center {
+  align-items: center;
+}
 .text-color {
   color: #06A763;
 }
@@ -57,10 +69,8 @@ ul li {
   background-color: #ffffff;
   max-width: 1200px;
   width: 100%;
-  display:flex;
   margin: auto;
   padding: 10px;
-  justify-content:space-around;
 }
 #navHighlight {
   position: absolute;
@@ -95,7 +105,6 @@ ul li {
   max-width: 1200px;
   margin: auto;
   width: 100%;
-  display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 5px;
@@ -104,10 +113,6 @@ ul li {
   font-size: 24px;
   color: #06A763;
   text-shadow: 1px 4px 6px;
-}
-.rightContainer {
-  display: flex;
-  align-items: center;
 }
 .battery {
   margin-right: 10px;
@@ -146,20 +151,12 @@ ul li {
   width: 100%;
   margin: auto;
 }
-#mainContainer {
-  display: flex;
-  flex-wrap: wrap;
-}
 #main {
   width: 100%;
   /* padding: 0 10px; */
   position: relative;
   z-index: 1;
   height: 100vh;
-}
-.home {
-  display: flex;
-  flex-wrap: wrap;
 }
 @media (min-width: 768px) {
   .home > div {

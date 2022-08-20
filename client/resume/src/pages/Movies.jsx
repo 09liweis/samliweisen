@@ -51,7 +51,7 @@ const Movies = (props) => {
         <span>What I Watched</span>
       </BoxTitle>
       <BoxBody>
-        <section className="visual__list">
+        <section className="visual__list display-flex flex-wrap">
           {loading ?<div className="lds-hourglass"></div>:visuals}
         </section>
         <div className="visual__loadmore" onClick={()=>handleLoadmore()}>Load More</div>

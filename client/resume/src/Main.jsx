@@ -40,7 +40,7 @@ export default class Main extends React.Component {
           <React.Fragment>
             <Status key="status"/>
             <Nav key="nav" />
-            <div id="mainContainer" className="container">
+            <div id="display-flex flex-wrap" className="container">
               <Widgets/>
               <main id="main">
                 <Route exact path='/' component={Home} />

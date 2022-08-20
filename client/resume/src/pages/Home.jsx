@@ -11,7 +11,7 @@ const Home = () => {
   updateDocumentTitle('Home');
   const dispatch = useDispatch();
   return (
-    <div className="home">
+    <div className="home display-flex flex-wrap">
       <Experiences />
       <Projects />
       <Skills />

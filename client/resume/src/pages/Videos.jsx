@@ -29,7 +29,7 @@ const Movies = () => {
         <span>Vlog</span>
       </BoxTitle>
       <BoxBody>
-        <div className="visual__list">
+        <div className="visual__list display-flex flex-wrap">
           {loading ?<div className="lds-hourglass"></div>:visuals}
         </div>
       </BoxBody>

@@ -70,7 +70,7 @@ const Nav = (props) => {
     )}
   );
   return(
-    <nav id="nav" className="box-shadow" onMouseLeave={()=>handleNav(activeNav.highLightPosId,1)}>
+    <nav id="nav" className="box-shadow display-flex flex-justify-content-space-around" onMouseLeave={()=>handleNav(activeNav.highLightPosId,1)}>
       <div id="navHighlight" className='bg-color transition' style={{left:activeNav.highLightPosLeft,width:activeNav.highLightPosWidth}}></div>
       {links}
     </nav>

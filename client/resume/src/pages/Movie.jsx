@@ -14,7 +14,6 @@ const Poster = styled.img`
 `;
 
 const Casts = styled.div`
-  display: flex;
   .cast {
     width: 90px;
     margin-right: 10px;
@@ -63,7 +62,7 @@ const Movie = (props) => {
             <div className="visual__rating">{visual.douban_rating}</div>
             <p>{visual.summary}</p>
             {visual.casts?
-            <Casts>
+            <Casts className='display-flex'>
               {visual.casts.map((c)=>
                 <div className="cast text-center" key={c.id}>
                   <img src={'https://images.weserv.nl/?url='+c.avt} />

@@ -16,8 +16,7 @@
   top: 10px;
 }
 .visual__list {
-  display: flex;
-  flex-wrap: wrap;
+  
 }
 .visual__image {
   width: 35%;

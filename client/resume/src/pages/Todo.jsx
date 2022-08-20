@@ -71,7 +71,7 @@ const Todo = () => {
         <span className="todo__complete" onClick={()=>handleComplete(idx)}>{todo.status == 'pending' ? 'Working' : 'Done'}</span>
         <div className="todo__title">{todo.name}</div>
         {todo.status != 'done'?
-        <div className="todo__actions">
+        <div className="todo__actions display-flex">
           <div className="todo__edit" onClick={()=>handleEdit(todo, idx)}>Edit</div>
           <div className="todo__remove" onClick={()=>handleRemove(todo._id,idx)}>Remove</div>
         </div>

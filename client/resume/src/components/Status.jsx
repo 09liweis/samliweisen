@@ -27,9 +27,9 @@ const Status = () => {
   }
   getBatteryStatus();
   return(
-    <header id="status">
+    <header id="status" className='display-flex'>
       <div className="carrie">I am Sam</div>
-      <div className="rightContainer">
+      <div className="flex-align-items-center display-flex">
         <div className={`battery ${isCharging?'charging':''}`}>
           {isCharging ? <span className="fa fa-bolt"></span> : null}
           <div className="battery__level">{level}</div>

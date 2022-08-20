@@ -9,9 +9,6 @@ const Comment = styled.div`
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 10px;
-  .nm {
-    text-transform: capitalize;
-  }
   p {
     margin: 5px 0;
   }
@@ -99,7 +96,7 @@ const Comments = () => {
         {comments.map((c) => 
           <CSSTransition key={c._id} timeout={500} classNames="todoAnimation">
           <Comment className='bg-color' key={c._id}>
-            <span className="nm">{c.name} - {c.created_at}</span>
+            <span className="nm text-capitalize">{c.name} - {c.created_at}</span>
             <p>{c.content}</p>
           </Comment>
           </CSSTransition>

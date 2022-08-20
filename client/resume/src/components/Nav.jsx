@@ -57,7 +57,7 @@ const Nav = (props) => {
     setActiveNav(ret);
   }
   const links = navs.map((nav)=> {
-    let navClass = 'navItem text-color transition';
+    let navClass = 'navItem text-color transition text-capitalize';
     if (nav.tl == tl) {
       navClass += ' active';
     }

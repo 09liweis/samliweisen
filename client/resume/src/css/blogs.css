@@ -11,9 +11,6 @@
 .blog__date {
   margin-right: 15px;
 }
-.blog__category {
-  text-transform: capitalize;
-}
 .blog__image {
   max-width: 100%;
 }

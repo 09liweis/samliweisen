@@ -5,7 +5,6 @@ import {Box, BoxTitle, BoxBody} from './style.jsx';
 
 const WeatherDesc = styled.div`
   font-weight:bold;
-  text-transform:capitalize;
   font-size:20px;
 `;
 const WeatherWrapper = styled.section`
@@ -98,7 +97,7 @@ const Weather = () => {
         :
         <WeatherWrapper>
           <WeatherIcon src={icon}/>
-          <WeatherDesc>{description}</WeatherDesc>
+          <WeatherDesc className='text-capitalize'>{description}</WeatherDesc>
           <div><span style={{'fontSize':'30px'}}>{temp} <sup>o</sup></span> <span>{city}, {country}</span></div>
           <div>{temp_max}<sup>o</sup>/{temp_min}<sup>o</sup> Feels like {feels_like} <sup>o</sup>C</div>
           <div>Sun: {sunrise}/{sunset}</div>

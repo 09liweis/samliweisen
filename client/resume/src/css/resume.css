@@ -31,6 +31,9 @@ h1,h2,h3,h4 {
   background-color: #308541;
   color: #fff;
 }
+.bg-white {
+  background-color: #fff;
+}
 .transition {
   transition: 0.3s ease-in-out;
 }
@@ -69,7 +72,6 @@ ul li {
   position: fixed;
   bottom: 0;
   z-index: 2;
-  background-color: #ffffff;
   max-width: 1200px;
   width: 100%;
   margin: auto;

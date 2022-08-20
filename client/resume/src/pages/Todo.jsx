@@ -67,11 +67,11 @@ const Todo = () => {
   );
   const todoList = items.map((todo, idx) => 
     <CSSTransition key={todo._id} timeout={500} classNames="todoAnimation">
-      <div className={`todo ${todo.status}`}>
+      <div className={`todo bg-white transition ${todo.status}`}>
         <span className="todo__complete" onClick={()=>handleComplete(idx)}>{todo.status == 'pending' ? 'Working' : 'Done'}</span>
         <div className="todo__title">{todo.name}</div>
         {todo.status != 'done'?
-        <div className="todo__actions display-flex">
+        <div className="todo__actions transition display-flex">
           <div className="todo__edit" onClick={()=>handleEdit(todo, idx)}>Edit</div>
           <div className="todo__remove" onClick={()=>handleRemove(todo._id,idx)}>Remove</div>
         </div>
@@ -86,9 +86,9 @@ const Todo = () => {
       <div className="todos__container text-center">
         <a className="todo__btn" onClick={()=>setShowForm(true)}>Add New</a>
         <div className="todo__statics text-center">
-          <span className="done">Done</span>
-          <span className="working">In Progress</span>
-          <span className="pending">Pending</span>
+          <span className="bg-white done">Done</span>
+          <span className="bg-white working">In Progress</span>
+          <span className="bg-white pending">Pending</span>
         </div>
         {loading ? 
         <div className="todos__loader"></div>

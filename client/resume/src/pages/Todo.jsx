@@ -52,9 +52,9 @@ const Todo = () => {
   }
   const todoForm = (
     <div className="todo__form">
-      <input className="todo__input box-shadow" name="name" placeholder="title" value={curTodo.name} onChange={(e)=>handleChange(e)} />
-      <input type="date" className="todo__input box-shadow" name="date" placeholder="date" value={curTodo.date} onChange={(e)=>handleChange(e)} />
-      <input className="todo__input box-shadow" name="status" placeholder="status" value={curTodo.status} onChange={(e)=>handleChange(e)} />
+      <input className="todo__input border-radius box-shadow" name="name" placeholder="title" value={curTodo.name} onChange={(e)=>handleChange(e)} />
+      <input type="date" className="todo__input border-radius box-shadow" name="date" placeholder="date" value={curTodo.date} onChange={(e)=>handleChange(e)} />
+      <input className="todo__input border-radius box-shadow" name="status" placeholder="status" value={curTodo.status} onChange={(e)=>handleChange(e)} />
       {curTodo.steps.length?
         <div className="">
           {curTodo.steps.map((s,i)=>
@@ -67,7 +67,7 @@ const Todo = () => {
   );
   const todoList = items.map((todo, idx) => 
     <CSSTransition key={todo._id} timeout={500} classNames="todoAnimation">
-      <div className={`todo bg-white transition ${todo.status}`}>
+      <div className={`todo border-radius bg-white transition ${todo.status}`}>
         <span className="todo__complete" onClick={()=>handleComplete(idx)}>{todo.status == 'pending' ? 'Working' : 'Done'}</span>
         <div className="todo__title">{todo.name}</div>
         {todo.status != 'done'?

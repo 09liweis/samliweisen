@@ -10,7 +10,6 @@ const Poster = styled.img`
   width: 180px;
   display: block;
   margin: auto;
-  border-radius: 10px;
 `;
 
 const Casts = styled.div`
@@ -19,7 +18,6 @@ const Casts = styled.div`
     margin-right: 10px;
     img {
       width: 100%;
-      border-radius: 10px;
     }
   }
 `;
@@ -56,7 +54,7 @@ const Movie = (props) => {
         {loading ?
         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>:
         <div style={{position:'relative'}}>
-          <Poster src={'https://images.weserv.nl/?url='+visual.poster} />
+          <Poster className='border-radius' src={'https://images.weserv.nl/?url='+visual.poster} />
           <div style={{padding:'20px 10px 10px',marginTop:'-20px',backgroundColor:'#ccc',border:'1px solid',borderRadius:'10px'}}>
             <div>{visual.release_date} {visual.duration}min</div>
             <div className="visual__rating">{visual.douban_rating}</div>
@@ -65,7 +63,7 @@ const Movie = (props) => {
             <Casts className='display-flex'>
               {visual.casts.map((c)=>
                 <div className="cast text-center" key={c.id}>
-                  <img src={'https://images.weserv.nl/?url='+c.avt} />
+                  <img className='border-radius' src={'https://images.weserv.nl/?url='+c.avt} />
                   <span>{c.name}</span>
                   <span>{c.role}</span>
                 </div>

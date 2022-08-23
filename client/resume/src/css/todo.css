@@ -1,10 +1,8 @@
 .todos__title {
   font-size: 2em;
-  width: 100%;
   margin-bottom: 20px;
 }
 .todos__container {
-  width: 100%;
   max-width: 624px;
   margin: auto;
   padding: 0 15px;
@@ -21,13 +19,6 @@
   cursor:pointer;
   margin:10px 0;
   display:inline-block;
-}
-.todo__name {
-  width: 100%;
-  padding: 10px;
-  font-size: 1.5em;
-  border: none;
-  outline: none;
 }
 .todo {
   margin-top: 30px;
@@ -65,7 +56,6 @@
   font-size: 1.5em;
   border: none;
   padding: 10px;
-  width: 100%;
 }
 .todo__title:focus {
   border: none;
@@ -167,7 +157,6 @@
   top:50%;
   transform:translateY(-50%);
   max-width:680px;
-  width:100%;
   background-color:#fff;
   left:0;
   right:0;
@@ -176,7 +165,6 @@
   border:1px solid #ccc;
 }
 .todo__input {
-  width: 100%;
   outline:none;
   border:none;
   padding: 15px;

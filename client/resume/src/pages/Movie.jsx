@@ -45,7 +45,7 @@ const Movie = (props) => {
     });
   },[]);
   return (
-    <Box id="movie_detail">
+    <Box id="movie_detail" className='full-width'>
       <BoxTitle>
         <i className="boxIcon fa fa-film" aria-hidden="true"></i>
         <span>{ visual.title || 'Movie Title' }</span>

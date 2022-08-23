@@ -51,10 +51,10 @@ const Todo = () => {
     setCurTodo(todo);
   }
   const todoForm = (
-    <div className="todo__form">
-      <input className="todo__input border-radius box-shadow" name="name" placeholder="title" value={curTodo.name} onChange={(e)=>handleChange(e)} />
-      <input type="date" className="todo__input border-radius box-shadow" name="date" placeholder="date" value={curTodo.date} onChange={(e)=>handleChange(e)} />
-      <input className="todo__input border-radius box-shadow" name="status" placeholder="status" value={curTodo.status} onChange={(e)=>handleChange(e)} />
+    <div className="todo__form full-width">
+      <input className="todo__input full-width border-radius box-shadow" name="name" placeholder="title" value={curTodo.name} onChange={(e)=>handleChange(e)} />
+      <input type="date" className="todo__input full-width border-radius box-shadow" name="date" placeholder="date" value={curTodo.date} onChange={(e)=>handleChange(e)} />
+      <input className="todo__input full-width border-radius box-shadow" name="status" placeholder="status" value={curTodo.status} onChange={(e)=>handleChange(e)} />
       {curTodo.steps.length?
         <div className="">
           {curTodo.steps.map((s,i)=>
@@ -69,7 +69,7 @@ const Todo = () => {
     <CSSTransition key={todo._id} timeout={500} classNames="todoAnimation">
       <div className={`todo border-radius bg-white transition ${todo.status}`}>
         <span className="todo__complete" onClick={()=>handleComplete(idx)}>{todo.status == 'pending' ? 'Working' : 'Done'}</span>
-        <div className="todo__title">{todo.name}</div>
+        <div className="todo__title full-width">{todo.name}</div>
         {todo.status != 'done'?
         <div className="todo__actions transition display-flex">
           <div className="todo__edit" onClick={()=>handleEdit(todo, idx)}>Edit</div>
@@ -82,8 +82,8 @@ const Todo = () => {
   return (
     <div className="container">
       {showForm?todoForm:''}
-      <h2 className="todos__title text-center">Todo List</h2>
-      <div className="todos__container text-center">
+      <h2 className="todos__title text-center full-width">Todo List</h2>
+      <div className="todos__container text-center full-width">
         <a className="todo__btn" onClick={()=>setShowForm(true)}>Add New</a>
         <div className="todo__statics text-center">
           <span className="bg-white done">Done</span>

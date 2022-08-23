@@ -12,6 +12,9 @@ h1,h2,h3,h4 {
   margin: 0;
   font-family: 'Josefin Sans', sans-serif;
 }
+.full-width {
+  width: 100%;
+}
 .display-flex {
   display: flex;
 }

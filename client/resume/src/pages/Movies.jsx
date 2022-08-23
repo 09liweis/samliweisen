@@ -33,7 +33,7 @@ const Movies = (props) => {
   }
   const visuals = items.map((v) => {
     return (
-      <article className="visual" key={v.id} onClick={()=>handleVisualClick(v.id)}>
+      <article className="visual full-width" key={v.id} onClick={()=>handleVisualClick(v.id)}>
         <Movie v={v} />
       </article>
     );

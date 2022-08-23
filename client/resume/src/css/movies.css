@@ -5,7 +5,6 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
   z-index: 1;
 }
 .movie_detail_close {
@@ -67,7 +66,6 @@
 }
 .visual {
   padding: 0 10px;
-  width: 100%;
   margin-bottom: 15px;
   transition: 0.3s;
 }

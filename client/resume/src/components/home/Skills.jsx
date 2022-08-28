@@ -22,7 +22,7 @@ const Skills = () => {
       <Skill bg={t.color} key={j}>{t.name}</Skill>
     );
     return (
-      <div className="skills__group" key={i}>
+      <div className="skills__group margin-bottom-10" key={i}>
         <h3 className="skills__title">{s.category}</h3>
         {techs}
       </div>

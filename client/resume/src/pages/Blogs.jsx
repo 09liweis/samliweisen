@@ -17,7 +17,7 @@ const Blogs = () => {
   const lst = blogs.map((b) => {
     return (
       <article className="blog" key={b._id}>
-        <Link className="blog__title text-color" to={`/blog/${b._id}`}>{b.title}</Link>
+        <Link className="blog__title margin-bottom-10 text-color" to={`/blog/${b._id}`}>{b.title}</Link>
         <div className="blog__attr">
           <span className="blog__date">{b.created_at}</span>
           <span className="blog__category">{b.category}</span>

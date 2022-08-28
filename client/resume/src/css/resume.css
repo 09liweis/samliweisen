@@ -15,6 +15,9 @@ h1,h2,h3,h4 {
 .full-width {
   width: 100%;
 }
+.margin-bottom-10 {
+  margin-bottom: 10px;
+}
 .display-flex {
   display: flex;
 }
@@ -182,7 +185,6 @@ ul li {
   padding-left: 1rem;
   border-left: 3px solid #FF9C9C;
   border-radius: 5px;
-  margin-bottom: 10px;
 }
 .project__type {
   font-size: 14px;
@@ -190,7 +192,6 @@ ul li {
   font-style: italic;
 }
 .skills__group {
-  margin-bottom: 10px;
 }
 .skills__title {
   margin-bottom: 5px;

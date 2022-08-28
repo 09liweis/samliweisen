@@ -19,7 +19,7 @@ const Experiences = () => {
       );
     });
     return (
-      <div className="experience" key={i}>
+      <div className="experience margin-bottom-10" key={i}>
         <h3>{e.company} - {e.title}</h3>
     <ExperienceDate><i className="boxIcon fa fa-calendar" aria-hidden="true"></i>{e.start_date} - {e.end_date}</ExperienceDate>
         <ul className="list">

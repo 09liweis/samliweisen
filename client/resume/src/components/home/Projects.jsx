@@ -22,7 +22,7 @@ const Projects = () => {
       );
     });
     return (
-      <div className="project" key={i}>
+      <div className="project margin-bottom-10" key={i}>
         <h3 className="project__title">
           <Link target="_blank" rel="noopener" href={p.link}><i className="fa fa-link" aria-hidden="true"></i>{p.name}</Link> - <span className="project__type">{p.type}</span></h3>
         <ul className="list">

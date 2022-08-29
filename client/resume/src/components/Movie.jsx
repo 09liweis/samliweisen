@@ -15,7 +15,6 @@ const VisualContainer = styled.div`
   position: relative;
 `;
 const VisualTitle = styled.h3`
-  margin: 0;
   font-size: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -59,7 +58,7 @@ export default class Movie extends React.Component {
           <img className="visual__image border-radius-top" src={'https://images.weserv.nl/?url='+v.poster} alt={v.original_title} onError={(e)=>this.handleErrorImg(e)} />
         </Link>
         <div className="visual__detail">
-          <VisualTitle className='text-color'>{v.title}</VisualTitle>
+          <VisualTitle className='margin-0 text-color'>{v.title}</VisualTitle>
           <div className="visual__ratings">
             <a className="visual__rating" target="_blank" onClick={(e)=>this.handleLink(e)} href={'https://movie.douban.com/subject/' + v.douban_id}>
               <img className="visual__rating-icon" src={doubanIcon} alt="" />

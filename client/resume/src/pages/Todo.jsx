@@ -62,7 +62,7 @@ const Todo = () => {
           )}
         </div>
       :null}
-      <div className="todo__btn" onClick={()=>handleUpsert()}>OK</div>
+      <div className="todo__btn bg-color" onClick={()=>handleUpsert()}>OK</div>
     </div>
   );
   const todoList = items.map((todo, idx) => 
@@ -84,7 +84,7 @@ const Todo = () => {
       {showForm?todoForm:''}
       <h2 className="todos__title text-center full-width">Todo List</h2>
       <div className="todos__container text-center full-width">
-        <a className="todo__btn" onClick={()=>setShowForm(true)}>Add New</a>
+        <a className="todo__btn bg-color" onClick={()=>setShowForm(true)}>Add New</a>
         <div className="todo__statics text-center">
           <span className="bg-white done">Done</span>
           <span className="bg-white working">In Progress</span>

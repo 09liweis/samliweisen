@@ -24,7 +24,6 @@
 }
 .visual__detail {
   width: 65%;
-  padding: 10px;
   display: inline-block;
   vertical-align: middle;
 }
@@ -43,11 +42,8 @@
   color: #86643d;
 }
 .visual__status {
-  position: absolute;
   top: 0;
   left: 0;
-  padding: 2px 3px;
-  color: #FFFFFF;
   min-width: 44px;
 }
 .visual__status.done {
@@ -65,9 +61,7 @@
   margin-bottom: 50px;
 }
 .visual {
-  padding: 0 10px;
-  margin-bottom: 15px;
-  transition: 0.3s;
+  
 }
 .visual:hover {
   transform: scale(1.06);

@@ -1,18 +1,16 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const ReleaseDate = styled.div`
   background: #fff;
   color: #000;
-  position: absolute;
   top: 0;
   right: 0;
-  padding: 2px 3px;
   mix-blend-mode:screen;
 `;
 const VisualContainer = styled.div`
-  position: relative;
+  
 `;
 const VisualTitle = styled.h3`
   font-size: 16px;
@@ -47,13 +45,13 @@ const Movie = (props) => {
   }
   const movieHref = "/movie/" + v.id;
   return (
-    <VisualContainer className='box-shadow border-radius bg-white'>
-      <span className={`visual__status border-radius-top-left text-center ${status}`}>{v.current_episode}/{v.episodes}</span>
-      <ReleaseDate className='border-radius-top-right'>{v.release_date.substr(0,4)}</ReleaseDate>
+    <VisualContainer className='position-relative box-shadow border-radius bg-white'>
+      <span className={`visual__status padding-3 text-white position-absolute border-radius-top-left text-center ${status}`}>{v.current_episode}/{v.episodes}</span>
+      <ReleaseDate className='position-absolute padding-3 border-radius-top-right'>{v.release_date.substr(0,4)}</ReleaseDate>
       <Link to={movieHref}>
-        <img className="visual__image border-radius-top" src={'https://images.weserv.nl/?url='+v.poster} alt={v.original_title} onError={(e)=>handleErrorImg(e)} />
+        <img className="visual__image border-radius-top" loading='lazy' src={'https://images.weserv.nl/?url='+v.poster} alt={v.original_title} onError={(e)=>handleErrorImg(e)} />
       </Link>
-      <div className="visual__detail">
+      <div className="visual__detail padding-10">
         <VisualTitle className='margin-0 text-color'>{v.title}</VisualTitle>
         <div className="visual__ratings">
           <a className="visual__rating" target="_blank" onClick={(e)=>handleLink(e)} href={'https://movie.douban.com/subject/' + v.douban_id}>

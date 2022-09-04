@@ -51,6 +51,9 @@ h1,h2,h3,h4 {
 .transition {
   transition: 0.3s ease-in-out;
 }
+.perspective-hover:hover {
+  transform: perspective(100px) rotateY(2deg);
+}
 .border-radius {
   border-radius: 5px;
 }

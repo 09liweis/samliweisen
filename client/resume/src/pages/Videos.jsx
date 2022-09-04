@@ -16,9 +16,8 @@ const Movies = () => {
   },[]);
   const visuals = items.map((v) => {
     return (
-      <a href={`https://www.bilibili.com/video/${v.bvid}`} target="_blank" className="bVideo full-width text-color" key={v.bvid}>
-        <img className="video_img full-width" src={'https://images.weserv.nl/?url='+v.pic} />
-        <h4>{v.title}</h4>
+      <a href={`https://www.bilibili.com/video/${v.bvid}`} target="_blank" className="bVideo transition full-width text-color perspective-hover" key={v.bvid}>
+        <img className="video_img full-width border-radius" src={'https://images.weserv.nl/?url='+v.pic} />
       </a>
     );
   });

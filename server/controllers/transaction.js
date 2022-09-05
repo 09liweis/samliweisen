@@ -2,6 +2,18 @@ var Transaction = require('../models/transaction');
 var Place = require('../models/place');
 const {sendRequest, sendResp, sendErr} = require('../helpers/request');
 
+exports.getStatistics = (req,resp)=> {
+  const {date} = req.body;
+  let filter = {};
+  if (date) {
+    filter.date = new RegExp(date, 'i');
+  }
+  Transaction.find(filter, '_id title price date category').sort('-date').exec((err, transactions) => {
+    handleError(resp, err);
+    sendResp(resp,transactions);
+  });
+}
+
 exports.findList = (req, resp) => {
   const user = req.user;
   if (!user) {

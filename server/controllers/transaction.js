@@ -5,12 +5,25 @@ const {sendRequest, sendResp, sendErr} = require('../helpers/request');
 exports.getStatistics = (req,resp)=> {
   const {date} = req.body;
   let filter = {};
+  let statistics = {};
   if (date) {
     filter.date = new RegExp(date, 'i');
+    statistics.date = date;
   }
   Transaction.find(filter, '_id title price date category').sort('-date').exec((err, transactions) => {
+    statistics.categoryPrice = {}
+    if (transactions.length == 0) {
+      return sendResp(resp,statistics);
+    }
     handleError(resp, err);
-    sendResp(resp,transactions);
+    transactions.forEach(({category,price}) => {
+      if (statistics.categoryPrice[category]) {
+        statistics.categoryPrice[category] += price;
+      } else {
+        statistics.categoryPrice[category] = price;
+      }
+    });
+    sendResp(resp,statistics);
   });
 }
 

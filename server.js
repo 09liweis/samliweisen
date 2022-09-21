@@ -53,7 +53,14 @@ app.use(function (req, res, next) {
   // if (host != 'localhost:8081' && req.protocol == 'http') {
   //   return res.redirect('https://' + req.headers.host + req.url);
   // }
-  const origins = ['https://what-i-watched.herokuapp.com/','https://samliweisen.herokuapp.com/','http://localhost:4200','http://localhost:8081','http://localhost:3000'];
+  const origins = [
+    'https://what-i-watched.herokuapp.com/',
+    'https://samliweisen.herokuapp.com/',
+    'http://localhost:4200',
+    'http://localhost:8081',
+    'http://localhost:3000',
+    'https://samdashboard.vercel.app'
+  ];
   // Website you wish to allow to connect
   if (origins.indexOf(req.headers.origin) > -1) {
     res.setHeader('Access-Control-Allow-Origin', req.headers.origin);   

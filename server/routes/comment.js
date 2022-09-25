@@ -14,6 +14,7 @@ router.post('/', (req, res, next) => {
   const name = req.body.name;
   const content = req.body.content;
   const comment = Comment({
+    ip: req.ip,
     name: name,
     content: content
   });

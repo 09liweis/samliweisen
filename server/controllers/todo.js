@@ -7,8 +7,7 @@ const STRINGS = {
   STEP_NAME: 'Missing step name'
 };
 
-exports.findList = (req, resp) => {
-  const {page,limit,status} = req.query;
+exports.findTodoList = findTodoList = ({page,limit,status},cb)=>{
   let options = {};
   let query = {};
   if (status) {
@@ -24,13 +23,19 @@ exports.findList = (req, resp) => {
     options.limit = parseInt(limit);
   }
   Todo.find(query, '_id name date steps status', options).sort('-created_at').exec((err, todos) => {
+    cb(err,todos);
+  });
+}
+
+exports.findList = (req, resp) => {
+  findTodoList(req.query,(err,todos)=>{
     handleError(resp, err);
     return sendResp(resp,todos);
   });
 };
 
-exports.create = (req, res) => {
-  const {steps,name,date,status} = req.body;
+exports.createTodo = createTodo = (input,cb) => {
+  const {steps,name,date,status} = input;
   const todo = {
     name,
     date,
@@ -45,6 +50,12 @@ exports.create = (req, res) => {
   }
   const newTodo = new Todo(todo);
   newTodo.save((err, todo) => {
+    cb(err,todo);
+  });
+}
+
+exports.create = (req, res) => {
+  createTodo(req.body,(err,todo)=>{
     handleError(res, err);
     return sendResp(res,todo);
   });

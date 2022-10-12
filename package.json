@@ -55,7 +55,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.9",
     "ng2-file-upload": "^1.3.0",
-    "node-sass": "^5.0.0",
+    "node-sass": "^7.0.0",
     "rxjs": "^6.0.0",
     "socket.io": "^4.5.2",
     "tinymce": "^4.9.8",

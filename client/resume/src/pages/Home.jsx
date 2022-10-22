@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Experiences from '../components/home/Experiences.jsx';
 import Skills from '../components/home/Skills.jsx';
@@ -10,11 +10,12 @@ import {updateDocumentTitle} from '../helpers';
 const Home = () => {
   updateDocumentTitle('Home');
   const dispatch = useDispatch();
+  const skills = useSelector(state => state.skills);
   return (
     <div className="home display-flex flex-wrap">
       <Experiences />
       <Projects />
-      <Skills />
+      <Skills skills={skills} />
     </div>
   );
 };

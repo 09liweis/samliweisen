@@ -1,5 +1,4 @@
-import React from 'react';
-import { connect,useSelector,useDispatch } from 'react-redux';
+import React, {memo} from 'react';
 import styled from 'styled-components';
 
 import {Box, BoxTitle, BoxBody} from '../style.jsx';
@@ -14,9 +13,7 @@ const Skill = styled.span`
   display: inline-block;
 `;
 
-// const Skills = ({skills}) => {
-const Skills = () => {
-  const skills = useSelector(state => state.skills);
+const Skills = memo(function Skills({skills}) {
   const sks = skills.map((s, i) => {
     const techs = s.techs.map((t, j) => 
       <Skill bg={t.color} key={j}>{t.name}</Skill>
@@ -39,5 +36,5 @@ const Skills = () => {
       </BoxBody>
     </Box>
   );
-};
+});
 export default Skills;

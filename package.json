@@ -7,14 +7,8 @@
     "npm": "6.9.0"
   },
   "scripts": {
-    "ng": "ng",
     "dev": "nodemon server.js",
-    "start": "node server.js",
-    "c9": "ng serve --host 0.0.0.0 --port 8080 --disable-host-check",
-    "build": "ng build --prod --base-href /dashboard/ --deploy-url /dashboard/",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",

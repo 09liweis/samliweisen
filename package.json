@@ -3,7 +3,7 @@
   "description": "This is web service for portfolio of Sam",
   "version": "3.0.0",
   "engines": {
-    "node": "10.16.3",
+    "node": ">=12",
     "npm": "6.9.0"
   },
   "scripts": {

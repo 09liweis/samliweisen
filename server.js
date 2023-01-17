@@ -58,12 +58,11 @@ app.use(function (req, res, next) {
   //   return res.redirect('https://' + req.headers.host + req.url);
   // }
   const origins = [
-    'https://what-i-watched.herokuapp.com/',
-    'https://samliweisen.herokuapp.com/',
+    'https://samliweisen.onrender.com/',
     'http://localhost:4200',
     'http://localhost:8081',
     'http://localhost:3000',
-    'https://samdashboard.vercel.app'
+    'https://samliweisen.cyclic.app/',
   ];
   // Website you wish to allow to connect
   if (origins.indexOf(req.headers.origin) > -1) {

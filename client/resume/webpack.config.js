@@ -1,4 +1,5 @@
 const path = require('path');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // compile index.html
@@ -22,5 +23,7 @@ module.exports = {
 			{ test: /\.css$/, loader: "style-loader!css-loader" },
 		]
 	},
-	// plugins: [HtmlWebpackPluginConfig]
+	plugins: [
+    new UglifyJSPlugin()
+  ]
 };

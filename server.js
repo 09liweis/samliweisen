@@ -5,6 +5,7 @@ path = require('path'),
 app = express(),
 bodyParser = require('body-parser'),
 mongoose = require('mongoose'),
+cors = require("cors"),
 
 indexRoute = require('./server/routes/index'),
 dashboardRoute = require('./server/routes/dashboard'),
@@ -33,6 +34,7 @@ if (port == DEFAULT_PORT) {
   dbUrl = 'mongodb+srv://samliweisen:`Qq363404661@samliweisen.3amrq.mongodb.net/heroku_6njptcbp?retryWrites=true&w=majority';
   // dbUrl = 'mongodb://heroku_6njptcbp:dg8h3o8v9dpjk1osignqn3ibel@ds125489.mlab.com:25489/heroku_6njptcbp';
 }
+dbUrl = 'mongodb+srv://samliweisen:`Qq363404661@samliweisen.3amrq.mongodb.net/heroku_6njptcbp?retryWrites=true&w=majority';
 mongoose.connect(dbUrl,{ useNewUrlParser: true,useUnifiedTopology:true });
 //,{ useNewUrlParser: true, useUnifiedTopology:true,useFindAndModify:true }
 
@@ -47,6 +49,8 @@ mongoose.connection.on('error', function() {
 mongoose.connection.on('disconnected', function () {    
   console.log('Mongoose connection disconnected');
 }); 
+
+app.use(cors());
 
 app.use(function (req, res, next) {
   var host = req.headers.host;
@@ -83,6 +87,35 @@ app.use('/dashboard', express.static(path.join(__dirname) + '/dashboard'));
 app.use('/resume', express.static(path.join(__dirname) + '/resume'));
 app.use('/what-i-watched', express.static(path.join(__dirname) + '/what-i-watched'));
 
+const http = require("http").Server(app);
+
+const socketIO = require('socket.io')(http, {
+  cors: {
+    origin: "http://localhost:3000"
+  }
+});
+
+const {createTodo} = require('./server/controllers/todo.js');
+//👇🏻 Add this before the app.get() block
+socketIO.on('connection', (socket) => {
+  console.log(`⚡: ${socket.id} user just connected!`);
+  console.log(socketIO.sockets.sockets.size);
+  socket.on("addTodo", (todo) => {
+      //👇🏻 todo - contains the object from the React app
+      createTodo(todo,(err,newTodo)=>{
+        findTodoList({},(err,todos)=>{
+          socket.emit('getTodos', todos);
+          socket.broadcast.emit('getTodos', todos);
+        });
+      });
+  });
+
+  socket.on('disconnect', () => {
+    socket.disconnect()
+    console.log('🔥: A user disconnected');
+  });
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'resume/resume.html'));
 });
@@ -116,6 +149,6 @@ app.use('/api/user',userRoute);
 app.use('/api/visuals', visualRoute);
 app.use('/api/category', categoryRoute);
 
-app.listen(port, () => {
+http.listen(port, () => {
   console.log(`${new Date()} Web server runs on: ${port}`);
 });

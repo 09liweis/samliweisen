@@ -5,6 +5,9 @@ import {CSSTransition,TransitionGroup} from 'react-transition-group';
 import {getTodos, addTodo, editTodo, deleteTodo} from '../actions/todo';
 import {updateDocumentTitle} from '../helpers';
 
+import socketIO from "socket.io-client";
+const socket = socketIO.connect(location.origin);
+
 import '../css/todo.css';
 
 const Todo = () => {
@@ -17,7 +20,8 @@ const Todo = () => {
   const {items} = useSelector(state => state.todos);
   useEffect(() => {
     dispatch(getTodos());
-  },[]);
+    socket.on('getTodos', (data) => dispatch(getTodos()));//TODO: fix with todos state, no need for reducer
+  },[socket]);
   if (items && items.length === 0) {
   }
   var errorMsg;
@@ -39,7 +43,8 @@ const Todo = () => {
       delete curTodo.idx;
       dispatch(editTodo(curTodo, idx));
     } else {
-      dispatch(addTodo(curTodo));
+      socket.emit("addTodo", curTodo);
+      // dispatch(addTodo(curTodo));
     }
     setShowForm(false);
     setCurTodo(emptyTodo);

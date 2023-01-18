@@ -6,10 +6,13 @@ exports.getStatistics = (req,resp)=> {
   const {date} = req.body;
   let filter = {};
   let statistics = {};
-  if (date) {
-    filter.date = new RegExp(date, 'i');
-    statistics.date = date;
+  if (!date) {
+    const now = new Date();
+    const month = now.getMonth()+1;
+    date = `${now.getFullYear()}-${month<10?'0'+month:month}`;
   }
+  filter.date = new RegExp(date, 'i');
+  statistics.date = date;
   Transaction.find(filter, '_id title price date category').sort('-date').exec((err, transactions) => {
     statistics.categoryPrice = {}
     if (transactions.length == 0) {

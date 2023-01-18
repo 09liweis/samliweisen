@@ -62,6 +62,7 @@ app.use(function (req, res, next) {
     'http://localhost:4200',
     'http://localhost:8081',
     'http://localhost:3000',
+    'https://what-sam-watched.onrender.com/',
     'https://samliweisen.cyclic.app/',
   ];
   // Website you wish to allow to connect

@@ -3,7 +3,7 @@ var Place = require('../models/place');
 const {sendRequest, sendResp, sendErr} = require('../helpers/request');
 
 exports.getStatistics = (req,resp)=> {
-  const {date} = req.body;
+  let {date} = req.body;
   let filter = {};
   let statistics = {};
   if (!date) {
@@ -13,17 +13,19 @@ exports.getStatistics = (req,resp)=> {
   }
   filter.date = new RegExp(date, 'i');
   statistics.date = date;
-  Transaction.find(filter, '_id title price date category').sort('-date').exec((err, transactions) => {
+  Transaction.find(filter, '_id title price date category').populate('place').sort('-date').exec((err, transactions) => {
     statistics.categoryPrice = {}
     if (transactions.length == 0) {
       return sendResp(resp,statistics);
     }
     handleError(resp, err);
-    transactions.forEach(({category,price}) => {
+    transactions.forEach((transaction) => {
+      const {category,price} = transaction;
       if (statistics.categoryPrice[category]) {
-        statistics.categoryPrice[category] += price;
+        statistics.categoryPrice[category].total += price;
+        statistics.categoryPrice[category].items.push(transaction);
       } else {
-        statistics.categoryPrice[category] = price;
+        statistics.categoryPrice[category] = {total:price,items:[transaction]};
       }
     });
     sendResp(resp,statistics);

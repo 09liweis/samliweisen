@@ -5,7 +5,7 @@ const {sendRequest, sendResp, sendErr} = require('../helpers/request');
 exports.getStatistics = (req,resp)=> {
   let {date} = req.body;
   let filter = {};
-  let statistics = {};
+  let statistics = {total:0};
   if (!date) {
     const now = new Date();
     const month = now.getMonth()+1;
@@ -20,7 +20,9 @@ exports.getStatistics = (req,resp)=> {
     }
     handleError(resp, err);
     transactions.forEach((transaction) => {
-      const {category,price} = transaction;
+      let {category,price} = transaction;
+      price = Math.abs(price);
+      statistics.total += price;
       if (statistics.categoryPrice[category]) {
         statistics.categoryPrice[category].total += price;
         statistics.categoryPrice[category].items.push(transaction);

@@ -63,7 +63,7 @@ exports.detail = async (req,resp) => {
   let user = req.user;
   if (user) {
     user = await User.findOne({_id:user._id},'nm eml lts roles');
-    if (roles.includes('admin')) {
+    if (user.roles && user.roles.includes('admin')) {
       user.isAdmin = true;
     }
     resp.status(200).json({user}); 

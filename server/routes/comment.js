@@ -9,7 +9,7 @@ router.get('/', (req, res, next) => {
   if (limit) {
     commentLimit = limit;
   }
-  Comment.find({limit:commentLimit}).sort('-created_at').exec((err, comments) => {
+  Comment.find({},'',{limit:commentLimit}).sort('-created_at').exec((err, comments) => {
     if (err) throw err;
     res.send(comments);
   });

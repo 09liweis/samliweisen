@@ -145,6 +145,10 @@ exports.detail = async function(req, resp) {
 
 exports.remove = (req, resp) => {
   //Delete transaction
+  const user = req.user;
+  if (!user) {
+    return resp.status(400).json({msg:'Login Required'});
+  }
   Transaction.remove({_id: req.params.id}, (err) => {
     handleError(resp, err);
     resp.status(200).json({ok:1,msg:'Transaction Deleted'});

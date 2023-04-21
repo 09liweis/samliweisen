@@ -15,7 +15,7 @@ router.route('/categories')
 
 router.route('/:id')
 .post(detail)
-.put(update)
-.delete(remove);
+.put(verify,update)
+.delete(verify,remove);
 
 module.exports = router;

@@ -85,7 +85,7 @@ upsertTransaction = async (req,resp) =>{
   if (!user) {
     return resp.status(400).json({msg:'Login Required'});
   }
-  const {id,price,date,category,place,title,uid} = req.body;
+  const {_id,price,date,category,place,title,uid} = req.body;
   transactionData = {
     uid:user._id,
     price,
@@ -112,10 +112,10 @@ upsertTransaction = async (req,resp) =>{
     transactionData.place = p._id;
   }
   let transaction;
-  if (id) {
+  if (_id) {
     transaction = transactionData;
     transaction.update_at = new Date();
-    Transaction.findOneAndUpdate({_id: id}, transaction, {returnNewDocument: true,upsert: true},(err, t)=>{
+    Transaction.findOneAndUpdate({_id}, transaction, {returnNewDocument: true,upsert: true},(err, t)=>{
       console.error(err);
       t.place = p;
       return sendResp(resp,t);

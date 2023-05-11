@@ -22,7 +22,7 @@ exports.findTodoList = findTodoList = ({page,limit,status},cb)=>{
   if (limit) {
     options.limit = parseInt(limit);
   }
-  Todo.find(query, '_id name date steps status', options).sort('-created_at').exec((err, todos) => {
+  Todo.find(query, '_id name date steps status', options).sort('date').exec((err, todos) => {
     cb(err,todos);
   });
 }

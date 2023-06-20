@@ -16,8 +16,6 @@ Tech Stack: Nodejs, ExpressJs, MongoDB, Angular 6 for Front End CMS, react for r
 ## Dashboard Design
 [Quilljs](https://quilljs.com)
 
-## What I Watched Management Tool
-
 ## Transaction
 https://dribbble.com/shots/5465599-Order-Management/attachments/1182859
 update google map to mapbox

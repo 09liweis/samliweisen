@@ -1,10 +1,12 @@
-const {router} = require('../helpers/router');
+const { router } = require('../helpers/router');
 
-const {search,inTheatre,getCelebrities,getSummary,getPhotoDetail,getComments,getReviews, upsertVisual} = require('../controllers/visual.js');
-const {getImdbBoxOffice} = require('../controllers/imdb.js');
-const {getSubjects,getTags,getPhotos,getVideos,getVideo,getCast,getCommingMovies} = require('../controllers/douban.js');
-const {getBilibili} = require('../controllers/bilibili.js');
-const {getMaoyan} = require('../controllers/maoyan.js');
+const { samVisuals, search, inTheatre, getCelebrities, getSummary, getPhotoDetail, getComments, getReviews, upsertVisual } = require('../controllers/visual.js');
+const { getImdbBoxOffice } = require('../controllers/imdb.js');
+const { getSubjects, getTags, getPhotos, getVideos, getVideo, getCast, getCommingMovies } = require('../controllers/douban.js');
+const { getBilibili } = require('../controllers/bilibili.js');
+const { getMaoyan } = require('../controllers/maoyan.js');
+
+router.route('/').get(samVisuals);
 
 router.route('/search').post(search);
 

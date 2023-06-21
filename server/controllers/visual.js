@@ -1,21 +1,26 @@
-const {sendRequest, sendResp} = require('../helpers/request');
-const {getDoubanUrl,getReviews,getComments,getCast} = require('../helpers/douban');
-const {getImdbSummary} = require('../helpers/imdb');
+const { sendRequest, sendResp } = require('../helpers/request');
+const { getDoubanUrl, getReviews, getComments, getCast } = require('../helpers/douban');
+const { getImdbSummary } = require('../helpers/imdb');
 
 const MISSING_DOUBAN_ID = 'Missing Douban Id';
 
-exports.inTheatre = (req,resp) => {
-  let {city} = req.body;
+exports.samVisuals = (req, resp) => {
+  const visuals = [];
+  return sendResp(resp, { visuals });
+}
+
+exports.inTheatre = (req, resp) => {
+  let { city } = req.body;
   city = city.trim();
   if (!city) {
     city = 'guangzhou';
   }
   const url = `https://movie.douban.com/cinema/nowplaying/${city}/`;
-  sendRequest({url},function(err,{$}) {
+  sendRequest({ url }, function(err, { $ }) {
     const listItems = $('.list-item');
     var movies = [];
     if (listItems) {
-      dataNames = ['title','release','actors','director','score','duration','category'];
+      dataNames = ['title', 'release', 'actors', 'director', 'score', 'duration', 'category'];
       for (let i = 0; i < listItems.length; i++) {
         const item = $(listItems[i]);
         var movie = {
@@ -28,23 +33,23 @@ exports.inTheatre = (req,resp) => {
         movies.push(movie);
       }
     }
-    return sendResp(resp,{city,movies});
+    return sendResp(resp, { city, movies });
   });
 }
 
 exports.search = (req, resp) => {
-  let {keyword} = req.body;
+  let { keyword } = req.body;
   keyword = keyword.trim();
   if (!keyword) {
-    return resp.status(400).json({msg:'No Keyword'});
+    return resp.status(400).json({ msg: 'No Keyword' });
   }
   const url = `https://m.douban.com/search/?query=${encodeURIComponent(keyword)}&type=movie`;
-  sendRequest({url},function(err,{$}) {
+  sendRequest({ url }, function(err, { $ }) {
     const results = $('.search_results_subjects a');
     if (results) {
-      var visuals = results.toArray().map((r)=>{
+      var visuals = results.toArray().map((r) => {
         const visual = $(r);
-        const [a,movie,subject,douban_id,b] = visual.attr('href').split('/');
+        const [a, movie, subject, douban_id, b] = visual.attr('href').split('/');
         return {
           douban_id,
           poster: visual.find('img').attr('src'),
@@ -53,36 +58,36 @@ exports.search = (req, resp) => {
         };
       });
     }
-    sendResp(resp,{keyword,visuals});
+    sendResp(resp, { keyword, visuals });
   });
 }
 
-exports.getCelebrities = (req,resp)=>{
-  const {douban_id} = req.body
+exports.getCelebrities = (req, resp) => {
+  const { douban_id } = req.body
   if (!douban_id) {
-    return resp.status(400).json({msg:MISSING_DOUBAN_ID});
+    return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }
-  const douban_url = getDoubanUrl(douban_id,{apiName:'celebrities'});
-  sendRequest({url:douban_url},function(err,{statusCode,$,body}) {
+  const douban_url = getDoubanUrl(douban_id, { apiName: 'celebrities' });
+  sendRequest({ url: douban_url }, function(err, { statusCode, $, body }) {
     const castsMatches = $('.list-wrapper');
     let casts = castsMatches.toArray().map((c) => {
       const castSection = $(c);
       let castTl = castSection.find('h2').text()
       const celebritiesMatch = castSection.find('.celebrity');
-      let celebrities = celebritiesMatch.toArray().map(c => getCast($(c),$));
-      return { tl:castTl, celebrities };
+      let celebrities = celebritiesMatch.toArray().map(c => getCast($(c), $));
+      return { tl: castTl, celebrities };
     });
-    sendResp(resp,{douban_url,casts});
+    sendResp(resp, { douban_url, casts });
   });
 }
 
 exports.getPhotoDetail = (req, resp) => {
-  const {photo_id} = req.body;
+  const { photo_id } = req.body;
   if (!photo_id) {
-    return resp.json({msg:'No Photo Id'});
+    return resp.json({ msg: 'No Photo Id' });
   }
   const douban_url = `https://movie.douban.com/photos/photo/${photo_id}`;
-  sendRequest({url:douban_url},(err,{$}) => {
+  sendRequest({ url: douban_url }, (err, { $ }) => {
     const commentsMatch = $('.comment-item');
     const uploader = $('.poster-info li:nth-child(5) a').text();
     const upload_date = $('.poster-info li:nth-child(6)').text();
@@ -90,51 +95,51 @@ exports.getPhotoDetail = (req, resp) => {
       var comments = commentsMatch.toArray().map((c) => {
         const comment = $(c);
         return {
-          pic:comment.find('img').attr('src'),
+          pic: comment.find('img').attr('src'),
           date: comment.find('.author span').text(),
           author: comment.find('.author a').text(),
           content: comment.find('p').text()
         };
       });
     }
-    sendResp(resp,{uploader,upload_date,comments});
+    sendResp(resp, { uploader, upload_date, comments });
   });
 }
 
 exports.getComments = (req, resp) => {
-  const {douban_id} = req.body;
+  const { douban_id } = req.body;
   if (!douban_id) {
-    return resp.status(400).json({msg:MISSING_DOUBAN_ID});
+    return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }
-  const douban_url = getDoubanUrl(douban_id,{apiName:'comments'});
-  sendRequest({url:douban_url}, (err,{statusCode,$,body}) => {
+  const douban_url = getDoubanUrl(douban_id, { apiName: 'comments' });
+  sendRequest({ url: douban_url }, (err, { statusCode, $, body }) => {
     const comments = getComments($);
-    return sendResp(resp,{comments});
+    return sendResp(resp, { comments });
   })
 }
 
-exports.getReviews = (req,resp) => {
-  let {douban_id} = req.body;
+exports.getReviews = (req, resp) => {
+  let { douban_id } = req.body;
   if (!douban_id) {
-    return resp.status(400).json({msg:MISSING_DOUBAN_ID});
+    return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }
-  const douban_url = getDoubanUrl(douban_id,{apiName:'reviews'});
-  sendRequest({url:douban_url},(err,{statusCode,$,body}) => {
+  const douban_url = getDoubanUrl(douban_id, { apiName: 'reviews' });
+  sendRequest({ url: douban_url }, (err, { statusCode, $, body }) => {
     const reviews = getReviews($);
-    return sendResp(resp,{reviews});
+    return sendResp(resp, { reviews });
   });
 }
 
-exports.getSummary = (req,resp)=>{
-  let {douban_id} = req.body;
+exports.getSummary = (req, resp) => {
+  let { douban_id } = req.body;
   if (douban_id) {
     douban_id = douban_id.trim();
   }
   if (!douban_id) {
-    return resp.status(400).json({msg:MISSING_DOUBAN_ID});
+    return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }
   douban_url = getDoubanUrl(douban_id);
-  sendRequest({url:douban_url},function(err,{statusCode,$,body}) {
+  sendRequest({ url: douban_url }, function(err, { statusCode, $, body }) {
     const title = $('span[property="v:itemreviewed"]').text();
     const douban_poster = $('img[rel="v:image"]').attr('src');
     const douban_rating = $('strong[property="v:average"]').text() || 0;
@@ -148,7 +153,7 @@ exports.getSummary = (req,resp)=>{
 
     const recommendsMatch = $('.recommendations-bd dl');
     if (recommendsMatch) {
-      var recommends = recommendsMatch.toArray().map((r)=>{
+      var recommends = recommendsMatch.toArray().map((r) => {
         var recommend = $(r);
         var url = recommend.find('dd a').attr('href');
         if (url) {
@@ -179,13 +184,13 @@ exports.getSummary = (req,resp)=>{
             src = imgMatches[1];
           }
         }
-        return {tp,src,href};
+        return { tp, src, href };
       })
     }
 
     const awardsMatch = $('.award');
     if (awardsMatch) {
-      var awards = awardsMatch.toArray().map((a)=>{
+      var awards = awardsMatch.toArray().map((a) => {
         return {
           nm: $(a).find('li:first-child a').text(),
           award: $(a).find('li:nth-child(2)').text()
@@ -223,7 +228,7 @@ exports.getSummary = (req,resp)=>{
     if (durationMatch) {
       duration = durationMatch[1].trim();
       if (/分钟/.test(duration)) {
-        duration = duration.replace('分钟','');
+        duration = duration.replace('分钟', '');
       }
     }
 
@@ -246,7 +251,7 @@ exports.getSummary = (req,resp)=>{
     const dateMatches = body.match(/[\d]{4}-[\d]{2}-[\d]{2}\([\u4e00-\u9fff]+\)/g);
     let dates = [];
     for (let i in dateMatches) {
-      if (dates.indexOf(dateMatches[i]) == -1 ) {
+      if (dates.indexOf(dateMatches[i]) == -1) {
         dates.push(dateMatches[i]);
       }
     }
@@ -270,33 +275,33 @@ exports.getSummary = (req,resp)=>{
       countries,
       summary,
       casts,
-      release_dates:dates,
+      release_dates: dates,
       recommends,
       reviews,
       comments,
       imdb_id,
     };
     if (!imdb_id) {
-      return sendResp(resp,visual);
+      return sendResp(resp, visual);
     }
     //handle scraping imdb data
     getImdbSummary(imdb_id, (err, imdbObj) => {
       if (err) {
         console.error(err);
       }
-      visual = Object.assign(visual,imdbObj);
+      visual = Object.assign(visual, imdbObj);
       visual.poster = douban_poster;
-      return sendResp(resp,visual);
+      return sendResp(resp, visual);
     })
   });
 }
 
 const UPSERT_VISUAL_API = 'https://what-i-watched.herokuapp.com/api/visual/submit'
-exports.upsertVisual = (req,resp) => {
+exports.upsertVisual = (req, resp) => {
   //35376457
   var visualBody = req.body;
-  sendRequest({url:UPSERT_VISUAL_API,method:'post',body:visualBody},function(err,{$,body}) {
+  sendRequest({ url: UPSERT_VISUAL_API, method: 'post', body: visualBody }, function(err, { $, body }) {
     console.log(err);
-    return sendResp(resp,body);
+    return sendResp(resp, body);
   });
 }

@@ -1,14 +1,14 @@
-const {router} = require('../helpers/router');
+const { router } = require('../helpers/router');
 
-const {getList,updateRandom,upsert,getDetail} = require('../controllers/place.js');
+const { findList, updateRandom, upsert, getDetail } = require('../controllers/place.js');
 
 router.route('/')
-.get(getList)
-.post(upsert);
+  .get(findList)
+  .post(upsert);
 
 router.route('/update_random').get(updateRandom);
 
 router.route('/:id')
-.get(getDetail);
+  .get(getDetail);
 
 module.exports = router;

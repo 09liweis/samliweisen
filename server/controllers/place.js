@@ -2,16 +2,16 @@ const https = require('https');
 var ObjectID = require('mongodb').ObjectID
 var Place = require('../models/place');
 var Transaction = require('../models/transaction');
-const {sendResp} = require('../helpers/request');
+const { sendResp } = require('../helpers/request');
 
 const API_KEY = 'AIzaSyA74jvNet0DufU8aoTe39dELLy2rVMeuos';
-const PLACE_DETAIL_API = 'https://maps.googleapis.com/maps/api/place/details/json?key='+API_KEY+'&place_id=';
+const PLACE_DETAIL_API = 'https://maps.googleapis.com/maps/api/place/details/json?key=' + API_KEY + '&place_id=';
 
-exports.updateRandom = async (req,res) =>{
+exports.updateRandom = async (req, res) => {
   const count = await Place.count();
   var random = Math.floor(Math.random() * count)
-  Place.findOne().skip(random).exec((err,p)=>{
-    https.get(PLACE_DETAIL_API+p.place_id,(resp) => {
+  Place.findOne().skip(random).exec((err, p) => {
+    https.get(PLACE_DETAIL_API + p.place_id, (resp) => {
       let data = '';
       resp.on('data', (chunk) => {
         data += chunk;
@@ -32,7 +32,7 @@ exports.updateRandom = async (req,res) =>{
           if (result.photos) {
             let photos = [];
             for (let pho of result.photos) {
-              const photo = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth='+pho.width+'&photoreference='+pho.photo_reference+'&key='+API_KEY
+              const photo = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=' + pho.width + '&photoreference=' + pho.photo_reference + '&key=' + API_KEY
               photos.push(photo);
             }
             p.photos = photos;
@@ -41,7 +41,7 @@ exports.updateRandom = async (req,res) =>{
             p.types = result.types;
           }
         }
-        await Place.findOneAndUpdate({_id: p._id}, p, {upsert: true});
+        await Place.findOneAndUpdate({ _id: p._id }, p, { upsert: true });
         res.send(p);
       });
     }).on("error", (err) => {
@@ -50,28 +50,28 @@ exports.updateRandom = async (req,res) =>{
   });
 };
 
-exports.getList = (req, resp) => {
+exports.findList = (req, resp) => {
   Place.find({}, '_id place_id icon name address lat lng rating photos types').sort('-created_at').exec((err, places) => {
     if (err) return resp.json(err);
-    return sendResp(resp,places);
+    return sendResp(resp, places);
   });
 };
 
 exports.getDetail = async function(req, resp) {
   const id = req.params.id;
   if (!ObjectID.isValid(id)) {
-    return resp.status(200).json({msg:'Place Id is not valid'});
+    return resp.status(200).json({ msg: 'Place Id is not valid' });
   }
   const p = await Place.findById(id);
   if (!p) {
-    return resp.status(200).json({msg:'No Place Found'});
+    return resp.status(200).json({ msg: 'No Place Found' });
   }
-  const transactions = await Transaction.find({place: p._id},'_id title price date category');
+  const transactions = await Transaction.find({ place: p._id }, '_id title price date category');
   p.transactions = transactions
-  return sendResp(resp,p);
+  return sendResp(resp, p);
 };
 exports.upsert = async function(req, resp) {
-  var {place_id, name, address, lat, lng} = req.body;
+  var { place_id, name, address, lat, lng } = req.body;
   const place = {
     place_id,
     name,
@@ -79,7 +79,7 @@ exports.upsert = async function(req, resp) {
     lat,
     lng,
   }
-  let p = await Place.findOne({place_id: place.place_id});
+  let p = await Place.findOne({ place_id: place.place_id });
   if (!p) {
     p = Place(place);
     await p.save();
@@ -88,7 +88,7 @@ exports.upsert = async function(req, resp) {
     p.address = place.address;
     p.lat = place.lat;
     p.lng = place.lng;
-    await Place.findOneAndUpdate({_id: p._id}, p, {upsert: true});
+    await Place.findOneAndUpdate({ _id: p._id }, p, { upsert: true });
   }
-  return sendResp(resp,p);
+  return sendResp(resp, p);
 };

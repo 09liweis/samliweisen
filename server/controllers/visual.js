@@ -1,12 +1,18 @@
 const { sendRequest, sendResp } = require('../helpers/request');
 const { getDoubanUrl, getReviews, getComments, getCast } = require('../helpers/douban');
 const { getImdbSummary } = require('../helpers/imdb');
+const Movie = require('../models/movie');
 
 const MISSING_DOUBAN_ID = 'Missing Douban Id';
 
-exports.samVisuals = (req, resp) => {
-  const visuals = [];
-  return sendResp(resp, { visuals });
+exports.samVisuals = async (req, resp) => {
+  let movies = [];
+  try {
+    movies = await Movie.find().limit(10).sort('-date_updated');
+  } catch (err) {
+
+  }
+  return sendResp(resp, { movies });
 }
 
 exports.inTheatre = (req, resp) => {

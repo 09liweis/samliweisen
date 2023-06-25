@@ -1,4 +1,5 @@
-const { router } = require('../helpers/router');
+var express = require('express');
+var router = express.Router();
 
 const { samVisuals, search, inTheatre, getCelebrities, getSummary, getPhotoDetail, getComments, getReviews, upsertVisual } = require('../controllers/visual.js');
 const { getImdbBoxOffice } = require('../controllers/imdb.js');

@@ -36,21 +36,21 @@ dbUrl =
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 //,{ useNewUrlParser: true, useUnifiedTopology:true,useFindAndModify:true }
 
-mongoose.connection.on('connected', function () {
+mongoose.connection.on('connected', function() {
   console.log('Connected to db');
 });
 
-mongoose.connection.on('error', function () {
+mongoose.connection.on('error', function() {
   console.log('connected fail');
 });
 
-mongoose.connection.on('disconnected', function () {
+mongoose.connection.on('disconnected', function() {
   console.log('Mongoose connection disconnected');
 });
 
 app.use(cors());
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   var host = req.headers.host;
   // if (host != 'localhost:8081' && req.protocol == 'http') {
   //   return res.redirect('https://' + req.headers.host + req.url);
@@ -87,12 +87,7 @@ app.use(function (req, res, next) {
   next();
 });
 app.use('/assets', express.static(path.join(__dirname) + '/assets'));
-app.use('/dashboard', express.static(path.join(__dirname) + '/dashboard'));
 app.use('/resume', express.static(path.join(__dirname) + '/resume'));
-app.use(
-  '/what-i-watched',
-  express.static(path.join(__dirname) + '/what-i-watched')
-);
 
 const http = require('http').Server(app);
 
@@ -127,32 +122,22 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'resume/resume.html'));
 });
 
-//Route for CMS: angular
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dashboard/index.html'));
-});
-
-// Route for what i watched management application
-app.get('/what-i-watched', (req, res) => {
-  res.sendFile(path.join(__dirname, 'what-i-watched/what-i-watched.html'));
-});
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/', indexRoute);
 app.use('/api/dashboard', dashboardRoute);
+app.use('/api/movies', visualRoute);
 app.use('/api/todos', todoRoute);
 app.use('/api/transactions', transactionRoute);
 app.use('/api/experiences', experienceRoute);
 app.use('/api/projects', projectRoute);
-app.use('/api/places', placeRoute);
 app.use('/api/blogs', blogRoute);
 app.use('/api/comments', commentRoute);
 app.use('/api/sites', SiteRoute);
 app.use('/api/user', userRoute);
-app.use('/api/visuals', visualRoute);
 app.use('/api/category', categoryRoute);
+app.use('/api/places', placeRoute);
 
 http.listen(port, () => {
   console.log(`${new Date()} Web server runs on: ${port}`);

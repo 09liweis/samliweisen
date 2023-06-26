@@ -6,9 +6,11 @@ const Movie = require('../models/movie');
 const MISSING_DOUBAN_ID = 'Missing Douban Id';
 
 exports.samVisuals = async (req, resp) => {
+  let { page = 1, limit = 10 } = req.query;
+  limit = parseInt(limit);
   let movies = [];
   try {
-    movies = await Movie.find().limit(10).sort('-date_updated');
+    movies = await Movie.find().limit(limit).sort('-date_updated');
   } catch (err) {
 
   }

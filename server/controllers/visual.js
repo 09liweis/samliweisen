@@ -12,6 +12,12 @@ exports.samVisuals = async (req, resp) => {
   } catch (err) {
 
   }
+  movies.forEach((movie) => {
+    if (movie.poster) {
+      //flutter app can only show img2 server somehow
+      movie.poster = 'https://img2.doubanio.com/view/photo/s_ratio_poster/public/' + movie.poster.split('/').slice(-1);
+    }
+  });
   return sendResp(resp, { movies });
 }
 

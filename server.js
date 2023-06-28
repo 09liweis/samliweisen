@@ -126,7 +126,7 @@ app.get('/', (req, res) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/', indexRoute);
+app.use('/api', indexRoute);
 app.use('/api/dashboard', dashboardRoute);
 app.use('/api/movies', visualRoute);
 app.use('/api/todos', todoRoute);

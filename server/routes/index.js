@@ -1,12 +1,25 @@
-const { router } = require('../helpers/router');
+const express = require('express');
+const router = express.Router();
 
-// router.route('/').get(function(req, resp) {
-//   resp.status(200).json('Resume site comming soon');
-// });
-
-router.route('/movie/:id').get((req, resp) => {
-  let douban_id = req.params.id;
-  resp.json('movie detail ' + douban_id);
+router.route('/').get(function(req, resp) {
+  resp.status(200).json({
+    todos: {
+      base: 'todos',
+    },
+    movies: {
+      base: 'movies'
+    },
+    blogs: {
+      base: 'blogs'
+    },
+    expenses: {
+      base: 'transactions',
+      statistics: 'statistics'
+    },
+    rents: {
+      base: 'rents'
+    }
+  });
 });
 
 var os = require('os');

@@ -19,6 +19,7 @@ const express = require('express'),
   userRoute = require('./server/routes/user'),
   visualRoute = require('./server/routes/visual'),
   categoryRoute = require('./server/routes/category'),
+  rentRoute = require('./server/routes/rent'),
   port = process.env.PORT || DEFAULT_PORT;
 
 mongoose.Promise = global.Promise;
@@ -138,6 +139,7 @@ app.use('/api/sites', SiteRoute);
 app.use('/api/user', userRoute);
 app.use('/api/category', categoryRoute);
 app.use('/api/places', placeRoute);
+app.use('/api/rents', rentRoute);
 
 http.listen(port, () => {
   console.log(`${new Date()} Web server runs on: ${port}`);

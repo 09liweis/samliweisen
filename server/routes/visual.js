@@ -9,7 +9,7 @@ const { getMaoyan } = require('../controllers/maoyan.js');
 
 router.route('/').get(samVisuals);
 
-router.route('/search').post(search);
+router.route('/search').get(search);
 
 router.route('/in_theatre').post(inTheatre);
 

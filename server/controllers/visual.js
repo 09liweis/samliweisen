@@ -52,8 +52,8 @@ exports.inTheatre = (req, resp) => {
 }
 
 exports.search = (req, resp) => {
-  let { keyword } = req.body;
-  keyword = keyword.trim();
+  let { keyword } = req.query;
+  keyword = keyword?.trim();
   if (!keyword) {
     return resp.status(400).json({ msg: 'No Keyword' });
   }

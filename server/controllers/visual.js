@@ -24,8 +24,8 @@ exports.samVisuals = async (req, resp) => {
 }
 
 exports.inTheatre = (req, resp) => {
-  let { city } = req.body;
-  city = city.trim();
+  let { city } = req.query;
+  city = city?.trim();
   if (!city) {
     city = 'guangzhou';
   }

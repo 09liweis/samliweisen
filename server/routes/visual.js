@@ -11,9 +11,9 @@ router.route('/').get(samVisuals);
 
 router.route('/search').get(search);
 
-router.route('/in_theatre').post(inTheatre);
+router.route('/in_theatre').get(inTheatre);
 
-router.route('/comming').post(getCommingMovies);
+router.route('/comming').get(getCommingMovies);
 
 router.route('/celebrities').post(getCelebrities);
 

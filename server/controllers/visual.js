@@ -152,8 +152,17 @@ exports.getSummary = (req, resp) => {
   if (!douban_id) {
     return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }
-  douban_url = getDoubanUrl(douban_id);
+  getDoubanMovieSummary(douban_id, (err, visual) => {
+    return sendResp(resp, visual);
+  })
+}
+
+const getDoubanMovieSummary = (douban_id, cb) => {
+  const douban_url = getDoubanUrl(douban_id);
   sendRequest({ url: douban_url }, function(err, { statusCode, $, body }) {
+    if (err) {
+      return cb(err);
+    }
     const title = $('span[property="v:itemreviewed"]').text();
     const douban_poster = $('img[rel="v:image"]').attr('src');
     const douban_rating = $('strong[property="v:average"]').text() || 0;
@@ -272,7 +281,7 @@ exports.getSummary = (req, resp) => {
 
     visual = {
       douban_id,
-      douban_url,
+      // douban_url,
       title,
       original_title,
       douban_poster,
@@ -296,26 +305,41 @@ exports.getSummary = (req, resp) => {
       imdb_id,
     };
     if (!imdb_id) {
-      return sendResp(resp, visual);
+      return cb(null, visual);
     }
     //handle scraping imdb data
     getImdbSummary(imdb_id, (err, imdbObj) => {
       if (err) {
-        console.error(err);
+        return cb(err);
       }
       visual = Object.assign(visual, imdbObj);
       visual.poster = douban_poster;
-      return sendResp(resp, visual);
+      return cb(null, visual);
     })
   });
 }
 
-const UPSERT_VISUAL_API = 'https://what-i-watched.herokuapp.com/api/visual/submit'
-exports.upsertVisual = (req, resp) => {
+exports.upsertVisual = async (req, resp) => {
   //35376457
-  var visualBody = req.body;
-  sendRequest({ url: UPSERT_VISUAL_API, method: 'post', body: visualBody }, function(err, { $, body }) {
-    console.log(err);
-    return sendResp(resp, body);
+  var {douban_id} = req.body;
+  if (!douban_id) {
+    return resp.status(400).json({msg:MISSING_DOUBAN_ID});
+  }
+  getDoubanMovieSummary(douban_id,(err,movie)=>{
+    if (!movie.douban_id) {
+      return resp.status(400).json({msg:'Can not get movie'});
+    }
+    Movie.findOne({douban_id},(err,oldMovie)=>{
+      if (!oldMovie) {
+        movie.date_watched = new Date();
+        movie.date_updated = new Date();
+      }
+      Movie.findOneAndUpdate({douban_id},movie,{upsert: true},(err,newMovie)=>{
+        if (err) {
+          return resp.status(400).json({err});
+        }
+        return sendResp(resp,movie);
+      })
+    });
   });
 }

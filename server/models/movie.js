@@ -9,7 +9,10 @@ const MovieSchema = new Schema({
   imdb_id: String,
   imdb_rating: Number,
   visual_type: String,
-  current_episode: Number,
+  current_episode: {
+    type: Number,
+    default: 0
+  },
   episodes: Number,
   date_watched: {
     type: Date,

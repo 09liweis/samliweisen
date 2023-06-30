@@ -343,3 +343,23 @@ exports.upsertVisual = async (req, resp) => {
     });
   });
 }
+
+exports.updateRandomMovie = (req, resp) => {
+  Movie.countDocuments().exec((err,count)=>{
+    var random = Math.floor(Math.random() * count);
+    Movie.findOne().skip(random).exec((err, movie)=>{
+      if (err || !movie) {
+        console.error(err);
+        return resp.status(404).json({msg:'Movie not found'});
+      }
+      getDoubanMovieSummary(movie.douban_id, (err, latestMovie)=>{
+        Movie.updateOne({douban_id:movie.douban_id},latestMovie,(err, result)=>{
+          if (err) return resp.status(400).json({msg:err.toString()});
+          if (result.ok) {
+           return sendResp(resp,latestMovie); 
+          }
+        })
+      });
+    });
+  });
+}

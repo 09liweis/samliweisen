@@ -36,6 +36,9 @@ exports.findList = (req, resp) => {
 
 exports.createRoom = createRoom = (input, cb) => {
   const { nm, startDate, endDate, isAvailable, cmts } = input;
+  if (!nm) {
+    return cb('No Room Name');
+  }
   const room = {
     nm,
     startDate,
@@ -51,7 +54,9 @@ exports.createRoom = createRoom = (input, cb) => {
 
 exports.create = (req, res) => {
   createRoom(req.body, (err, room) => {
-    handleError(res, err);
+    if (err) {
+     return handleError(res, err); 
+    }
     return sendResp(res, room);
   });
 };

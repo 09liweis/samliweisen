@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var RoomSchema = new Schema({
   nm: String,
-  isAvailable: Number,
+  isAvailable: Boolean,
   startDate: String,
   endDate: String,
   cmts: String,//comments

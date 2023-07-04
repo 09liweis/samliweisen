@@ -55,7 +55,7 @@ exports.createRoom = createRoom = (input, cb) => {
 exports.create = (req, res) => {
   createRoom(req.body, (err, room) => {
     if (err) {
-     return handleError(res, err); 
+      return handleError(res, err);
     }
     return sendResp(res, room);
   });

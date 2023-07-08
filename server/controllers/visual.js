@@ -8,9 +8,10 @@ const MISSING_DOUBAN_ID = 'Missing Douban Id';
 exports.samVisuals = async (req, resp) => {
   let { page = 1, limit = 10 } = req.query;
   limit = parseInt(limit);
+  const skip = (page - 1) * limit;
   let movies = [];
   try {
-    movies = await Movie.find().limit(limit).sort('-date_updated');
+    movies = await Movie.find().skip(skip).limit(limit).sort('-date_updated');
   } catch (err) {
 
   }
@@ -321,42 +322,42 @@ const getDoubanMovieSummary = (douban_id, cb) => {
 
 exports.upsertVisual = async (req, resp) => {
   //35376457
-  var {douban_id} = req.body;
+  var { douban_id } = req.body;
   if (!douban_id) {
-    return resp.status(400).json({msg:MISSING_DOUBAN_ID});
+    return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }
-  getDoubanMovieSummary(douban_id,(err,movie)=>{
+  getDoubanMovieSummary(douban_id, (err, movie) => {
     if (!movie.douban_id) {
-      return resp.status(400).json({msg:'Can not get movie'});
+      return resp.status(400).json({ msg: 'Can not get movie' });
     }
-    Movie.findOne({douban_id},(err,oldMovie)=>{
+    Movie.findOne({ douban_id }, (err, oldMovie) => {
       if (!oldMovie) {
         movie.date_watched = new Date();
         movie.date_updated = new Date();
       }
-      Movie.findOneAndUpdate({douban_id},movie,{upsert: true},(err,newMovie)=>{
+      Movie.findOneAndUpdate({ douban_id }, movie, { upsert: true }, (err, newMovie) => {
         if (err) {
-          return resp.status(400).json({err});
+          return resp.status(400).json({ err });
         }
-        return sendResp(resp,movie);
+        return sendResp(resp, movie);
       })
     });
   });
 }
 
 exports.updateRandomMovie = (req, resp) => {
-  Movie.countDocuments().exec((err,count)=>{
+  Movie.countDocuments().exec((err, count) => {
     var random = Math.floor(Math.random() * count);
-    Movie.findOne().skip(random).exec((err, movie)=>{
+    Movie.findOne().skip(random).exec((err, movie) => {
       if (err || !movie) {
         console.error(err);
-        return resp.status(404).json({msg:'Movie not found'});
+        return resp.status(404).json({ msg: 'Movie not found' });
       }
-      getDoubanMovieSummary(movie.douban_id, (err, latestMovie)=>{
-        Movie.updateOne({douban_id:movie.douban_id},latestMovie,(err, result)=>{
-          if (err) return resp.status(400).json({msg:err.toString()});
+      getDoubanMovieSummary(movie.douban_id, (err, latestMovie) => {
+        Movie.updateOne({ douban_id: movie.douban_id }, latestMovie, (err, result) => {
+          if (err) return resp.status(400).json({ msg: err.toString() });
           if (result.ok) {
-           return sendResp(resp,latestMovie); 
+            return sendResp(resp, latestMovie);
           }
         })
       });

@@ -146,7 +146,7 @@ exports.getReviews = (req, resp) => {
 }
 
 exports.getSummary = (req, resp) => {
-  let { douban_id } = req.body;
+  let { douban_id } = req.params;
   if (douban_id) {
     douban_id = douban_id.trim();
   }

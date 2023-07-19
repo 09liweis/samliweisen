@@ -7,6 +7,17 @@ const STRINGS = {
   STEP_NAME: 'Missing step name'
 };
 
+const ROOM_FIELDS = ['nm', 'startDate', 'endDate', 'isAvailable', 'cmts', 'lastChecked'];
+function getRoomDetailFromObj(requestBody) {
+  const roomDetail = {};
+  ROOM_FIELDS.forEach((roomField) => {
+    if (requestBody[roomField]) {
+      roomDetail[roomField] = requestBody[roomField];
+    }
+  });
+  return roomDetail;
+}
+
 exports.findRoomList = findRoomList = ({ page, limit, status }, cb) => {
   let options = {};
   let query = {};
@@ -22,7 +33,7 @@ exports.findRoomList = findRoomList = ({ page, limit, status }, cb) => {
   if (limit) {
     options.limit = parseInt(limit);
   }
-  Room.find(query, '_id nm startDate endDate isAvailable cmts', options).sort('-mt').exec((err, rooms) => {
+  Room.find(query, 'nm startDate endDate isAvailable lastChecked cmts', options).sort('-mt').exec((err, rooms) => {
     cb(err, rooms);
   });
 }
@@ -35,17 +46,10 @@ exports.findList = (req, resp) => {
 };
 
 exports.createRoom = createRoom = (input, cb) => {
-  const { nm, startDate, endDate, isAvailable, cmts } = input;
-  if (!nm) {
+  if (!input.nm) {
     return cb('No Room Name');
   }
-  const room = {
-    nm,
-    startDate,
-    endDate,
-    isAvailable,
-    cmts
-  }
+  const room = getRoomDetailFromObj(input);
   const newTodo = new Room(room);
   newTodo.save((err, room) => {
     cb(err, room);
@@ -75,12 +79,9 @@ exports.findDetail = (req, resp) => {
 };
 
 exports.update = (req, resp) => {
-  const { steps, nm, date, isAvailable, cmts } = req.body;
-  let room = {
-    nm,
-    date,
-    isAvailable,
-    cmts
+  let room = getRoomDetailFromObj(req.body);
+  if (room.lastChecked) {
+    room.lastChecked = Date.now()
   }
   room.update_at = new Date();
   Room.findOneAndUpdate({ _id: req.params.id }, room, { upsert: true, new: true }, (err, room) => {

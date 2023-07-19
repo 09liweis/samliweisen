@@ -1,6 +1,6 @@
 # Portfolio Web Service For Sam
 
-Tech Stack: Nodejs, ExpressJs, MongoDB, Angular 6 for Front End CMS, react for resume site
+Tech Stack: Nodejs, ExpressJs, MongoDB, react for resume site
 
 ## Todo List
 

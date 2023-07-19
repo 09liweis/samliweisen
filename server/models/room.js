@@ -7,6 +7,9 @@ var RoomSchema = new Schema({
   startDate: String,
   endDate: String,
   cmts: String,//comments
+  lastChecked: {
+    type: Date
+  },
   ts: {
     type: Date,
     default: Date.now

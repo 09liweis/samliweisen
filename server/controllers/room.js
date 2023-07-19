@@ -18,6 +18,23 @@ function getRoomDetailFromObj(requestBody) {
   return roomDetail;
 }
 
+const getTimeDiff = (lastChecked) => {
+  const now = new Date();
+  const lastCheckedTime = new Date(lastChecked);
+  const timeDiff = now - lastCheckedTime;
+  if (timeDiff < 1000) {
+    return 'now';
+  } else if (timeDiff < 1000*60) {
+    return timeDiff/(1000*60) + ' mins';
+  } else if (timeDiff < 1000*60*60) {
+    return timeDiff/(1000*60*60) + ' hrs'
+  } else if (timeDiff < 1000*60*60*24) {
+    return timeDiff/(1000*60*60*24) + ' days';
+  } else if (timeDiff < 1000*60*60*24*365) {
+    return timeDiff/(1000*60*60*24*365) + ' years';
+  }
+}
+
 exports.findRoomList = findRoomList = ({ page, limit, status }, cb) => {
   let options = {};
   let query = {};
@@ -34,6 +51,11 @@ exports.findRoomList = findRoomList = ({ page, limit, status }, cb) => {
     options.limit = parseInt(limit);
   }
   Room.find(query, 'nm startDate endDate isAvailable lastChecked cmts', options).sort('-mt').exec((err, rooms) => {
+    rooms.forEach((room) => {
+      if (room.lastChecked) {
+        room.lastCheckedDiff = getTimeDiff(room.lastChecked);
+      }
+    });
     cb(err, rooms);
   });
 }

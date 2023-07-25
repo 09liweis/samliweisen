@@ -75,8 +75,8 @@ exports.search = (req, resp) => {
         return {
           douban_id,
           poster: visual.find('img').attr('src'),
-          name: visual.find('.subject-title').text(),
-          rating: visual.find('.rating span:nth-child(2)').text()
+          title: visual.find('.subject-title').text(),
+          douban_rating: visual.find('.rating span:nth-child(2)').text()
         };
       });
     }

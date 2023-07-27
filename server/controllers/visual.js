@@ -40,14 +40,15 @@ exports.inTheatre = (req, resp) => {
   const url = `https://movie.douban.com/cinema/nowplaying/${city}/`;
   sendRequest({ url }, function(err, { $ }) {
     const listItems = $('.list-item');
-    var movies = [];
+    const movies = [];
     if (listItems) {
-      dataNames = ['title', 'release', 'actors', 'director', 'score', 'duration', 'category'];
+      const dataNames = ['title', 'release', 'actors', 'director', 'duration', 'category'];
       for (let i = 0; i < listItems.length; i++) {
         const item = $(listItems[i]);
-        var movie = {
+        const movie = {
           douban_id: item.attr('id'),
           poster: item.find('img').attr('src'),
+          douban_rating: item.attr('data-score')
         };
         dataNames.forEach(name => {
           movie[name] = item.attr(`data-${name}`);

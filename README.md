@@ -23,9 +23,10 @@ update google map to mapbox
 https://api.mapbox.com/geocoding/v5/mapbox.places/17%20ingram%20road.json?access_token=[access_token]&cachebuster=1622573383792&autocomplete=true
 
 
-API: https://animechan.vercel.app
+API: [https://animechan.vercel.app](https://animechan.xyz/)
 World Time/holiday: http://www.shijian.cc
 
 ## Todo List
 - [x] movie detail route /api/movies/[douban_id]
-- [ ] integrate sendgrid email service 
+- [ ] integrate sendgrid email service
+- [ ] api rate limiter

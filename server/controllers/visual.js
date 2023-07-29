@@ -31,6 +31,18 @@ exports.samVisuals = async (req, resp) => {
   return sendResp(resp, { movies });
 }
 
+exports.getMovieDetail = async (req, resp) => {
+  let { douban_id } = req.params;
+  if (douban_id) {
+    douban_id = douban_id.trim();
+  }
+  if (!douban_id) {
+    return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
+  }
+  const movie = await Movie.findOne({ douban_id });
+  return sendResp(resp, { movie });
+}
+
 exports.inTheatre = (req, resp) => {
   let { city } = req.query;
   city = city?.trim();

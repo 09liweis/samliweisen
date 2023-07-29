@@ -1,13 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
-const { samVisuals, search, inTheatre, getCelebrities, getSummary, getPhotoDetail, getComments, getReviews, upsertVisual, updateRandomMovie } = require('../controllers/visual.js');
+const { samVisuals, getMovieDetail, search, inTheatre, getCelebrities, getSummary, getPhotoDetail, getComments, getReviews, upsertVisual, updateRandomMovie } = require('../controllers/visual.js');
 const { getImdbBoxOffice } = require('../controllers/imdb.js');
 const { getSubjects, getTags, getPhotos, getVideos, getVideo, getCast, getCommingMovies } = require('../controllers/douban.js');
 const { getBilibili } = require('../controllers/bilibili.js');
 const { getMaoyan } = require('../controllers/maoyan.js');
 
 router.route('/').get(samVisuals);
+
+router.route('/:douban_id').get(getMovieDetail);
 
 router.route('/search').get(search);
 
@@ -19,7 +21,7 @@ router.route('/celebrities').post(getCelebrities);
 
 router.route('/cast').post(getCast);
 
-router.route('/:douban_id').get(getSummary);
+router.route('/douban/:douban_id').get(getSummary);
 
 router.route('/videos').post(getVideos);
 

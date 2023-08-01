@@ -30,3 +30,4 @@ World Time/holiday: http://www.shijian.cc
 - [x] movie detail route /api/movies/[douban_id]
 - [ ] integrate sendgrid email service
 - [ ] api rate limiter
+- [ ] user resume

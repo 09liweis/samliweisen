@@ -9,8 +9,6 @@ const { getMaoyan } = require('../controllers/maoyan.js');
 
 router.route('/').get(samVisuals);
 
-router.route('/:douban_id').get(getMovieDetail);
-
 router.route('/search').get(search);
 
 router.route('/in_theatre').get(inTheatre);
@@ -48,5 +46,7 @@ router.route('/maoyan').post(getMaoyan);
 router.route('/upsert').post(upsertVisual);
 
 router.route('/update_random').put(updateRandomMovie);
+
+router.route('/:douban_id').get(getMovieDetail);
 
 module.exports = router;

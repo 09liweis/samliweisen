@@ -43,6 +43,28 @@ exports.getMovieDetail = async (req, resp) => {
   return sendResp(resp, { movie });
 }
 
+exports.getDoubanChart = (req, resp) => {
+  const url = 'https://movie.douban.com/chart';
+  sendRequest({ url }, function(err, { $ }) {
+    const listItems = $('.item');
+    const movies = [];
+    if (listItems) {
+      for (let i = 0; i < listItems.length; i++) {
+        const item = $(listItems[i]);
+        const linkArray = item.find('.nbg').attr('href').split('/');
+        const movie = {
+          douban_id: linkArray[4],
+          poster: item.find('img').attr('src'),
+          title: item.find('.pl2 a').text().trim(),
+          douban_rating: item.find('.rating_nums').text()
+        }
+        movies.push(movie);
+      }
+    }
+    return sendResp(resp, { movies });
+  });
+}
+
 exports.inTheatre = (req, resp) => {
   let { city } = req.query;
   city = city?.trim();

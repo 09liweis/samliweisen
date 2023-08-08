@@ -6,14 +6,14 @@ var TodoSchema = new Schema({
     type: String,
     required: 'Kindly enter the name of the task'
   },
-  date:String,
-  transaction:{
-    type:Schema.Types.ObjectId,
-    ref:'Transaction'
+  date: String,
+  transaction: {
+    type: Schema.Types.ObjectId,
+    ref: 'Transaction'
   },
   steps: [
     {
-      name:String,
+      name: String,
       status: {
         type: String,
         default: 'pending'
@@ -34,7 +34,7 @@ var TodoSchema = new Schema({
   },
   status: {
     type: String,
-    default: 'pending'
+    default: 'pending'//working,done
   }
 });
 

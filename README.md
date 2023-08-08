@@ -28,6 +28,8 @@ World Time/holiday: http://www.shijian.cc
 
 ## Todo List
 - [x] movie detail route /api/movies/[douban_id]
+- [x] douban chat api
+- [ ] douban box office api
 - [ ] integrate sendgrid email service
 - [ ] api rate limiter
 - [ ] user resume

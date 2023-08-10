@@ -306,10 +306,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     }
 
     const imdbMatches = body.match(/tt[\d]{7,8}/g);
-    let imdb_id = '';
-    if (imdbMatches && imdbMatches.length > 0) {
-      imdb_id = imdbMatches[0];
-    }
+    const imdb_id = imdbMatches?.length ? imdbMatches[0] : '';
 
     const dateMatches = body.match(/[\d]{4}-[\d]{2}-[\d]{2}\([\u4e00-\u9fff]+\)/g);
     let dates = [];

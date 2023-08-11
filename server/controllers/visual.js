@@ -5,6 +5,7 @@ const Movie = require('../models/movie');
 
 const MISSING_DOUBAN_ID = 'Missing Douban Id';
 const DOUBAN_CHART_URL = 'https://movie.douban.com/chart';
+const DOUBAN_INTHEATRE_URL = 'https://movie.douban.com/cinema/nowplaying/';
 
 exports.samVisuals = async (req, resp) => {
   let { page = 1, limit = 10, current_episode, type } = req.query;
@@ -71,8 +72,7 @@ exports.inTheatre = (req, resp) => {
   if (!city) {
     city = 'guangzhou';
   }
-  const url = `https://movie.douban.com/cinema/nowplaying/${city}/`;
-  sendRequest({ url }, function(err, { $ }) {
+  sendRequest({ url: `${DOUBAN_INTHEATRE_URL}${city}` }, function(err, { $ }) {
     const listItems = $('.list-item');
     const movies = [];
     if (listItems) {

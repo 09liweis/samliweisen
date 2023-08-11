@@ -4,6 +4,7 @@ const { getImdbSummary } = require('../helpers/imdb');
 const Movie = require('../models/movie');
 
 const MISSING_DOUBAN_ID = 'Missing Douban Id';
+const DOUBAN_CHART_URL = 'https://movie.douban.com/chart';
 
 exports.samVisuals = async (req, resp) => {
   let { page = 1, limit = 10, current_episode, type } = req.query;
@@ -44,8 +45,7 @@ exports.getMovieDetail = async (req, resp) => {
 }
 
 exports.getDoubanChart = (req, resp) => {
-  const url = 'https://movie.douban.com/chart';
-  sendRequest({ url }, function(err, { $ }) {
+  sendRequest({ url: DOUBAN_CHART_URL }, function(err, { $ }) {
     const listItems = $('.item');
     const movies = [];
     if (listItems) {

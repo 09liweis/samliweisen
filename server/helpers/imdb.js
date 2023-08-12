@@ -17,10 +17,11 @@ exports.getImdbSummary = (imdb_id, cb) => {
     try {
       const parseJSONInfo = JSON.parse(jsonLdInfo);
       console.log(parseJSONInfo);
-      const { name, image, aggregateRating } = parseJSONInfo;
+      const { name, image, description, aggregateRating } = parseJSONInfo;
       imdbObj.imdb_title = name;
       imdbObj.imdb_rating = aggregateRating?.ratingValue;
       imdbObj.imdb_poster = image;
+      imdbObj.imdb_description = description;
     } catch (parseErr) {
       console.error(parseErr);
     }

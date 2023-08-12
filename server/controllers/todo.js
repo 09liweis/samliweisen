@@ -77,9 +77,15 @@ exports.findDetail = (req, resp) => {
 exports.update = (req, resp) => {
   const {steps,name,date,status} = req.body;
   let todo = {
-    name,
-    date,
-    status,
+  };
+  if (name) {
+    todo.name = name;
+  }
+  if (date) {
+    todo.date = date;
+  }
+  if (status) {
+    todo.status = status;
   }
   if (steps) {
     todo.steps = steps;

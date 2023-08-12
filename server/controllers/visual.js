@@ -243,7 +243,6 @@ const getDoubanMovieSummary = (douban_id, cb) => {
         let src = media.find('img').attr('src');
         let href = media.find('a').attr('href');
         const mediaType = media.attr('class');
-        console.log(mediaType);
         if (mediaType) {
           tp = mediaType.replace('label-', '');
           var imgStyle = media.find('a').attr('style');

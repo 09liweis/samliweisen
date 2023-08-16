@@ -58,6 +58,7 @@ app.use(function(req, res, next) {
   // }
   const origins = [
     'https://samliweisen.onrender.com/',
+    'https://dashboard.09liweis.repl.co/',
     'http://localhost:4200',
     'http://localhost:8081',
     'http://localhost:3000',

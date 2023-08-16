@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const axios = require('axios');
 const {sign} = require('../helpers/verifyToken');
 const {sendErr} = require('../helpers/request');
 
@@ -68,4 +69,31 @@ exports.detail = async (req,resp) => {
     }
     resp.status(200).json({user}); 
   }
+}
+
+const clientID = '105591674a9b55dc8196';
+const clientSecret = '4e0ad6229531df62c9ca3bf7fc027364f9c33c11';
+
+exports.authThirdParty = async (req,resp) => {
+  const {requestToken} = req.body;
+
+  axios({
+    method: 'post',
+    url: `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}`,
+    // Set the content type header, so that we get the response in JSON
+    headers: {
+      accept: 'application/json'
+    }
+  }).then((response) => {
+    const access_token = response.data.access_token;
+    axios({
+      method: 'get',
+      url: `https://api.github.com/user`,
+      headers: {
+        Authorization: 'token ' + access_token
+      }
+    }).then((response) => {
+      resp.status(200).json({ userData: response.data });
+    })
+  })
 }

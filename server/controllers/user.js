@@ -93,9 +93,9 @@ exports.authThirdParty = async (req, resp) => {
         Authorization: 'token ' + access_token
       }
     }).then((response) => {
-      const useData = response.data;
-      const {email,name,id} = userData;
-      User.findOneAndUpdate({eml:email},{eml:email,nm:name,githubId:id},{returnNewDocument: true,upsert: true},(err,user)=>{
+      const userData = response.data;
+      const { email, name, id } = userData;
+      User.findOneAndUpdate({ eml: email }, { eml: email, nm: name, githubId: id }, { returnNewDocument: true, upsert: true }, (err, user) => {
         const token = sign({ _id: user._id, roles: user.roles });
         resp.header('auth-token', token);
         resp.status(200).json({ token });

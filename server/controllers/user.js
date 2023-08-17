@@ -63,7 +63,7 @@ exports.login = async (req, resp) => {
 exports.detail = async (req, resp) => {
   let user = req.user;
   if (user) {
-    user = await User.findOne({ _id: user._id }, 'nm eml lts roles');
+    user = await User.findOne({ _id: user._id }, 'nm eml lts roles githubId');
     if (user.roles && user.roles.includes('admin')) {
       user.isAdmin = true;
     }

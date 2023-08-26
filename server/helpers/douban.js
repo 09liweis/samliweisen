@@ -24,7 +24,12 @@ exports.getPhotos = ($) => {
   return photos;
 }
 
-exports.getDoubanUrl = (douban_id,opt = {}) => {
+/**
+ * @param {string} douban_id
+ * @param {object} opt
+ * @return {string}
+*/
+exports.getDoubanUrl = (douban_id, opt = {}) => {
   let endPoint = opt.apiName || '';
   return `${DOUBAN_SITE}${douban_id}/${endPoint}`;
 }
@@ -39,7 +44,7 @@ function getAvtUrl(element) {
   return avt;
 }
 
-exports.getCast = (cast,$) => {
+exports.getCast = (cast, $) => {
   const worksMatch = cast.find('.works a');
   let works = [];
   if (worksMatch) {
@@ -47,7 +52,7 @@ exports.getCast = (cast,$) => {
       const work = $(worksMatch[i]);
       works.push({
         url: work.attr('href'),
-        tl:work.attr('title')
+        tl: work.attr('title')
       })
     }
   }
@@ -60,9 +65,9 @@ exports.getCast = (cast,$) => {
   }
   return {
     id,
-    name:name.text(),
-    avt:getAvtUrl(cast),
-    role:cast.find('.role').text(),
+    name: name.text(),
+    avt: getAvtUrl(cast),
+    role: cast.find('.role').text(),
     works
   }
 }
@@ -78,7 +83,7 @@ exports.getReviews = ($) => {
     var rating = review.find('.main-title-rating').attr('class');
     if (typeof rating == 'string') {
       try {
-        rating = rating.replace('main-title-rating','').replace('allstar','').trim();
+        rating = rating.replace('main-title-rating', '').replace('allstar', '').trim();
         rating = parseFloat(rating) / 10;
       } catch (error) {
         rating = 'N/A';
@@ -111,7 +116,7 @@ exports.getComments = ($) => {
     var rating = comment.find('.rating').attr('class');
     if (typeof rating == 'string') {
       try {
-        rating = rating.replace('rating','').replace('allstar','').trim();
+        rating = rating.replace('rating', '').replace('allstar', '').trim();
         rating = parseFloat(rating) / 10;
       } catch (e) {
         console.error(e)

@@ -23,7 +23,11 @@ exports.add = (req, resp) => {
 };
 
 exports.update = (req, resp) => {
-  let updateContact = req.body;
+  const {name,group} = req.body;
+  const updateContact = {name};
+  if (group) {
+    updateContact.groups = group;
+  }
   updateContact.mt = new Date();
   Contact.findOneAndUpdate({ _id: req.params.id }, updateContact, { upsert: true }, (err, contact) => {
     handleError(resp, err);

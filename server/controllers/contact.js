@@ -2,7 +2,7 @@ const { sendResp, sendErr } = require('../helpers/request');
 const Contact = require('../models/contact');
 
 exports.findList = (req, resp) => {
-  Contact.find().sort('-ts').exec((err, contacts) => {
+  Contact.find().sort('-groups').exec((err, contacts) => {
     handleError(resp, err);
     return sendResp(resp, contacts);
   });
@@ -23,8 +23,8 @@ exports.add = (req, resp) => {
 };
 
 exports.update = (req, resp) => {
-  const {name,group} = req.body;
-  const updateContact = {name};
+  const { name, group } = req.body;
+  const updateContact = { name };
   if (group) {
     updateContact.groups = group;
   }

@@ -20,6 +20,7 @@ const express = require('express'),
   visualRoute = require('./server/routes/visual'),
   categoryRoute = require('./server/routes/category'),
   roomRoute = require('./server/routes/room'),
+  contactRoute = require('./server/routes/contact'),
   port = process.env.PORT || DEFAULT_PORT;
 
 mongoose.Promise = global.Promise;
@@ -141,6 +142,7 @@ app.use('/api/user', userRoute);
 app.use('/api/category', categoryRoute);
 app.use('/api/places', placeRoute);
 app.use('/api/rooms', roomRoute);
+app.use('/api/contacts', contactRoute);
 
 http.listen(port, () => {
   console.log(`${new Date()} Web server runs on: ${port}`);

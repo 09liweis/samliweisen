@@ -37,10 +37,7 @@ exports.getDoubanUrl = (douban_id, opt = {}) => {
 function getAvtUrl(element) {
   var avtStyle = element.find('div.avatar').attr('style');
   var avtMatches = /url\((.*?)\)/g.exec(avtStyle);
-  let avt = '';
-  if (avtMatches) {
-    avt = avtMatches[1];
-  }
+  let avt = avtMatches ? avtMatches[1] : '';
   return avt;
 }
 

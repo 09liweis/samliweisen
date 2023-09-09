@@ -16,7 +16,7 @@ exports.getImdbSummary = (imdb_id, cb) => {
     const jsonLdInfo = $('script[type="application/ld+json"]').text();
     try {
       const parseJSONInfo = JSON.parse(jsonLdInfo);
-      console.log(parseJSONInfo);
+      // console.log(parseJSONInfo);
       const { name, image, description, aggregateRating } = parseJSONInfo;
       imdbObj.imdb_title = name;
       imdbObj.imdb_rating = aggregateRating?.ratingValue;

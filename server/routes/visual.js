@@ -4,7 +4,6 @@ var router = express.Router();
 const { samVisuals, getMovieDetail, search, inTheatre, getDoubanChart, getCelebrities, getSummary, getPhotoDetail, getComments, getReviews, upsertVisual, updateRandomMovie } = require('../controllers/visual.js');
 const { getImdbBoxOffice } = require('../controllers/imdb.js');
 const { getSubjects, getTags, getPhotos, getVideos, getVideo, getCast, getCommingMovies } = require('../controllers/douban.js');
-const { getBilibili } = require('../controllers/bilibili.js');
 const { getMaoyan } = require('../controllers/maoyan.js');
 
 router.route('/').get(samVisuals);
@@ -40,8 +39,6 @@ router.route('/imdb_boxoffice').post(getImdbBoxOffice);
 router.route('/douban').post(getSubjects);
 
 router.route('/douban/tags').post(getTags);
-
-router.route('/bilibili').post(getBilibili);
 
 router.route('/maoyan').post(getMaoyan);
 

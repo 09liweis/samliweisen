@@ -18,6 +18,7 @@ const express = require('express'),
   SiteRoute = require('./server/routes/site'),
   userRoute = require('./server/routes/user'),
   visualRoute = require('./server/routes/visual'),
+  videoRoute = require('./server/routes/video'),
   categoryRoute = require('./server/routes/category'),
   roomRoute = require('./server/routes/room'),
   contactRoute = require('./server/routes/contact'),
@@ -132,6 +133,7 @@ app.use(bodyParser.json());
 app.use('/api', indexRoute);
 app.use('/api/dashboard', dashboardRoute);
 app.use('/api/xiaohongshu', xiaohongshuRoute);
+app.use('/api/videos', videoRoute);
 app.use('/api/movies', visualRoute);
 app.use('/api/todos', todoRoute);
 app.use('/api/transactions', transactionRoute);

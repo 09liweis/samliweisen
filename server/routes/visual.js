@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const { samVisuals, getMovieDetail, search, inTheatre, getDoubanChart, getCelebrities, getSummary, getPhotoDetail, getComments, getReviews, upsertVisual, updateRandomMovie } = require('../controllers/visual.js');
+const { samVisuals, getMovieDetail, search, inTheatre, getDoubanChart, getCelebrities, getSummary, getPhotoDetail, getComments, getReviews, upsertVisual, updateRandomMovie, updateSamMovie } = require('../controllers/visual.js');
 const { getImdbBoxOffice } = require('../controllers/imdb.js');
 const { getSubjects, getTags, getPhotos, getVideos, getVideo, getCast, getCommingMovies } = require('../controllers/douban.js');
 const { getMaoyan } = require('../controllers/maoyan.js');
@@ -46,6 +46,8 @@ router.route('/upsert').post(upsertVisual);
 
 router.route('/update_random').put(updateRandomMovie);
 
-router.route('/:douban_id').get(getMovieDetail);
+router.route('/:douban_id')
+  .get(getMovieDetail)
+  .put(updateSamMovie);
 
 module.exports = router;

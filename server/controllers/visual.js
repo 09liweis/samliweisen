@@ -45,6 +45,12 @@ exports.getMovieDetail = async (req, resp) => {
   return sendResp(resp, { movie });
 }
 
+exports.updateSamMovie = async (req, resp) => {
+  const {douban_id} = req.params;
+  const movie = await Movie.updateOne({ douban_id }, {'$inc':{'current_episode':1}});
+  return sendResp(resp, movie);
+}
+
 exports.getDoubanChart = (req, resp) => {
   sendRequest({ url: DOUBAN_CHART_URL }, function(err, { $ }) {
     const listItems = $('.item');

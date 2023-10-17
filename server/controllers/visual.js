@@ -46,8 +46,8 @@ exports.getMovieDetail = async (req, resp) => {
 }
 
 exports.updateSamMovie = async (req, resp) => {
-  const {douban_id} = req.params;
-  const movie = await Movie.updateOne({ douban_id }, {'$inc':{'current_episode':1}});
+  const { douban_id } = req.params;
+  const movie = await Movie.updateOne({ douban_id }, { '$inc': { 'current_episode': 1 } });
   return sendResp(resp, movie);
 }
 
@@ -212,11 +212,6 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     if (err) {
       return cb(err);
     }
-    const title = $('span[property="v:itemreviewed"]').text();
-    const douban_poster = $('img[rel="v:image"]').attr('src');
-    const douban_rating = $('strong[property="v:average"]').text() || 0;
-    const summary = $('span[property="v:summary"]').text().trim();
-    const douban_vote_count = $('span[property="v:votes"]').text();
 
     const genresMatch = $('span[property="v:genre"]');
     if (genresMatch) {
@@ -296,8 +291,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     var durationMatch = /单集片长:<\/span>(.*?)<br\/>/g.exec(body);
     let duration = $('span[property="v:runtime"]').attr('content');
     if (durationMatch) {
-      duration = durationMatch[1].trim();
-      if (/分钟/.test(duration)) {
+      if (/分钟/.test(durationMatch[1].trim())) {
         duration = duration.replace('分钟', '');
       }
     }
@@ -321,11 +315,11 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     visual = {
       douban_id,
       // douban_url,
-      title,
+      title: $('span[property="v:itemreviewed"]').text(),
       original_title,
-      douban_poster,
-      douban_rating,
-      douban_vote_count,
+      douban_poster: $('img[rel="v:image"]').attr('src'),
+      douban_rating: $('strong[property="v:average"]').text() || 0,
+      douban_vote_count: $('span[property="v:votes"]').text(),
       genres,
       website,
       duration,
@@ -335,7 +329,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       awards,
       languages,
       countries,
-      summary,
+      summary: $('span[property="v:summary"]').text().trim(),
       casts,
       release_dates: dates,
       recommends,
@@ -352,7 +346,6 @@ const getDoubanMovieSummary = (douban_id, cb) => {
         return cb(err);
       }
       visual = Object.assign(visual, imdbObj);
-      visual.poster = douban_poster;
       return cb(null, visual);
     })
   });

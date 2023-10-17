@@ -291,8 +291,14 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     var durationMatch = /单集片长:<\/span>(.*?)<br\/>/g.exec(body);
     let duration = $('span[property="v:runtime"]').attr('content');
     if (durationMatch) {
-      if (/分钟/.test(durationMatch[1].trim())) {
+      duration = durationMatch[1].trim();
+      if (/分钟/.test(duration)) {
         duration = duration.replace('分钟', '');
+        try {
+          duration = parseInt(duration);
+        } catch (durationErr) {
+          console.log(durationErr);
+        }
       }
     }
 

@@ -294,12 +294,12 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       duration = durationMatch[1].trim();
       if (/分钟/.test(duration)) {
         duration = duration.replace('分钟', '');
-        try {
-          duration = parseInt(duration);
-        } catch (durationErr) {
-          console.log(durationErr);
-        }
       }
+    }
+    try {
+      duration = parseInt(duration);
+    } catch (durationErr) {
+      console.log(durationErr);
     }
 
     var langsMatch = /语言:<\/span>(.*?)<br\/>/g.exec(body);

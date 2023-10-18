@@ -264,8 +264,6 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       });
     }
 
-    const reviews = getReviews($);
-
     const castMatches = $('.celebrity');
     if (castMatches) {
       var casts = castMatches.toArray().map(c => getCast($(c), $));
@@ -337,7 +335,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       casts,
       release_dates: dates,
       recommends,
-      reviews,
+      reviews: getReviews($),
       comments: getComments($),
       imdb_id,
     };

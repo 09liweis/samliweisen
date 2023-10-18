@@ -234,8 +234,6 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       });
     }
 
-    const comments = getComments($);
-
     const photosMatch = $('.related-pic-bd li');
     if (photosMatch) {
       var photos = photosMatch.toArray().map((p) => {
@@ -340,7 +338,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       release_dates: dates,
       recommends,
       reviews,
-      comments,
+      comments: getComments($),
       imdb_id,
     };
     if (!imdb_id) {

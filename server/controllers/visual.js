@@ -7,6 +7,21 @@ const MISSING_DOUBAN_ID = 'Missing Douban Id';
 const DOUBAN_CHART_URL = 'https://movie.douban.com/chart';
 const DOUBAN_INTHEATRE_URL = 'https://movie.douban.com/cinema/nowplaying/';
 
+function formatDuration(duration) {
+  try {
+    duration = parseInt(duration);
+  } catch (durationErr) {
+    console.log(durationErr);
+    return duration;
+  }
+  if (duration < 60) {
+    return duration + ':00';
+  }
+  const hours = Math.floor(duration / 60);
+  const minutes = duration % 60;
+  return `${hours}:${minutes>9?minutes:`0${minutes}`}:00`;
+}
+
 exports.samVisuals = async (req, resp) => {
   let { page = 1, limit = 10, current_episode, type } = req.query;
   limit = parseInt(limit);
@@ -292,11 +307,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
         duration = duration.replace('分钟', '');
       }
     }
-    try {
-      duration = parseInt(duration);
-    } catch (durationErr) {
-      console.log(durationErr);
-    }
+    duration = formatDuration(duration);
 
     var langsMatch = /语言:<\/span>(.*?)<br\/>/g.exec(body);
     if (langsMatch) {

@@ -19,7 +19,7 @@ function formatDuration(duration) {
   }
   const hours = Math.floor(duration / 60);
   const minutes = duration % 60;
-  return `${hours}:${minutes>9?minutes:`0${minutes}`}:00`;
+  return `${hours}:${minutes > 9 ? minutes : `0${minutes}`}:00`;
 }
 
 exports.samVisuals = async (req, resp) => {
@@ -307,7 +307,9 @@ const getDoubanMovieSummary = (douban_id, cb) => {
         duration = duration.replace('分钟', '');
       }
     }
-    duration = formatDuration(duration);
+    if (duration) {
+      duration = formatDuration(duration);
+    }
 
     var langsMatch = /语言:<\/span>(.*?)<br\/>/g.exec(body);
     if (langsMatch) {

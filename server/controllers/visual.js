@@ -324,7 +324,8 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     const imdbMatches = body.match(/tt[\d]{7,8}/g);
     const imdb_id = imdbMatches?.length ? imdbMatches[0] : '';
 
-    const dateMatches = body.match(/[\d]{4}-[\d]{2}-[\d]{2}\([\u4e00-\u9fff]+\)/g);
+    //2018-03-16(美国/中国大陆)
+    const dateMatches = body.match(/[\d]{4}-[\d]{2}-[\d]{2}\([\u4e00-\u9fff\/]+\)/g);
     const dates = [...new Set(dateMatches)]
 
     let visual = {

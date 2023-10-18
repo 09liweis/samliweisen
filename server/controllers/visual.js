@@ -299,6 +299,9 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       var original_title = originalTitleMatch[1].trim();
     }
 
+    const seasonMatch = /季数:<\/span>(.*?)<br\/>/g.exec(body);
+    const season = seasonMatch ? parseInt(seasonMatch[1].trim()) : '';
+
     var episodesMatch = /集数:<\/span>(.*?)<br\/>/g.exec(body);
     const episodes = episodesMatch ? parseInt(episodesMatch[1].trim()) : 1;
 
@@ -340,6 +343,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       website,
       duration,
       episodes,
+      season,
       visual_type: (episodes > 1) ? 'tv' : 'movie',
       photos,
       awards,

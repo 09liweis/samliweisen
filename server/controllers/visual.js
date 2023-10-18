@@ -318,14 +318,14 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     const dateMatches = body.match(/[\d]{4}-[\d]{2}-[\d]{2}\([\u4e00-\u9fff]+\)/g);
     const dates = [...new Set(dateMatches)]
 
-    visual = {
+    let visual = {
       douban_id,
       // douban_url,
       title: $('span[property="v:itemreviewed"]').text(),
       original_title,
       douban_poster: $('img[rel="v:image"]').attr('src'),
-      douban_rating: $('strong[property="v:average"]').text() || 0,
-      douban_vote_count: $('span[property="v:votes"]').text(),
+      douban_rating: parseFloat($('strong[property="v:average"]').text() || 0),
+      douban_vote_count: parseInt($('span[property="v:votes"]').text()),
       genres,
       website,
       duration,

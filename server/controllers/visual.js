@@ -108,6 +108,9 @@ exports.inTheatre = (req, resp) => {
         dataNames.forEach(name => {
           movie[name] = item.attr(`data-${name}`);
         });
+        if (movie.duration) {
+          movie.duration = formatDuration(movie.duration);
+        }
         movies.push(movie);
       }
     }
@@ -303,9 +306,6 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     let duration = $('span[property="v:runtime"]').attr('content');
     if (durationMatch) {
       duration = durationMatch[1].trim();
-      if (/分钟/.test(duration)) {
-        duration = duration.replace('分钟', '');
-      }
     }
     if (duration) {
       duration = formatDuration(duration);

@@ -88,6 +88,7 @@ exports.getReviews = ($) => {
       }
     }
     reviews.push({
+      review_id: review.find('.review-short').attr('data-rid'),
       title: review.find('h2 a').text(),
       content: review.find('.short-content').text(),
       author: review.find('.name').text(),

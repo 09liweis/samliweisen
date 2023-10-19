@@ -8,10 +8,11 @@ const DOUBAN_CHART_URL = 'https://movie.douban.com/chart';
 const DOUBAN_INTHEATRE_URL = 'https://movie.douban.com/cinema/nowplaying/';
 
 function formatDuration(duration) {
+  if (!duration) return;
   try {
     duration = parseInt(duration);
   } catch (durationErr) {
-    console.log(durationErr);
+    console.error(durationErr);
     return duration;
   }
   if (duration < 60) {
@@ -314,16 +315,16 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     }
 
     var episodesMatch = /集数:<\/span>(.*?)<br\/>/g.exec(body);
-    const episodes = episodesMatch ? parseInt(episodesMatch[1].trim()) : 1;
+    if (episodesMatch) {
+      var episodes = parseInt(episodesMatch[1].trim());
+    }
 
     var durationMatch = /单集片长:<\/span>(.*?)<br\/>/g.exec(body);
     let duration = $('span[property="v:runtime"]').attr('content');
     if (durationMatch) {
       duration = durationMatch[1].trim();
     }
-    if (duration) {
-      duration = formatDuration(duration);
-    }
+    duration = formatDuration(duration);
 
     var langsMatch = /语言:<\/span>(.*?)<br\/>/g.exec(body);
     if (langsMatch) {

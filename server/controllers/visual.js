@@ -62,7 +62,7 @@ exports.getMovieDetail = async (req, resp) => {
 
 exports.updateSamMovie = async (req, resp) => {
   const { douban_id } = req.params;
-  const movie = await Movie.updateOne({ douban_id }, { '$inc': { 'current_episode': 1 } });
+  const movie = await Movie.updateOne({ douban_id }, { '$inc': { 'current_episode': 1 }, 'date_updated': new Date() });
   return sendResp(resp, movie);
 }
 
@@ -300,7 +300,18 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     }
 
     const seasonMatch = /季数:<\/span>(.*?)<br\/>/g.exec(body);
-    const season = seasonMatch ? parseInt(seasonMatch[1].trim()) : '';
+    if (seasonMatch) {
+      var season = seasonMatch[1].trim();
+      //if season is null, try to get select tag of season
+      if (isNaN(season)) {
+        season = $('#season option[selected]').text();
+      }
+      try {
+        season = parseInt(season);
+      } catch (seasonError) {
+        console.error(`Season parse error: ${seasonError}`);
+      }
+    }
 
     var episodesMatch = /集数:<\/span>(.*?)<br\/>/g.exec(body);
     const episodes = episodesMatch ? parseInt(episodesMatch[1].trim()) : 1;

@@ -123,6 +123,7 @@ exports.getComments = ($) => {
     const text = comment.find('.short').text();
     if (text) {
       comments.push({
+        comment_id: comment.attr('data-cid'),
         text,
         author: comment.find('.comment-info a').text(),
         avt: comment.find('img').attr('src'),

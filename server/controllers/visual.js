@@ -396,8 +396,8 @@ exports.upsertVisual = async (req, resp) => {
     Movie.findOne({ douban_id }, (err, oldMovie) => {
       if (!oldMovie) {
         movie.date_watched = new Date();
-        movie.date_updated = new Date();
       }
+      movie.date_updated = new Date();
       Movie.findOneAndUpdate({ douban_id }, movie, { upsert: true }, (err, newMovie) => {
         if (err) {
           return resp.status(400).json({ err });

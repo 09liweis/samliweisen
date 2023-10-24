@@ -74,7 +74,7 @@ exports.updateSamMovie = async (req, resp) => {
   if (foundMovie.current_episode < foundMovie.episodes) {
     update.current_episode = foundMovie.current_episode + 1;
   } else {
-    update.current_episode = foundMovie.episodes;
+    update.current_episode = foundMovie.episodes || 1;//in case there is no episodes
   }
   const movie = await Movie.updateOne({ douban_id }, update);
   return sendResp(resp, movie);

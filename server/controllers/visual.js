@@ -64,6 +64,9 @@ exports.getMovieDetail = async (req, resp) => {
 exports.updateSamMovie = async (req, resp) => {
   const { douban_id } = req.params;
   const foundMovie = await Movie.findOne({douban_id});
+  if (!foundMovie) {
+    return reps.status(404).json({msg:'Movie not found'});
+  }
   const increasedEpisode = (foundMovie.current_episode === foundMovie.episodes) ? 0 : 1;
   const movie = await Movie.updateOne({ douban_id }, { '$inc': { 'current_episode': increasedEpisode }, 'date_updated': new Date() });
   return sendResp(resp, movie);

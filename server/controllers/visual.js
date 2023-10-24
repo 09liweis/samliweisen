@@ -364,7 +364,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       // douban_url,
       title: $('span[property="v:itemreviewed"]').text(),
       original_title,
-      douban_poster: $('img[rel="v:image"]').attr('src'),
+      poster: $('img[rel="v:image"]').attr('src'),
       douban_rating: parseFloat($('strong[property="v:average"]').text() || 0),
       douban_vote_count: parseInt($('span[property="v:votes"]').text()),
       genres,
@@ -403,7 +403,7 @@ exports.upsertVisual = async (req, resp) => {
   //35376457
   var { douban_id } = req.body;
   if (!douban_id) {
-    return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
+    return resp.status(400).json({ msg: MISSING_DOUBAN_ID, body: req.body });
   }
   getDoubanMovieSummary(douban_id, (err, movie) => {
     if (!movie.douban_id) {

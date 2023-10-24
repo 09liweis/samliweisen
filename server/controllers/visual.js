@@ -63,7 +63,9 @@ exports.getMovieDetail = async (req, resp) => {
 
 exports.updateSamMovie = async (req, resp) => {
   const { douban_id } = req.params;
-  const movie = await Movie.updateOne({ douban_id }, { '$inc': { 'current_episode': 1 }, 'date_updated': new Date() });
+  const foundMovie = await Movie.findOne({douban_id});
+  const increasedEpisode = (foundMovie.current_episode === foundMovie.episodes) ? 0 : 1;
+  const movie = await Movie.updateOne({ douban_id }, { '$inc': { 'current_episode': increasedEpisode }, 'date_updated': new Date() });
   return sendResp(resp, movie);
 }
 

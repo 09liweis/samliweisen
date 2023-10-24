@@ -41,6 +41,9 @@ exports.samVisuals = async (req, resp) => {
 
   }
   movies.forEach((movie) => {
+    if (!movie.episodes) {
+      movie.episodes = 1;
+    }
     if (movie.poster?.includes('doubanio')) {
       //flutter app can only show img2 server somehow
       movie.poster = 'https://img2.doubanio.com/view/photo/s_ratio_poster/public/' + movie.poster.split('/').slice(-1);

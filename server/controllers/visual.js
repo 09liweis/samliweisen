@@ -406,10 +406,16 @@ exports.upsertVisual = async (req, resp) => {
     return resp.status(400).json({ msg: MISSING_DOUBAN_ID, body: req.body });
   }
   getDoubanMovieSummary(douban_id, (err, movie) => {
+    if (err) {
+      return resp.status(400).json({ err: err.toString() });
+    }
     if (!movie.douban_id) {
       return resp.status(400).json({ msg: 'Can not get movie' });
     }
     Movie.findOne({ douban_id }, (err, oldMovie) => {
+      if (err) {
+        return resp.status(400).json({ err: err.toString() });
+      }
       if (!oldMovie) {
         movie.date_watched = new Date();
       }

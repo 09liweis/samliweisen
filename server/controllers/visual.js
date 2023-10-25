@@ -4,6 +4,7 @@ const { getImdbSummary } = require('../helpers/imdb');
 const Movie = require('../models/movie');
 
 const MISSING_DOUBAN_ID = 'Missing Douban Id';
+const MOVIE_NOT_FOUND = 'Movie Not Found';
 const DOUBAN_CHART_URL = 'https://movie.douban.com/chart';
 const DOUBAN_INTHEATRE_URL = 'https://movie.douban.com/cinema/nowplaying/';
 
@@ -65,22 +66,27 @@ exports.getMovieDetail = async (req, resp) => {
 }
 
 exports.updateSamMovie = async (req, resp) => {
-  const { douban_id } = req.params;
-  const foundMovie = await Movie.findOne({ douban_id });
-  if (!foundMovie) {
-    return reps.status(404).json({ msg: 'Movie not found' });
-  }
+  try {
+    const { douban_id } = req.params;
+    const foundMovie = await Movie.findOne({ douban_id });
+    if (!foundMovie) {
+      return sendErr(resp, { err: MOVIE_NOT_FOUND, douban_id });
+    }
 
-  const update = {
-    'date_updated': new Date()
-  };
-  if (foundMovie.current_episode < foundMovie.episodes) {
-    update.current_episode = foundMovie.current_episode + 1;
-  } else {
-    update.current_episode = foundMovie.episodes || 1;//in case there is no episodes
+    const update = {
+      'date_updated': new Date()
+    };
+    if (foundMovie.current_episode < foundMovie.episodes) {
+      update.current_episode = foundMovie.current_episode + 1;
+    } else {
+      update.current_episode = foundMovie.episodes || 1;//in case there is no episodes
+    }
+    const movie = await Movie.updateOne({ douban_id }, update);
+    return sendResp(resp, movie);
+  } catch (updateSamMovieErr) {
+    return sendErr(resp, {err: `updateSamMovieErr: ${updateSamMovieErr.toString()}`,douban_id});
   }
-  const movie = await Movie.updateOne({ douban_id }, update);
-  return sendResp(resp, movie);
+  
 }
 
 exports.getDoubanChart = (req, resp) => {

@@ -39,8 +39,8 @@ exports.sendRequest = ({url,method='GET',body},cb) => {
   });
 }
 
-exports.sendErr = (resp,err) => {
-  return resp.status(400).json({err});
+exports.sendErr = (resp,errObj) => {
+  return resp.status(400).json(errObj);
 }
 
 exports.sendResp = (resp,data) => {

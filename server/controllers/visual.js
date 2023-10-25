@@ -1,4 +1,4 @@
-const { sendRequest, sendResp } = require('../helpers/request');
+const { sendRequest, sendResp, sendErr } = require('../helpers/request');
 const { getDoubanUrl, getReviews, getComments, getCast } = require('../helpers/douban');
 const { getImdbSummary } = require('../helpers/imdb');
 const Movie = require('../models/movie');
@@ -38,7 +38,7 @@ exports.samVisuals = async (req, resp) => {
   try {
     movies = await Movie.find(filter).skip(skip).limit(limit).sort('-date_updated');
   } catch (err) {
-
+    return sendErr(resp, {err:err.toString()});
   }
   movies.forEach((movie) => {
     if (!movie.episodes) {
@@ -58,7 +58,7 @@ exports.getMovieDetail = async (req, resp) => {
     douban_id = douban_id.trim();
   }
   if (!douban_id) {
-    return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
+    return sendErr(resp, { msg: MISSING_DOUBAN_ID, douban_id });
   }
   const movie = await Movie.findOne({ douban_id });
   return sendResp(resp, { movie });

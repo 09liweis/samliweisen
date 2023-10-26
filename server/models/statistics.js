@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const StatisticsSchema = new Schema({
   name: String, //todo,movie,blog,comment,
-  cnt:Number,
-  details:Object,
+  details: Object, //{pending:Number, done:Number, in_progress:Number,total:Number}
   ts: {
     type: Date,
     default: Date.now

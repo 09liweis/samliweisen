@@ -409,18 +409,18 @@ exports.upsertVisual = async (req, resp) => {
   //35376457
   var { douban_id } = req.body;
   if (!douban_id) {
-    return resp.status(400).json({ msg: MISSING_DOUBAN_ID, body: req.body });
+    return sendErr(resp, { msg: MISSING_DOUBAN_ID, body: req.body })
   }
   getDoubanMovieSummary(douban_id, (err, movie) => {
     if (err) {
-      return resp.status(400).json({ err: err.toString() });
+      return sendErr(resp, { err: err.toString() })
     }
     if (!movie.douban_id) {
-      return resp.status(400).json({ msg: 'Can not get movie' });
+      return sendErr(resp, { msg: 'Can not get movie' });
     }
     Movie.findOne({ douban_id }, (err, oldMovie) => {
       if (err) {
-        return resp.status(400).json({ err: err.toString() });
+        return sendErr(resp, { err: err.toString() });
       }
       if (!oldMovie) {
         movie.date_watched = new Date();
@@ -428,7 +428,7 @@ exports.upsertVisual = async (req, resp) => {
       movie.date_updated = new Date();
       Movie.findOneAndUpdate({ douban_id }, movie, { upsert: true }, (err, newMovie) => {
         if (err) {
-          return resp.status(400).json({ err });
+          return sendErr(resp, { err: err.toString() });
         }
         return sendResp(resp, movie);
       })

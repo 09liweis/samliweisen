@@ -439,13 +439,13 @@ exports.upsertVisual = async (req, resp) => {
 exports.updateRandomMovie = (req, resp) => {
   Movie.countDocuments().exec((err, count) => {
     if (err) {
-      return resp.status(400).json({ err });
+      return sendErr(resp, {err:err.toString()});
     }
     var random = Math.floor(Math.random() * count);
     Movie.findOne().skip(random).exec((err, movie) => {
       if (err || !movie) {
         console.error(err);
-        return resp.status(404).json({ msg: 'Movie not found' });
+        return sendErr(resp, {msg: MOVIE_NOT_FOUND});
       }
       getDoubanMovieSummary(movie.douban_id, (err, latestMovie) => {
         if (err) return resp.status(400).json({ msg: err.toString() });

@@ -39,7 +39,7 @@ exports.samVisuals = async (req, resp) => {
   try {
     movies = await Movie.find(filter).skip(skip).limit(limit).sort('-date_updated');
   } catch (err) {
-    return sendErr(resp, {err:err.toString()});
+    return sendErr(resp, { err: err.toString() });
   }
   movies.forEach((movie) => {
     if (!movie.episodes) {
@@ -84,9 +84,9 @@ exports.updateSamMovie = async (req, resp) => {
     const movie = await Movie.updateOne({ douban_id }, update);
     return sendResp(resp, movie);
   } catch (updateSamMovieErr) {
-    return sendErr(resp, {err: `updateSamMovieErr: ${updateSamMovieErr.toString()}`,douban_id});
+    return sendErr(resp, { err: `updateSamMovieErr: ${updateSamMovieErr.toString()}`, douban_id });
   }
-  
+
 }
 
 exports.getDoubanChart = (req, resp) => {
@@ -145,7 +145,7 @@ exports.search = (req, resp) => {
   let { keyword } = req.query;
   keyword = keyword?.trim();
   if (!keyword) {
-    return resp.status(400).json({ msg: 'No Keyword' });
+    return sendErr(resp, { msg: 'No Keyword' });
   }
   const url = `https://m.douban.com/search/?query=${encodeURIComponent(keyword)}&type=movie`;
   sendRequest({ url }, function(err, { $ }) {

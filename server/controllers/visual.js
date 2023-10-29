@@ -28,11 +28,11 @@ function getDefaultEpisodes(movie) {
   return movie.episodes || 1;
 }
 
-exports.samVisuals = async (req, resp) => {
-  let { page = 1, limit = 10, current_episode, type } = req.query;
+function getSearchQuery(query) {
+  let { page = 1, limit = 10, current_episode, type } = query;
   limit = parseInt(limit);
   const skip = (page - 1) * limit;
-  let movies = [];
+
   const filter = {};
   if (current_episode) {
     filter.current_episode = current_episode;
@@ -40,6 +40,12 @@ exports.samVisuals = async (req, resp) => {
   if (type) {
     filter.visual_type = type;
   }
+  return {filter,skip,limit}
+}
+
+exports.samVisuals = async (req, resp) => {
+  const {filer,skip,limit} = getSearchQuery(req.query);
+  let movies = [];
   try {
     movies = await Movie.find(filter).skip(skip).limit(limit).sort('-date_updated');
   } catch (err) {

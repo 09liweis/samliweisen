@@ -13,7 +13,10 @@ const MovieSchema = new Schema({
     type: Number,
     default: 0
   },
-  episodes: Number,
+  episodes: {
+    type: Number,
+    default: 1
+  },
   date_watched: {
     type: Date,
     default: Date.now

@@ -55,9 +55,7 @@ exports.samVisuals = async (req, resp) => {
 
 exports.getMovieDetail = async (req, resp) => {
   let { douban_id } = req.params;
-  if (douban_id) {
-    douban_id = douban_id.trim();
-  }
+  douban_id = douban_id.trim();
   if (!douban_id) {
     return sendErr(resp, { msg: MISSING_DOUBAN_ID, douban_id });
   }
@@ -439,13 +437,13 @@ exports.upsertVisual = async (req, resp) => {
 exports.updateRandomMovie = (req, resp) => {
   Movie.countDocuments().exec((err, count) => {
     if (err) {
-      return sendErr(resp, {err:err.toString()});
+      return sendErr(resp, { err: err.toString() });
     }
     var random = Math.floor(Math.random() * count);
     Movie.findOne().skip(random).exec((err, movie) => {
       if (err || !movie) {
         console.error(err);
-        return sendErr(resp, {msg: MOVIE_NOT_FOUND});
+        return sendErr(resp, { msg: MOVIE_NOT_FOUND });
       }
       getDoubanMovieSummary(movie.douban_id, (err, latestMovie) => {
         if (err) return resp.status(400).json({ msg: err.toString() });

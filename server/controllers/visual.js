@@ -24,6 +24,10 @@ function formatDuration(duration) {
   return `${hours}:${minutes > 9 ? minutes : `0${minutes}`}:00`;
 }
 
+function getDefaultEpisodes(movie) {
+  return movie.episodes || 1;
+}
+
 exports.samVisuals = async (req, resp) => {
   let { page = 1, limit = 10, current_episode, type } = req.query;
   limit = parseInt(limit);
@@ -42,9 +46,7 @@ exports.samVisuals = async (req, resp) => {
     return sendErr(resp, { err: err.toString() });
   }
   movies.forEach((movie) => {
-    if (!movie.episodes) {
-      movie.episodes = 1;
-    }
+    movie.episodes = getDefaultEpisodes(movie);
     if (movie.poster?.includes('doubanio')) {
       //flutter app can only show img2 server somehow
       movie.poster = 'https://img2.doubanio.com/view/photo/s_ratio_poster/public/' + movie.poster.split('/').slice(-1);
@@ -77,7 +79,7 @@ exports.updateSamMovie = async (req, resp) => {
     if (foundMovie.current_episode < foundMovie.episodes) {
       update.current_episode = foundMovie.current_episode + 1;
     } else {
-      update.current_episode = foundMovie.episodes || 1;//in case there is no episodes
+      update.current_episode = getDefaultEpisodes(foundMovie.episodes);
     }
     const movie = await Movie.updateOne({ douban_id }, update);
     return sendResp(resp, movie);

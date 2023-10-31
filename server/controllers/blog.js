@@ -1,13 +1,13 @@
-const {sendResp, sendErr} = require('../helpers/request');
+const { sendResp, sendErr } = require('../helpers/request');
 const Blog = require('../models/blog');
 
 exports.findList = (req, resp) => {
-  Blog.find({}, '_id title url content created_at',{limit:10}).sort('-created_at').exec((err, blogs) => {
+  Blog.find({}, '_id title url content created_at', { limit: 10 }).sort('-created_at').exec((err, blogs) => {
     handleError(resp, err);
-    blogs.forEach((blog)=>{
-      blog.content = blog.content.substr(0,100) + ' ...';
+    blogs.forEach((blog) => {
+      blog.content = blog.content.substr(0, 100) + ' ...';
     });
-    return sendResp(resp,blogs);
+    return sendResp(resp, blogs);
   });
 };
 
@@ -15,35 +15,37 @@ exports.add = (req, resp) => {
   const newBlog = new Blog(req.body);
   newBlog.save((err, blog) => {
     handleError(resp, err);
-    return sendResp(resp,blog);
+    return sendResp(resp, blog);
   });
 };
 
-exports.findDetail = (req, resp) => {
-  Blog.findById(req.params.id, (err, blog) => {
-    handleError(resp, err);
-    return sendResp(resp,blog);
-  });
+exports.findDetail = async (req, resp) => {
+  try {
+    const blog = Blog.findById(req.params.id);
+    return sendResp(resp, blog);
+  } catch (err) {
+    return sendErr(resp, { err: err.toString() });
+  }
 };
 
 exports.update = (req, resp) => {
   let updateblog = req.body;
   updateblog.update_at = new Date();
-  Blog.findOneAndUpdate({_id: req.params.id}, updateblog, {upsert: true}, (err, blog) => {
+  Blog.findOneAndUpdate({ _id: req.params.id }, updateblog, { upsert: true }, (err, blog) => {
     handleError(resp, err);
-    return sendResp(resp,blog);
+    return sendResp(resp, blog);
   });
 };
 
 exports.remove = (req, resp) => {
-  Blog.remove({_id: req.params.id}, (err) => {
+  Blog.remove({ _id: req.params.id }, (err) => {
     handleError(resp, err);
-    return sendResp(resp,'ok');
+    return sendResp(resp, 'ok');
   });
 };
 
 function handleError(resp, err) {
   if (err) {
-    return sendErr(resp,err);
+    return sendErr(resp, err);
   }
 }

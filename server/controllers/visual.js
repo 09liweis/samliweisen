@@ -40,11 +40,11 @@ function getSearchQuery(query) {
   if (type) {
     filter.visual_type = type;
   }
-  return {filter,skip,limit}
+  return { filter, skip, limit }
 }
 
 exports.samVisuals = async (req, resp) => {
-  const {filer,skip,limit} = getSearchQuery(req.query);
+  const { filter, skip, limit } = getSearchQuery(req.query);
   let movies = [];
   try {
     movies = await Movie.find(filter).skip(skip).limit(limit).sort('-date_updated');

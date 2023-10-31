@@ -21,7 +21,7 @@ exports.add = (req, resp) => {
 
 exports.findDetail = async (req, resp) => {
   try {
-    const blog = Blog.findById(req.params.id);
+    const blog = await Blog.findById(req.params.id);
     return sendResp(resp, blog);
   } catch (err) {
     return sendErr(resp, { err: err.toString() });

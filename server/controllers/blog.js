@@ -23,7 +23,7 @@ exports.findDetail = async (req, resp) => {
   const blogId = req.params.id;
   if (!blogId) return sendErr(resp, {msg:`Blog Id ${blogId} not found`});
   try {
-    const blog = await Blog.findById(req.params.id);
+    const blog = await Blog.findById(blogId);
     return sendResp(resp, blog);
   } catch (err) {
     return sendErr(resp, { err: err.toString() });

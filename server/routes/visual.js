@@ -14,6 +14,8 @@ router.route('/in_theatre').get(inTheatre);
 
 router.route('/comming').get(getCommingMovies);
 
+router.route('/maoyan').get(getMaoyan);
+
 router.route('/chart').get(getDoubanChart);
 
 router.route('/celebrities').post(getCelebrities);
@@ -39,8 +41,6 @@ router.route('/imdb_boxoffice').post(getImdbBoxOffice);
 router.route('/douban').post(getSubjects);
 
 router.route('/douban/tags').post(getTags);
-
-router.route('/maoyan').post(getMaoyan);
 
 router.route('/upsert').post(upsertVisual);
 

@@ -22,7 +22,6 @@ const express = require('express'),
   categoryRoute = require('./server/routes/category'),
   roomRoute = require('./server/routes/room'),
   contactRoute = require('./server/routes/contact'),
-  xiaohongshuRoute = require('./server/routes/xiaohongshu'),
   port = process.env.PORT || DEFAULT_PORT;
 
 mongoose.Promise = global.Promise;
@@ -132,7 +131,6 @@ app.use(bodyParser.json());
 
 app.use('/api', indexRoute);
 app.use('/api/dashboard', dashboardRoute);
-app.use('/api/xiaohongshu', xiaohongshuRoute);
 app.use('/api/videos', videoRoute);
 app.use('/api/movies', visualRoute);
 app.use('/api/todos', todoRoute);

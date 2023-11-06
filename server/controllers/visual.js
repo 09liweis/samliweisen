@@ -8,6 +8,16 @@ const MOVIE_NOT_FOUND = 'Movie Not Found';
 const DOUBAN_CHART_URL = 'https://movie.douban.com/chart';
 const DOUBAN_INTHEATRE_URL = 'https://movie.douban.com/cinema/nowplaying/';
 
+/** 
+ * Get formated duration of a movie
+ 
+ * @param {string} duration - movie duration
+ * @returns {string} formated duration
+
+ * @example
+ * formatDuration('45') => '45:00'
+ * formatDuration('125') // => '2:02:00'
+*/
 function formatDuration(duration) {
   if (!duration) return;
   try {

@@ -2,10 +2,10 @@ var axios = require('axios');
 var cheerio = require('cheerio');
 
 exports.getCheerio = getCheerio = (body) => {
-  var body = body.replace(/(\r\n|\n|\r)/gm, '').replace(/ +(?= )/g,'');
-  const $ = cheerio.load(body.toString(),{
-    normalizeWhitespace:true,
-    decodeEntities:true
+  var body = body.replace(/(\r\n|\n|\r)/gm, '').replace(/ +(?= )/g, '');
+  const $ = cheerio.load(body.toString(), {
+    normalizeWhitespace: true,
+    decodeEntities: true
   });
   return $;
 }
@@ -16,9 +16,13 @@ const headers = {
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'
 };
 
-exports.sendRequest = ({url,method='GET',body},cb) => {
-  requestOpt = {url,method,headers};
-  if (body){
+/** 
+ * @param {object} {url, method, body}
+ * @param {function} cb
+*/
+exports.sendRequest = ({ url, method = 'GET', body }, cb) => {
+  requestOpt = { url, method, headers };
+  if (body) {
     requestOpt.data = body;
     //for post method
   }
@@ -30,19 +34,19 @@ exports.sendRequest = ({url,method='GET',body},cb) => {
     }
     //handle json api result
     if (body && typeof body == 'object') {
-      return cb(null,{body});
+      return cb(null, { body });
     }
     var $ = getCheerio(body);
-    return cb(null,{statusCode,$,body});
+    return cb(null, { statusCode, $, body });
   }).catch((err) => {
-    return cb(err,{});
+    return cb(err, {});
   });
 }
 
-exports.sendErr = (resp,errObj) => {
+exports.sendErr = (resp, errObj) => {
   return resp.status(400).json(errObj);
 }
 
-exports.sendResp = (resp,data) => {
+exports.sendResp = (resp, data) => {
   return resp.status(200).json(data);
 }

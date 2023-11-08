@@ -43,6 +43,10 @@ exports.sendRequest = ({ url, method = 'GET', body }, cb) => {
   });
 }
 
+/** 
+* @param {object} resp
+* @param {object} errObj
+*/
 exports.sendErr = (resp, errObj) => {
   return resp.status(400).json(errObj);
 }

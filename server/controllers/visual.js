@@ -81,20 +81,24 @@ exports.samVisuals = async (req, resp) => {
   return sendResp(resp, { movies });
 }
 
+async function getMovieByDoubanId(douban_id) {
+  return await Movie.findOne({douban_id})
+}
+
 exports.getMovieDetail = async (req, resp) => {
   let { douban_id } = req.params;
   douban_id = douban_id.trim();
   if (!douban_id) {
     return sendErr(resp, { msg: MISSING_DOUBAN_ID, douban_id });
   }
-  const movie = await Movie.findOne({ douban_id });
+  const movie = await getMovieByDoubanId(douban_id);
   return sendResp(resp, { movie });
 }
 
 exports.updateSamMovie = async (req, resp) => {
   try {
     const { douban_id } = req.params;
-    const foundMovie = await Movie.findOne({ douban_id });
+    const foundMovie = await getMovieByDoubanId(douban_id);
     if (!foundMovie) {
       return sendErr(resp, { err: MOVIE_NOT_FOUND, douban_id });
     }

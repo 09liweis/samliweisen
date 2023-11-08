@@ -3,11 +3,10 @@ var cheerio = require('cheerio');
 
 exports.getCheerio = getCheerio = (body) => {
   var body = body.replace(/(\r\n|\n|\r)/gm, '').replace(/ +(?= )/g, '');
-  const $ = cheerio.load(body.toString(), {
+  return cheerio.load(body.toString(), {
     normalizeWhitespace: true,
     decodeEntities: true
   });
-  return $;
 }
 
 const headers = {

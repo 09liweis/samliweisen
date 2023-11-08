@@ -34,8 +34,18 @@ function formatDuration(duration) {
   return `${hours}:${minutes > 9 ? minutes : `0${minutes}`}:00`;
 }
 
-function getDefaultEpisodes(movie) {
-  return movie.episodes || 1;
+/** 
+ * Get movie episodes or 1
+
+ * @param {number|null} episodes - movie episodes
+ * @returns {number} episodes or 1
+ 
+ * @example
+ * getDefaultEpisodes(3) => 3
+ * getDefaultEpisodes(null) => 1
+*/
+function getDefaultEpisodes(episodes) {
+  return episodes || 1;
 }
 
 function getSearchQuery(query) {
@@ -62,7 +72,7 @@ exports.samVisuals = async (req, resp) => {
     return sendErr(resp, { err: err.toString() });
   }
   movies.forEach((movie) => {
-    movie.episodes = getDefaultEpisodes(movie);
+    movie.episodes = getDefaultEpisodes(movie?.episodes);
     if (movie.poster?.includes('doubanio')) {
       //flutter app can only show img2 server somehow
       movie.poster = 'https://img2.doubanio.com/view/photo/s_ratio_poster/public/' + movie.poster.split('/').slice(-1);

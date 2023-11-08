@@ -2,6 +2,11 @@ const { sendRequest } = require('./request');
 
 const IMDB_SITE = 'https://www.imdb.com/title/';
 
+/** 
+* Get imdb url with imdb_id
+* @param {string} imdb_id
+* @returns string imdb url
+*/
 function getImdbUrl(imdb_id) {
   return `${IMDB_SITE}${imdb_id}`;
 }

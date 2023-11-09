@@ -26,12 +26,13 @@ function formatDuration(duration) {
     console.error(durationErr);
     return duration;
   }
+  const defaultMins = ':00';
   if (duration < 60) {
-    return duration + ':00';
+    return duration + defaultMins;
   }
   const hours = Math.floor(duration / 60);
   const minutes = duration % 60;
-  return `${hours}:${minutes > 9 ? minutes : `0${minutes}`}:00`;
+  return `${hours}:${minutes > 9 ? minutes : `0${minutes}`}${defaultMins}`;
 }
 
 /** 
@@ -82,7 +83,7 @@ exports.samVisuals = async (req, resp) => {
 }
 
 async function getMovieByDoubanId(douban_id) {
-  return await Movie.findOne({douban_id})
+  return await Movie.findOne({ douban_id })
 }
 
 exports.getMovieDetail = async (req, resp) => {

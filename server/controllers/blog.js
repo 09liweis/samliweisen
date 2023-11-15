@@ -30,13 +30,15 @@ exports.findDetail = async (req, resp) => {
   }
 };
 
-exports.update = (req, resp) => {
+exports.update = async (req, resp) => {
   let updateblog = req.body;
   updateblog.update_at = new Date();
-  Blog.findOneAndUpdate({ _id: req.params.id }, updateblog, { upsert: true }, (err, blog) => {
-    handleError(resp, err);
+  try {
+    const blog = await Blog.findByIdAndUpdate(req.params.id, updateblog, { new: true});
     return sendResp(resp, blog);
-  });
+  } catch (err) {
+    return sendErr(resp, {err: err.toString});
+  }
 };
 
 exports.remove = (req, resp) => {

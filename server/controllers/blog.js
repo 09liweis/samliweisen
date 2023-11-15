@@ -1,9 +1,9 @@
 const { sendResp, sendErr } = require('../helpers/request');
 const Blog = require('../models/blog');
 
-exports.findList = (req, resp) => {
+exports.findList = async (req, resp) => {
   try {
-    const blogs = Blog.find({}, '_id title url content created_at', { limit: 10 }).sort('-created_at');
+    const blogs = await Blog.find({}, '_id title url content created_at', { limit: 10 }).sort('-created_at');
     blogs.forEach((blog) => {
       blog.content = blog.content.substr(0, 100) + ' ...';
     });

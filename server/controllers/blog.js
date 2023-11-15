@@ -29,7 +29,8 @@ exports.findDetail = async (req, resp) => {
   if (!blogId) return sendErr(resp, {msg:`Blog Id ${blogId} not found`});
   try {
     const blog = await Blog.findById(blogId);
-    return sendResp(resp, blog);
+    if (blog) return sendResp(resp, blog);
+    return sendErr(resp, {err: `Blog not found wwith ${blogId}`});
   } catch (err) {
     return sendErr(resp, { err: err.toString() });
   }

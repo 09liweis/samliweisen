@@ -2,13 +2,15 @@ const { sendResp, sendErr } = require('../helpers/request');
 const Blog = require('../models/blog');
 
 exports.findList = (req, resp) => {
-  Blog.find({}, '_id title url content created_at', { limit: 10 }).sort('-created_at').exec((err, blogs) => {
-    handleError(resp, err);
+  try {
+    const blogs = Blog.find({}, '_id title url content created_at', { limit: 10 }).sort('-created_at');
     blogs.forEach((blog) => {
       blog.content = blog.content.substr(0, 100) + ' ...';
     });
     return sendResp(resp, blogs);
-  });
+  } catch (error) {
+    return sendErr(resp, {err: error.toString()});
+  }
 };
 
 exports.add = (req, resp) => {

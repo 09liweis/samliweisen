@@ -4,6 +4,9 @@ const Blog = require('../models/blog');
 exports.findList = async (req, resp) => {
   try {
     const blogs = await Blog.find({}, '_id title url content created_at', { limit: 10 }).sort('-created_at');
+    if (!blogs || blogs?.length == 0) {
+      return sendResp(resp, []);
+    }
     blogs.forEach((blog) => {
       blog.content = blog.content.substr(0, 100) + ' ...';
     });

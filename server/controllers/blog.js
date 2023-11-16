@@ -12,11 +12,13 @@ exports.findList = async (req, resp) => {
     });
     return sendResp(resp, blogs);
   } catch (error) {
-    return sendErr(resp, {err: error.toString()});
+    return sendErr(resp, { err: error.toString() });
   }
 };
 
 exports.add = (req, resp) => {
+  const { title } = req.body;
+  if (!title) return sendErr(resp, { err: 'No Title' });
   const newBlog = new Blog(req.body);
   newBlog.save((err, blog) => {
     handleError(resp, err);
@@ -26,11 +28,11 @@ exports.add = (req, resp) => {
 
 exports.findDetail = async (req, resp) => {
   const blogId = req.params.id;
-  if (!blogId) return sendErr(resp, {msg:`Blog Id ${blogId} not found`});
+  if (!blogId) return sendErr(resp, { msg: `Blog Id ${blogId} not found` });
   try {
     const blog = await Blog.findById(blogId);
     if (blog) return sendResp(resp, blog);
-    return sendErr(resp, {err: `Blog not found wwith ${blogId}`});
+    return sendErr(resp, { err: `Blog not found wwith ${blogId}` });
   } catch (err) {
     return sendErr(resp, { err: err.toString() });
   }
@@ -40,10 +42,10 @@ exports.update = async (req, resp) => {
   let updateblog = req.body;
   updateblog.update_at = new Date();
   try {
-    const blog = await Blog.findByIdAndUpdate(req.params.id, updateblog, { new: true});
+    const blog = await Blog.findByIdAndUpdate(req.params.id, updateblog, { new: true });
     return sendResp(resp, blog);
   } catch (err) {
-    return sendErr(resp, {err: err.toString});
+    return sendErr(resp, { err: err.toString });
   }
 };
 

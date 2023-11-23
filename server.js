@@ -53,6 +53,10 @@ mongoose.connection.on('disconnected', function() {
 
 app.use(cors());
 
+const getPathName = (path) => {
+  return express.static(path.join(__dirname) + '/' + path;
+}
+
 app.use(function(req, res, next) {
   var host = req.headers.host;
   // if (host != 'localhost:8081' && req.protocol == 'http') {
@@ -90,8 +94,9 @@ app.use(function(req, res, next) {
   // Pass to next layer of middleware
   next();
 });
-app.use('/assets', express.static(path.join(__dirname) + '/assets'));
-app.use('/resume', express.static(path.join(__dirname) + '/resume'));
+
+app.use('/assets', getPathName('assets'));
+app.use('/resume', getPathName('resume'));
 
 const http = require('http').Server(app);
 

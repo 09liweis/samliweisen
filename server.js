@@ -54,7 +54,7 @@ mongoose.connection.on('disconnected', function() {
 app.use(cors());
 
 const getPathName = (path) => {
-  return express.static(path.join(__dirname) + '/' + path;
+  return express.static(path.join(__dirname) + '/' + path);
 }
 
 app.use(function(req, res, next) {

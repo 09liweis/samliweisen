@@ -1,5 +1,5 @@
 const { sendRequest, sendResp, sendErr } = require('../helpers/request');
-const { getDoubanUrl, DOUBAN_SITE_API, getPhotos, getComments } = require('../helpers/douban');
+const { getDoubanUrl, DOUBAN_SITE_API, getPhotos, getComments,getDoubanPoster } = require('../helpers/douban');
 
 const CAST_DOUBAN_URL = 'https://movie.douban.com/celebrity/';
 const SORTS = ['recommend', 'time', 'rank'];
@@ -33,7 +33,7 @@ exports.getCommingMovies = (req, resp) => {
         var poster = $(item).find('.thumb img').attr('src');
         return {
           douban_id: movieUrl.split('/')[4],
-          poster: 'https://img2.doubanio.com/view/photo/s_ratio_poster/public/' + poster.split('/').slice(-1),
+          poster: getDoubanPoster(poster),
           title: $(item).find('.intro h3 a').text(),
           release: $(item).find('ul .dt:nth-child(1)').text(),
           category: $(item).find('ul .dt:nth-child(2)').text(),

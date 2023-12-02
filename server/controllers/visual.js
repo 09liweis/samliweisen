@@ -1,5 +1,5 @@
 const { sendRequest, sendResp, sendErr } = require('../helpers/request');
-const { getDoubanUrl, getReviews, getComments, getCast } = require('../helpers/douban');
+const { getDoubanUrl, getReviews, getComments, getCast, getDoubanPoster } = require('../helpers/douban');
 const { getImdbSummary } = require('../helpers/imdb');
 const Movie = require('../models/movie');
 
@@ -75,8 +75,7 @@ exports.samVisuals = async (req, resp) => {
   movies.forEach((movie) => {
     movie.episodes = getDefaultEpisodes(movie?.episodes);
     if (movie.poster?.includes('doubanio')) {
-      //flutter app can only show img2 server somehow
-      movie.poster = 'https://img2.doubanio.com/view/photo/s_ratio_poster/public/' + movie.poster.split('/').slice(-1);
+      movie.poster = getDoubanPoster(movie.poster);
     }
   });
   return sendResp(resp, { movies });
@@ -156,7 +155,7 @@ exports.inTheatre = (req, resp) => {
         const item = $(listItems[i]);
         const movie = {
           douban_id: item.attr('id'),
-          poster: item.find('img').attr('src'),
+          poster: getDoubanPoster(item.find('img').attr('src')),
           douban_rating: item.attr('data-score')
         };
         dataNames.forEach(name => {

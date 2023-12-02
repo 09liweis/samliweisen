@@ -129,7 +129,7 @@ exports.getDoubanChart = (req, resp) => {
         const linkArray = item.find('.nbg').attr('href').split('/');
         const movie = {
           douban_id: linkArray[4],
-          poster: item.find('img').attr('src'),
+          poster: getDoubanPoster(item.find('img').attr('src')),
           title: item.find('.pl2 a').text().trim(),
           douban_rating: item.find('.rating_nums').text()
         }

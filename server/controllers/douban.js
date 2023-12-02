@@ -30,9 +30,10 @@ exports.getCommingMovies = (req, resp) => {
     if (listItems) {
       movies = listItems.toArray().map((item) => {
         var movieUrl = $(item).find('.thumb').attr('href');
+        var poster = $(item).find('.thumb img').attr('src');
         return {
           douban_id: movieUrl.split('/')[4],
-          poster: $(item).find('.thumb img').attr('src'),
+          poster: 'https://img2.doubanio.com/view/photo/s_ratio_poster/public/' + poster.split('/').slice(-1),
           title: $(item).find('.intro h3 a').text(),
           release: $(item).find('ul .dt:nth-child(1)').text(),
           category: $(item).find('ul .dt:nth-child(2)').text(),

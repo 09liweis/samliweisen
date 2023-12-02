@@ -34,6 +34,11 @@ exports.getDoubanUrl = (douban_id, opt = {}) => {
   return `${DOUBAN_SITE}${douban_id}/${endPoint}`;
 }
 
+exports.getDoubanPoster = (poster, opt = {}) => {
+  //img2 domain works on browser without 403
+  return 'https://img2.doubanio.com/view/photo/s_ratio_poster/public/' + poster.split('/').slice(-1);
+}
+
 function getAvtUrl(element) {
   var avtStyle = element.find('div.avatar').attr('style');
   var avtMatches = /url\((.*?)\)/g.exec(avtStyle);

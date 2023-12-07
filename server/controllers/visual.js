@@ -157,7 +157,7 @@ exports.inTheatre = (req, resp) => {
         const movie = {
           douban_id: item.attr('id'),
           poster: getDoubanPoster(item.find('img').attr('src')),
-          douban_rating: item.attr('data-score')
+          douban_rating: parseFloat(item.attr('data-score'))
         };
         dataNames.forEach(name => {
           movie[name] = item.attr(`data-${name}`);

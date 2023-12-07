@@ -36,7 +36,7 @@ router.route('/comments').post(getComments);
 
 router.route('/reviews').post(getReviews);
 
-router.route('/imdb_boxoffice').post(getImdbBoxOffice);
+router.route('/imdb_boxoffice').get(getImdbBoxOffice);
 
 router.route('/douban').post(getSubjects);
 

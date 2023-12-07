@@ -1,36 +1,20 @@
-const {sendRequest,sendResp,sendErr} = require('../helpers/request');
+const { sendRequest, sendResp, sendErr } = require('../helpers/request');
 
 const IMDB_BOXOFFICE = 'https://www.imdb.com/chart/boxoffice';
 
-exports.getImdbBoxOffice = (req,resp) => {
-  sendRequest({url:IMDB_BOXOFFICE},(err,{$}) => {
+exports.getImdbBoxOffice = (req, resp) => {
+  sendRequest({ url: IMDB_BOXOFFICE }, (err, { $ }) => {
     if (err) {
-      return sendErr(resp,err);
+      return sendErr(resp, err);
     }
-    const chart = $('table.chart tbody tr');
+    const chart = $('.ipc-metadata-list-summary-item');
     let boxOffice = {
-      title: $('h1.header').text(),
-      date: $('#boxoffice h4').text()
+      title: $('.chart-layout-specific-title-text').text(),
+      date: $('.chart-layout-specific-title .ipc-title__description').text()
     }
-    if (!chart) {
-      return sendResp(resp, boxOffice);
-    }
-    boxOffice.movies = chart.toArray().map((c)=>{
-      const movie = $(c);
-      const [weekend,gross] = movie.find('.ratingColumn').text().trim().split('  ');
-      var imdbUrl = movie.find('.posterColumn a').attr('href').split('?')[0];
-      if (imdbUrl) {
-        var imdb_id = imdbUrl.split('/')[2];
-      }
-      return {
-        imdb_id,
-        title: movie.find('.titleColumn a').text(),
-        poster: movie.find('.posterColumn img').attr('src'),
-        weekend,
-        gross,
-        weeks: movie.find('.weeksColumn').text()
-      };
-    });
-    return sendResp(resp,boxOffice);
+    const jsonLdInfo = $('script[type="application/json"]').text();
+    const json = JSON.parse(jsonLdInfo);
+    boxOffice.movies = json?.props?.pageProps?.pageData?.topGrossingReleases;
+    return sendResp(resp, boxOffice);
   });
 }

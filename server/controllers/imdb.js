@@ -7,14 +7,26 @@ exports.getImdbBoxOffice = (req, resp) => {
     if (err) {
       return sendErr(resp, err);
     }
-    const chart = $('.ipc-metadata-list-summary-item');
     let boxOffice = {
       title: $('.chart-layout-specific-title-text').text(),
       date: $('.chart-layout-specific-title .ipc-title__description').text()
     }
     const jsonLdInfo = $('script[type="application/json"]').text();
     const json = JSON.parse(jsonLdInfo);
-    boxOffice.movies = json?.props?.pageProps?.pageData?.topGrossingReleases;
+    const movies = json?.props?.pageProps?.pageData?.topGrossingReleases?.edges;
+    boxOffice.movies = movies.map(({node})=>{
+      const movie = node.release.titles[0];
+      return {
+        title: movie.titleText.text,
+        original_title: movie.originalTitleText.text,
+        poster: movie.primaryImage.url,
+        imdb_rating: movie.ratingsSummary.aggregateRating,
+        vote_count: movie.ratingsSummary.voteCount,
+        summary: movie.plot.plotText.plainText,
+        totalGross: movie.lifetimeGross.total.amount,
+        currentGross: node.gross.total.amount
+      }
+    });
     return sendResp(resp, boxOffice);
   });
 }

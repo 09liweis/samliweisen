@@ -70,18 +70,18 @@ exports.getPopular = (req, resp) => {
   const url = `${DOUBAN_SITE_API}search_subjects?sort=${sort}&type=${type}&tag=${tag}&page_limit=${page_limit}&page_start=${page_start}`;
   sendRequest({ url }, (err, { body }) => {
     if (err) return sendErr(resp, { err: err.toString() });
-    var visuals = body.subjects;
-    for (let i = 0; i < visuals.length; i++) {
-      const { cover, rate, id, episodes_info } = visuals[i];
-      visuals[i].poster = cover;
-      visuals[i].douban_rating = rate;
-      visuals[i].douban_id = id;
-      visuals[i].episodes_info = episodes_info;
-      delete visuals[i].cover;
-      delete visuals[i].rate;
-      delete visuals[i].id;
+    var movies = body.subjects;
+    for (let i = 0; i < movies.length; i++) {
+      const { cover, rate, id, episodes_info } = movies[i];
+      movies[i].poster = cover;
+      movies[i].douban_rating = rate;
+      movies[i].douban_id = id;
+      movies[i].episodes_info = episodes_info;
+      delete movies[i].cover;
+      delete movies[i].rate;
+      delete movies[i].id;
     }
-    return sendResp(resp, { tag: decodeURIComponent(tag), visuals, page, limit });
+    return sendResp(resp, { tag: decodeURIComponent(tag), movies, page, limit });
   });
 }
 

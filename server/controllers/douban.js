@@ -7,7 +7,12 @@ const SORTS = ['recommend', 'time', 'rank'];
 const NUM_LIMIT = 30;
 
 exports.getAlltimeBoxOffice = (req, resp) => {
-  const url = 'https://www.douban.com/doulist/1641439/';
+  let {page} = req.query;
+  if (!page) {
+    page = 1;
+  }
+  const start = 25 * (page - 1);
+  const url = `https://www.douban.com/doulist/1641439/?start=${start}`;
   sendRequest({ url }, (err, { $ }) => {
     if (err) {
       return sendErr(resp, { err: err.toString() });

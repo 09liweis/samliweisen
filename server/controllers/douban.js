@@ -7,7 +7,23 @@ const SORTS = ['recommend', 'time', 'rank'];
 const NUM_LIMIT = 30;
 
 exports.getAlltimeBoxOffice = (req, resp) => {
-  const url = 'https://www.douban.com/doulist/1641439/'
+  const url = 'https://www.douban.com/doulist/1641439/';
+  sendRequest({ url }, (err, { $ }) => {
+    if (err) {
+      return sendErr(resp, { err: err.toString() });
+    }
+    const results = $('.doulist-item');
+    const movies = results.toArray().map((movie) => {
+      return {
+        title: $(movie).find('.title a').text(),
+        douban_rating: $(movie).find('.rating_nums').text(),
+        poster: $(movie).find('.post img').attr('src'),
+        release_date: $(movie).find('.abstract').html().split('<br>').pop(),
+        totalGross: $(movie).find('.comment').text()
+      }
+    })
+    return sendResp(resp, { movies });
+  })
 }
 
 exports.getCurrentChinaBoxOffice = (req, resp) => {

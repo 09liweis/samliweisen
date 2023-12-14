@@ -3,7 +3,7 @@ var router = express.Router();
 
 const { samVisuals, getMovieDetail, search, inTheatre, getDoubanChart, getCelebrities, getSummary, getPhotoDetail, getComments, getReviews, upsertVisual, updateRandomMovie, updateSamMovie } = require('../controllers/visual.js');
 const { getImdbBoxOffice } = require('../controllers/imdb.js');
-const { getPopular, getTags, getPhotos, getVideos, getVideo, getCast, getCommingMovies } = require('../controllers/douban.js');
+const { getPopular, getTags, getPhotos, getVideos, getVideo, getCast, getCommingMovies, getAlltimeBoxOffice } = require('../controllers/douban.js');
 const { getMaoyan } = require('../controllers/maoyan.js');
 
 router.route('/').get(samVisuals);
@@ -19,6 +19,8 @@ router.route('/maoyan').get(getMaoyan);
 router.route('/chart').get(getDoubanChart);
 
 router.route('/popular').get(getPopular);
+
+router.route('/alltime_boxoffice').get(getAlltimeBoxOffice)
 
 router.route('/celebrities').post(getCelebrities);
 

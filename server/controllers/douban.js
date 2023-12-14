@@ -7,7 +7,7 @@ const SORTS = ['recommend', 'time', 'rank'];
 const NUM_LIMIT = 30;
 
 exports.getAlltimeBoxOffice = (req, resp) => {
-  let {page} = req.query;
+  let { page } = req.query;
   if (!page) {
     page = 1;
   }
@@ -22,9 +22,9 @@ exports.getAlltimeBoxOffice = (req, resp) => {
       return {
         title: $(movie).find('.title a').text(),
         douban_rating: $(movie).find('.rating_nums').text(),
-        poster: $(movie).find('.post img').attr('src'),
+        poster: getDoubanPoster($(movie).find('.post img').attr('src')),
         release_date: $(movie).find('.abstract').html().split('<br>').pop(),
-        totalGross: $(movie).find('.comment').text()
+        totalGross: $(movie).find('.comment').text().replace('评语：', '').trim()
       }
     })
     return sendResp(resp, { movies });

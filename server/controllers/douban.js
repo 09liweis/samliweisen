@@ -1,5 +1,5 @@
 const { sendRequest, sendResp, sendErr } = require('../helpers/request');
-const { getDoubanUrl, DOUBAN_SITE_API, getPhotos, getComments,getDoubanPoster } = require('../helpers/douban');
+const { getDoubanUrl, DOUBAN_SITE_API, getPhotos, getComments, getDoubanPoster } = require('../helpers/douban');
 
 const CAST_DOUBAN_URL = 'https://movie.douban.com/celebrity/';
 const SORTS = ['recommend', 'time', 'rank'];
@@ -59,8 +59,8 @@ exports.getTags = (req, resp) => {
   });
 }
 
-exports.getSubjects = (req, resp) => {
-  var { type, tag, page, limit, sort } = req.body;
+exports.getPopular = (req, resp) => {
+  var { type, tag, page, limit, sort } = req.query;
 
   sort = sort || SORTS[0];
   type = type || 'movie';

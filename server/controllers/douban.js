@@ -94,7 +94,7 @@ exports.getPopular = (req, resp) => {
     var movies = body.subjects;
     for (let i = 0; i < movies.length; i++) {
       const { cover, rate, id, episodes_info } = movies[i];
-      movies[i].poster = cover;
+      movies[i].poster = getDoubanPoster(cover);
       movies[i].douban_rating = rate;
       movies[i].douban_id = id;
       movies[i].episodes_info = episodes_info;

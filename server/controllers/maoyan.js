@@ -9,7 +9,9 @@ exports.getMaoyan = (req, resp) => {
     const movies = maoyanMovies.map((movie) => {
       return {
         title: movie.movieInfo.movieName,
-        totalGross: movie.sumBoxDesc
+        releaseStatus: movie.movieInfo.releaseInfo,
+        totalGross: movie.sumBoxDesc,
+        currentGross: movie.boxSplitUnit?.num
       };
     })
     return sendResp(resp, { movies });

@@ -11,7 +11,7 @@ exports.getMaoyan = (req, resp) => {
         title: movie.movieInfo.movieName,
         releaseStatus: movie.movieInfo.releaseInfo,
         totalGross: movie.sumBoxDesc,
-        currentGross: movie.boxSplitUnit?.num
+        // currentGross: movie.boxSplitUnit?.num//need font file to display
       };
     })
     return sendResp(resp, { movies });

@@ -3,12 +3,9 @@
   "description": "This is web service for portfolio of Sam",
   "version": "3.0.0",
   "engines": {
-    "node": ">=12",
-    "npm": "6.9.0"
+    "node": ">=12"
   },
   "scripts": {
-    "ng": "ng",
-    "build": "ng build --prod --base-href /dashboard/ --deploy-url /dashboard/",
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
@@ -29,7 +26,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.25.0",
-    "bcrypt": "^5.0.0",
+    "bcrypt": "^5.1.1",
     "bili-api": "^1.10.1",
     "body-parser": "^1.18.2",
     "cheerio": "^1.0.0-rc.2",

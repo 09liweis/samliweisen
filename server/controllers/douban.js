@@ -130,7 +130,8 @@ exports.getPhotos = (req, resp) => {
     R: "海报",
     W: "壁纸",
   };
-  var { douban_id, page, type, cast_id } = req.body;
+  const { douban_id } = req.params;
+  var { page, type, cast_id } = req.query;
   if (!(douban_id || cast_id)) {
     return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }

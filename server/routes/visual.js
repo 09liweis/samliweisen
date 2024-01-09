@@ -55,7 +55,7 @@ router.route("/douban/:douban_id/videos").get(getVideos);
 
 router.route("/video").post(getVideo);
 
-router.route("/photos").post(getPhotos);
+router.route("/douban/:douban_id/photos").post(getPhotos);
 
 router.route("/photo").post(getPhotoDetail);
 

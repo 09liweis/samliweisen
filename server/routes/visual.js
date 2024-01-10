@@ -45,7 +45,7 @@ router.route("/popular").get(getPopular);
 
 router.route("/alltime_boxoffice").get(getAlltimeBoxOffice);
 
-router.route("/celebrities").post(getCelebrities);
+router.route("/douban/:douban_id/casts").get(getCelebrities);
 
 router.route("/cast").post(getCast);
 

@@ -264,7 +264,7 @@ exports.getPhotoDetail = (req, resp) => {
 };
 
 exports.getComments = (req, resp) => {
-  const { douban_id } = req.body;
+  const { douban_id } = req.params;
   if (!douban_id) {
     return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }

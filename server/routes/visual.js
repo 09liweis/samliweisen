@@ -59,7 +59,7 @@ router.route("/douban/:douban_id/photos").get(getPhotos);
 
 router.route("/photo").post(getPhotoDetail);
 
-router.route("/comments").post(getComments);
+router.route("/douban/:douban_id/comments").get(getComments);
 
 router.route("/reviews").post(getReviews);
 

@@ -276,7 +276,7 @@ exports.getComments = (req, resp) => {
 };
 
 exports.getReviews = (req, resp) => {
-  let { douban_id } = req.body;
+  let { douban_id } = req.params;
   if (!douban_id) {
     return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }

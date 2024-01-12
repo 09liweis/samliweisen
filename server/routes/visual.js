@@ -61,7 +61,7 @@ router.route("/photo").post(getPhotoDetail);
 
 router.route("/douban/:douban_id/comments").get(getComments);
 
-router.route("/reviews").post(getReviews);
+router.route("/douban/:douban_id/reviews").get(getReviews);
 
 router.route("/imdb_boxoffice").get(getImdbBoxOffice);
 

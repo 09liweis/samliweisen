@@ -56,11 +56,14 @@ function getDefaultEpisodes(episodes) {
 }
 
 function getSearchQuery(query) {
-  let { page = 1, limit = 10, current_episode, type } = query;
+  let { page = 1, limit = 10, current_episode, type, search } = query;
   limit = parseInt(limit);
   const skip = (page - 1) * limit;
 
   const filter = {};
+  if (search) {
+    filter.title = { $regex: search, $options: "i" };
+  }
   if (current_episode) {
     filter.current_episode = current_episode;
   }

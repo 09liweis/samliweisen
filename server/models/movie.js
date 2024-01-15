@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const MovieSchema = new Schema({
@@ -9,25 +9,26 @@ const MovieSchema = new Schema({
   imdb_id: String,
   imdb_rating: Number,
   visual_type: String,
+  genres: [String],
   current_episode: {
     type: Number,
-    default: 0
+    default: 0,
   },
   episodes: {
     type: Number,
-    default: 1
+    default: 1,
   },
   date_watched: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   date_updated: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-MovieSchema.pre('save', function(next) {
+MovieSchema.pre("save", function (next) {
   const currentDate = new Date();
   this.date_updated = currentDate;
   if (!this.date_watched) {
@@ -36,4 +37,4 @@ MovieSchema.pre('save', function(next) {
   next();
 });
 
-module.exports = mongoose.model('Visual', MovieSchema);
+module.exports = mongoose.model("Visual", MovieSchema);

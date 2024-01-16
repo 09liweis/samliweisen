@@ -324,6 +324,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
           var douban_id = url.split("/")[4];
         }
         return {
+          douban_rating: recommend.find(".subject-rate").text(),
           poster: recommend.find("dt img").attr("src"),
           title: recommend.find("dd a").text(),
           douban_id,

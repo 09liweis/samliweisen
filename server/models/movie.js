@@ -10,6 +10,7 @@ const MovieSchema = new Schema({
   imdb_rating: Number,
   visual_type: String,
   genres: [String],
+  countries: [String],
   current_episode: {
     type: Number,
     default: 0,

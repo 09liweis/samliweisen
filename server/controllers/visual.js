@@ -5,6 +5,7 @@ const {
   getComments,
   getCast,
   getDoubanPoster,
+  getDoubanMovieAPIs,
 } = require("../helpers/douban");
 const { getImdbSummary } = require("../helpers/imdb");
 const Movie = require("../models/movie");
@@ -84,11 +85,20 @@ exports.samVisuals = async (req, resp) => {
   } catch (err) {
     return sendErr(resp, { err: err.toString() });
   }
-  movies.forEach((movie) => {
+  movies = movies.map((m) => {
+    let movie = { ...m._doc };
     movie.episodes = getDefaultEpisodes(movie?.episodes);
     if (movie.poster?.includes("doubanio")) {
       movie.poster = getDoubanPoster(movie.poster);
     }
+    if (movie.douban_id) {
+      movie.apis = getDoubanMovieAPIs({
+        douban_id: movie.douban_id,
+        protocol: req.protocol,
+        host: req.host,
+      });
+    }
+    return movie;
   });
   return sendResp(resp, { movies });
 };

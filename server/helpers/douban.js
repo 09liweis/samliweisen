@@ -4,11 +4,11 @@ exports.DOUBAN_SITE_API = "https://movie.douban.com/j/";
 
 exports.getDoubanMovieAPIs = ({ protocol, host, douban_id }) => {
   return {
-    summary: `${protocol}://${host}/api/movies/douban/${douban_id}`,
-    reviews: `${protocol}://${host}/api/movies/douban/${douban_id}/reviews`,
-    comments: `${protocol}://${host}/api/movies/douban/${douban_id}/comments`,
-    casts: `${protocol}://${host}/api/movies/douban/${douban_id}/casts`,
-    photos: `${protocol}://${host}/api/movies/douban/${douban_id}/photos`,
+    summary: `https://${host}/api/movies/douban/${douban_id}`,
+    reviews: `https://${host}/api/movies/douban/${douban_id}/reviews`,
+    comments: `https://${host}/api/movies/douban/${douban_id}/comments`,
+    casts: `https://${host}/api/movies/douban/${douban_id}/casts`,
+    photos: `https://${host}/api/movies/douban/${douban_id}/photos`,
   };
 };
 

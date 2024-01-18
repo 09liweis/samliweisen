@@ -524,12 +524,12 @@ exports.updateRandomMovie = (req, resp) => {
           return sendErr(resp, { msg: MOVIE_NOT_FOUND });
         }
         getDoubanMovieSummary(movie.douban_id, (err, latestMovie) => {
-          if (err) return resp.status(400).json({ msg: err.toString() });
+          if (err) return sendErr({ msg: err.toString() });
           Movie.updateOne(
             { douban_id: movie.douban_id },
             latestMovie,
             (err, result) => {
-              if (err) return resp.status(400).json({ msg: err.toString() });
+              if (err) return sendErr({ msg: err.toString() });
               if (result.ok) {
                 return sendResp(resp, latestMovie);
               }

@@ -95,7 +95,7 @@ exports.samVisuals = async (req, resp) => {
       movie.apis = getDoubanMovieAPIs({
         douban_id: movie.douban_id,
         protocol: req.protocol,
-        host: req.host,
+        host: req.hostname,
       });
     }
     return movie;

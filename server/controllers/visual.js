@@ -445,7 +445,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       genres,
       website,
       duration,
-      episodes,
+      episodes: getDefaultEpisodes(episodes),
       season,
       visual_type: episodes > 1 ? "tv" : "movie",
       photos,

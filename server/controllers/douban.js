@@ -206,6 +206,27 @@ exports.getVideo = (req, resp) => {
   });
 };
 
+function getWorks($, worksName) {
+  var works = [];
+  const worksMatch = $(`#${worksName} .list-s li`);
+  if (worksMatch) {
+    works = worksMatch.toArray().map((r) => {
+      const work = $(r);
+      var workDoubanUrl = work.find(".info a").attr("href");
+      if (workDoubanUrl) {
+        var douban_id = workDoubanUrl.split("/")[4];
+      }
+      return {
+        img: work.find(".pic img").attr("src"),
+        title: work.find(".info a").text(),
+        douban_id,
+        rating: work.find(".info em").text(),
+      };
+    });
+  }
+  return works;
+}
+
 exports.getCast = (req, resp) => {
   const { cast_id } = req.params;
   const url = `${CAST_DOUBAN_URL}${cast_id}/`;
@@ -224,22 +245,7 @@ exports.getCast = (req, resp) => {
         .toArray()
         .map((p) => $(p).find("img").attr("src"));
     }
-    const receWorksMatch = $("#recent_movies .list-s li");
-    if (receWorksMatch) {
-      var recent_works = receWorksMatch.toArray().map((r) => {
-        const work = $(r);
-        var workDoubanUrl = work.find(".info a").attr("href");
-        if (workDoubanUrl) {
-          var douban_id = workDoubanUrl.split("/")[4];
-        }
-        return {
-          img: work.find(".pic img").attr("src"),
-          title: work.find(".info a").text(),
-          douban_id,
-          rating: work.find(".info em").text(),
-        };
-      });
-    }
+
     sendResp(resp, {
       cast_id,
       infos,
@@ -247,7 +253,8 @@ exports.getCast = (req, resp) => {
       poster: $("#headline .pic a img").attr("src"),
       intro: $("#intro .all.hidden").text().trim(),
       photos,
-      recent_works,
+      recent_works: getWorks($, "recent_movies"),
+      best_works: getWorks($, "best_movies"),
     });
   });
 };

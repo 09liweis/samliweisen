@@ -251,7 +251,7 @@ exports.getCast = (req, resp) => {
       infos,
       name: $("#content h1").text(),
       poster: $("#headline .pic a img").attr("src"),
-      intro: $("#intro .all.hidden").text().trim(),
+      summary: $("#intro .all.hidden").text().trim(),
       photos,
       recent_works: getWorks($, "recent_movies"),
       best_works: getWorks($, "best_movies"),

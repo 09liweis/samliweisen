@@ -91,14 +91,13 @@ exports.getTags = (req, resp) => {
 };
 
 exports.getPopular = (req, resp) => {
-  var { type, tag, page, limit, sort } = req.query;
+  var { type, tag, page, limit = NUM_LIMIT, sort } = req.query;
 
   sort = sort || SORTS[0];
   type = type || "movie";
   tag = encodeURIComponent(tag || "热门");
-  const page_limit = limit || NUM_LIMIT;
   const page_start = (page - 1 || 0) * page_limit;
-  const url = `${DOUBAN_SITE_API}search_subjects?sort=${sort}&type=${type}&tag=${tag}&page_limit=${page_limit}&page_start=${page_start}`;
+  const url = `${DOUBAN_SITE_API}search_subjects?sort=${sort}&type=${type}&tag=${tag}&page_limit=${limit}&page_start=${page_start}`;
   sendRequest({ url }, (err, { body }) => {
     if (err) return sendErr(resp, { err: err.toString() });
     var movies = body?.subjects || [];

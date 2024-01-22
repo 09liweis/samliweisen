@@ -103,14 +103,14 @@ exports.getPopular = (req, resp) => {
     var movies = body?.subjects || [];
     if (movies.length !== 0) {
       for (let i = 0; i < movies.length; i++) {
-        const { cover, rate, id, episodes_info } = movies[i];
+        const { cover, rate, id } = movies[i];
         movies[i].poster = getDoubanPoster(cover);
         movies[i].douban_rating = rate;
         movies[i].douban_id = id;
-        movies[i].episodes_info = episodes_info;
         delete movies[i].cover;
         delete movies[i].rate;
         delete movies[i].id;
+        delete movies[i].cover_x;
       }
     }
     return sendResp(resp, {

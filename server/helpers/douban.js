@@ -46,10 +46,10 @@ exports.getDoubanUrl = (douban_id, opt = {}) => {
 
 exports.getDoubanPoster = (poster, opt = {}) => {
   //img2 domain works on browser without 403
-  //not working anymore https://img2.doubanio.com/view/photo/s_ratio_poster/public/
+  //not working for web browser, but work for app https://img2.doubanio.com/view/photo/s_ratio_poster/public/
   //https://img1.doubanio.com/view/photo/sqxs/public/
   return (
-    "https://img1.doubanio.com/view/photo/sqxs/public/" +
+    "https://https://img2.doubanio.com/view/photo/s_ratio_poster/public/" +
     poster.split("/").slice(-1)
   );
 };

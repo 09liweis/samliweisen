@@ -91,6 +91,12 @@ exports.samVisuals = async (req, resp) => {
     if (movie.poster?.includes("doubanio")) {
       movie.poster = getDoubanPoster(movie.poster);
     }
+    if (movie.imdb_rating) {
+      movie.imdb_rating = movie.imdb_rating.toFixed(1);
+    }
+    if (movie.douban_rating) {
+      movie.douban_rating = movie.douban_rating.toFixed(1);
+    }
     if (movie.douban_id) {
       movie.apis = getDoubanMovieAPIs({
         douban_id: movie.douban_id,

@@ -49,7 +49,7 @@ exports.getDoubanPoster = (poster, opt = {}) => {
   //not working for web browser, but work for app https://img2.doubanio.com/view/photo/s_ratio_poster/public/
   //https://img1.doubanio.com/view/photo/sqxs/public/
   return (
-    "https://https://img2.doubanio.com/view/photo/s_ratio_poster/public/" +
+    "https://img2.doubanio.com/view/photo/s_ratio_poster/public/" +
     poster.split("/").slice(-1)
   );
 };

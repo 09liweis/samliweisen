@@ -2,14 +2,18 @@ var Transaction = require("../models/transaction");
 var Place = require("../models/place");
 const { sendRequest, sendResp, sendErr } = require("../helpers/request");
 
+function getCurrentMonth() {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  return `${now.getFullYear()}-${month < 10 ? `0${month}` : month}`;
+}
+
 exports.getStatistics = (req, resp) => {
   let { date } = req.body;
   let filter = {};
   let statistics = { total: 0 };
   if (!date) {
-    const now = new Date();
-    const month = now.getMonth() + 1;
-    date = `${now.getFullYear()}-${month < 10 ? "0" + month : month}`;
+    date = getCurrentMonth();
   }
   filter.date = new RegExp(date, "i");
   statistics.date = date;

@@ -10,12 +10,11 @@ function getCurrentMonth() {
 
 exports.getStatistics = (req, resp) => {
   let { date } = req.body;
-  let filter = {};
-  let statistics = { total: 0 };
+  const statistics = { total: 0 };
   if (!date) {
     date = getCurrentMonth();
   }
-  filter.date = new RegExp(date, "i");
+  const filter = { date: new RegExp(date, "i") };
   statistics.date = date;
   Transaction.find(filter, "_id title price date category")
     .populate("place")

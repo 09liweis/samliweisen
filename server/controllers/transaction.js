@@ -41,6 +41,15 @@ exports.getStatistics = (req, resp) => {
           };
         }
       });
+      const categoryPrice = statistics.categoryPrice;
+      const categoryPriceArr = Object.keys(categoryPrice).map((category) => {
+        return {
+          category,
+          total: categoryPrice[category].total,
+          items: categoryPrice[category].items,
+        };
+      });
+      statistics.categoryPrice = categoryPriceArr;
       sendResp(resp, statistics);
     });
 };

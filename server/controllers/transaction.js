@@ -8,6 +8,21 @@ function getCurrentMonth() {
   return `${now.getFullYear()}-${month < 10 ? `0${month}` : month}`;
 }
 
+function getFormatPrice(price) {
+  return `$${Math.abs(price).toFixed(2)}`;
+}
+
+function getFormatExpenses(inputExpenses) {
+  return inputExpenses.map(({ title, date, price, category }) => {
+    return {
+      title,
+      date,
+      price: getFormatPrice(price),
+      category,
+    };
+  });
+}
+
 exports.getStatistics = (req, resp) => {
   let { date } = req.body;
   const statistics = { total: 0 };
@@ -45,10 +60,11 @@ exports.getStatistics = (req, resp) => {
       const categoryPriceArr = Object.keys(categoryPrice).map((category) => {
         return {
           category,
-          total: categoryPrice[category].total,
-          items: categoryPrice[category].items,
+          total: getFormatPrice(categoryPrice[category].total),
+          items: getFormatExpenses(categoryPrice[category].items),
         };
       });
+      statistics.total = getFormatPrice(statistics.total);
       statistics.categoryPrice = categoryPriceArr;
       sendResp(resp, statistics);
     });

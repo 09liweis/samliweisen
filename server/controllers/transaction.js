@@ -13,12 +13,13 @@ function getFormatPrice(price) {
 }
 
 function getFormatExpenses(inputExpenses) {
-  return inputExpenses.map(({ title, date, price, category }) => {
+  return inputExpenses.map(({ title, date, price, category, place }) => {
     return {
       title,
       date,
       price: getFormatPrice(price),
       category,
+      place,
     };
   });
 }

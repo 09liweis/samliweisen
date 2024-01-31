@@ -56,7 +56,7 @@ function getDefaultEpisodes(episodes) {
   return episodes || 1;
 }
 
-function getFullMovieDetail(movie) {
+function getFullMovieDetail(movie, { req }) {
   movie.episodes = getDefaultEpisodes(movie?.episodes);
   if (movie.poster?.includes("doubanio")) {
     movie.poster = getDoubanPoster(movie.poster);
@@ -108,7 +108,7 @@ exports.samVisuals = async (req, resp) => {
   }
   movies = movies.map((m) => {
     let movie = { ...m._doc };
-    return getFullMovieDetail(movie);
+    return getFullMovieDetail(movie, { req });
   });
   return sendResp(resp, { movies });
 };

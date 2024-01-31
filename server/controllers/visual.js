@@ -56,6 +56,27 @@ function getDefaultEpisodes(episodes) {
   return episodes || 1;
 }
 
+function getFullMovieDetail(movie) {
+  movie.episodes = getDefaultEpisodes(movie?.episodes);
+  if (movie.poster?.includes("doubanio")) {
+    movie.poster = getDoubanPoster(movie.poster);
+  }
+  if (movie.imdb_rating) {
+    movie.imdb_rating = movie.imdb_rating.toFixed(1);
+  }
+  if (movie.douban_rating) {
+    movie.douban_rating = movie.douban_rating.toFixed(1);
+  }
+  if (movie.douban_id) {
+    movie.apis = getDoubanMovieAPIs({
+      douban_id: movie.douban_id,
+      protocol: req.protocol,
+      host: req.hostname,
+    });
+  }
+  return movie;
+}
+
 function getSearchQuery(query) {
   let { page = 1, limit = 10, current_episode, type, search } = query;
   limit = parseInt(limit);
@@ -87,24 +108,7 @@ exports.samVisuals = async (req, resp) => {
   }
   movies = movies.map((m) => {
     let movie = { ...m._doc };
-    movie.episodes = getDefaultEpisodes(movie?.episodes);
-    if (movie.poster?.includes("doubanio")) {
-      movie.poster = getDoubanPoster(movie.poster);
-    }
-    if (movie.imdb_rating) {
-      movie.imdb_rating = movie.imdb_rating.toFixed(1);
-    }
-    if (movie.douban_rating) {
-      movie.douban_rating = movie.douban_rating.toFixed(1);
-    }
-    if (movie.douban_id) {
-      movie.apis = getDoubanMovieAPIs({
-        douban_id: movie.douban_id,
-        protocol: req.protocol,
-        host: req.hostname,
-      });
-    }
-    return movie;
+    return getFullMovieDetail(movie);
   });
   return sendResp(resp, { movies });
 };

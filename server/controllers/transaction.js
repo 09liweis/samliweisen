@@ -128,7 +128,7 @@ upsertTransaction = async (req, resp) => {
     return resp.status(400).json({ msg: "Login Required" });
   }
   const { _id, price, date, category, place, title, uid } = req.body;
-  transactionData = {
+  const transactionData = {
     uid: user._id,
     price,
     date,

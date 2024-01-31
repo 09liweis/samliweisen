@@ -36,13 +36,15 @@ exports.getStatistics = (req, resp) => {
     .populate("place")
     .sort("-date")
     .exec((err, transactions) => {
+      if (err) {
+        return sendErr(resp, { err: err.toString() });
+      }
+
       statistics.categoryPrice = {};
       if (transactions.length == 0) {
         return sendResp(resp, statistics);
       }
-      if (err) {
-        return sendErr(resp, { err: err.toString() });
-      }
+
       transactions.forEach((transaction) => {
         let { category, price } = transaction;
         price = Math.abs(price);

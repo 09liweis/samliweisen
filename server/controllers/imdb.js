@@ -1,4 +1,5 @@
 const { sendRequest, sendResp, sendErr } = require("../helpers/request");
+const { getFullMovieDetail } = require("../helpers/douban");
 
 const IMDB_BOXOFFICE = "https://www.imdb.com/chart/boxoffice";
 
@@ -27,8 +28,8 @@ exports.getImdbBoxOffice = (req, resp) => {
     const json = JSON.parse(jsonLdInfo);
     const movies = json?.props?.pageProps?.pageData?.topGrossingReleases?.edges;
     boxOffice.movies = movies.map(({ node }) => {
-      const movie = node.release.titles[0];
-      return {
+      let movie = node.release.titles[0];
+      movie = {
         imdb_id: movie.id,
         title: movie.titleText.text,
         original_title: movie.originalTitleText.text,
@@ -39,6 +40,7 @@ exports.getImdbBoxOffice = (req, resp) => {
         totalGross: getCurrencyFormat(movie.lifetimeGross.total.amount),
         currentGross: getCurrencyFormat(node.gross.total.amount),
       };
+      return getFullMovieDetail(movie, { req });
     });
     return sendResp(resp, boxOffice);
   });

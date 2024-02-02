@@ -1,7 +1,7 @@
 {
   "name": "samliweisen_portfolio_webserver",
   "description": "This is web service for portfolio of Sam",
-  "version": "4.21.15",
+  "version": "4.22.15",
   "engines": {
     "node": ">=12"
   },
@@ -37,6 +37,6 @@
     "socket.io": "^4.5.2"
   },
   "devDependencies": {
-    "nodemon": "^1.17.2"
+    "nodemon": "^1.19.4"
   }
 }

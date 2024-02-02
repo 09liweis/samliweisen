@@ -132,7 +132,7 @@ exports.getDoubanChart = (req, resp) => {
           title: item.find(".pl2 a").text().trim(),
           douban_rating: item.find(".rating_nums").text(),
         };
-        movies.push(movie);
+        movies.push(getFullMovieDetail(movie, { req }));
       }
     }
     return sendResp(resp, { movies });

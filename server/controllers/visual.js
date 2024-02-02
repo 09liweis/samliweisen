@@ -5,7 +5,7 @@ const {
   getComments,
   getCast,
   getDoubanPoster,
-  getDoubanMovieAPIs,
+  getFullMovieDetail,
 } = require("../helpers/douban");
 const { getImdbSummary } = require("../helpers/imdb");
 const Movie = require("../models/movie");
@@ -40,41 +40,6 @@ function formatDuration(duration) {
   const hours = Math.floor(duration / 60);
   const minutes = duration % 60;
   return `${hours}:${minutes > 9 ? minutes : `0${minutes}`}${defaultMins}`;
-}
-
-/** 
- * Get movie episodes or 1
-
- * @param {number|null} episodes - movie episodes
- * @returns {number} episodes or 1
- 
- * @example
- * getDefaultEpisodes(3) => 3
- * getDefaultEpisodes(null) => 1
-*/
-function getDefaultEpisodes(episodes) {
-  return episodes || 1;
-}
-
-function getFullMovieDetail(movie, { req }) {
-  movie.episodes = getDefaultEpisodes(movie?.episodes);
-  if (movie.poster?.includes("doubanio")) {
-    movie.poster = getDoubanPoster(movie.poster);
-  }
-  if (movie.imdb_rating) {
-    movie.imdb_rating = movie.imdb_rating.toFixed(1);
-  }
-  if (movie.douban_rating) {
-    movie.douban_rating = movie.douban_rating.toFixed(1);
-  }
-  if (movie.douban_id) {
-    movie.apis = getDoubanMovieAPIs({
-      douban_id: movie.douban_id,
-      protocol: req.protocol,
-      host: req.hostname,
-    });
-  }
-  return movie;
 }
 
 function getSearchQuery(query) {

@@ -2,7 +2,46 @@ const DOUBAN_SITE = "https://movie.douban.com/subject/";
 
 exports.DOUBAN_SITE_API = "https://movie.douban.com/j/";
 
-exports.getDoubanMovieAPIs = ({ protocol, host, douban_id }) => {
+/** 
+ * Get movie episodes or 1
+
+ * @param {number|null} episodes - movie episodes
+ * @returns {number} episodes or 1
+
+ * @example
+ * getDefaultEpisodes(3) => 3
+ * getDefaultEpisodes(null) => 1
+*/
+exports.getDefaultEpisodes = getDefaultEpisodes = (episodes) => {
+  return episodes || 1;
+};
+
+exports.getFullMovieDetail = (movie, { req }) => {
+  movie.episodes = getDefaultEpisodes(movie?.episodes);
+  if (movie.poster?.includes("doubanio")) {
+    movie.poster = getDoubanPoster(movie.poster);
+  }
+  if (movie.imdb_rating) {
+    movie.imdb_rating = movie.imdb_rating.toFixed(1);
+  }
+  if (movie.douban_rating) {
+    movie.douban_rating = movie.douban_rating.toFixed(1);
+  }
+  if (movie.douban_id) {
+    movie.apis = getDoubanMovieAPIs({
+      douban_id: movie.douban_id,
+      protocol: req.protocol,
+      host: req.hostname,
+    });
+  }
+  return movie;
+};
+
+exports.getDoubanMovieAPIs = getDoubanMovieAPIs = ({
+  protocol,
+  host,
+  douban_id,
+}) => {
   return {
     summary: `https://${host}/api/movies/douban/${douban_id}`,
     reviews: `https://${host}/api/movies/douban/${douban_id}/reviews`,
@@ -44,7 +83,7 @@ exports.getDoubanUrl = (douban_id, opt = {}) => {
   return `${DOUBAN_SITE}${douban_id}/${endPoint}`;
 };
 
-exports.getDoubanPoster = (poster, opt = {}) => {
+exports.getDoubanPoster = getDoubanPoster = (poster, opt = {}) => {
   //img2 domain works on browser without 403
   //not working for web browser, but work for app https://img2.doubanio.com/view/photo/s_ratio_poster/public/
   //https://img1.doubanio.com/view/photo/sqxs/public/

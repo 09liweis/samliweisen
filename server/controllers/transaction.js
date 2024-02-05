@@ -42,6 +42,7 @@ exports.getStatistics = (req, resp) => {
 
       statistics.categoryPrice = {};
       if (transactions.length == 0) {
+        statistics.total = getFormatPrice(0);
         return sendResp(resp, statistics);
       }
 

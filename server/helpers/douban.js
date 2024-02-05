@@ -18,16 +18,20 @@ exports.getDefaultEpisodes = getDefaultEpisodes = (episodes) => {
 
 exports.getFullMovieDetail = (movie, { req }) => {
   movie.episodes = getDefaultEpisodes(movie?.episodes);
-  if (movie.poster?.includes("doubanio")) {
+  if (movie?.poster?.includes("doubanio")) {
     movie.poster = getDoubanPoster(movie.poster);
   }
-  if (movie.imdb_rating) {
+  if (movie?.imdb_rating) {
     movie.imdb_rating = movie.imdb_rating.toFixed(1);
   }
-  if (movie.douban_rating) {
-    movie.douban_rating = movie.douban_rating.toFixed(1);
+  if (movie?.douban_rating) {
+    try {
+      movie.douban_rating = movie.douban_rating.toFixed(1);
+    } catch (error) {
+      console.error(`${movie.douban_rating} has error: ${error}`);
+    }
   }
-  if (movie.douban_id) {
+  if (movie?.douban_id) {
     movie.apis = getDoubanMovieAPIs({
       douban_id: movie.douban_id,
       protocol: req.protocol,

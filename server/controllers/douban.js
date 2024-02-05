@@ -5,6 +5,7 @@ const {
   getPhotos,
   getComments,
   getDoubanPoster,
+  getFullMovieDetail,
 } = require("../helpers/douban");
 
 const CAST_DOUBAN_URL = "https://movie.douban.com/celebrity/";
@@ -62,7 +63,7 @@ exports.getCommingMovies = (req, resp) => {
       movies = listItems.toArray().map((item) => {
         var movieUrl = $(item).find(".thumb").attr("href");
         var poster = $(item).find(".thumb img").attr("src");
-        return {
+        let movie = {
           douban_id: movieUrl.split("/")[4],
           poster: getDoubanPoster(poster),
           title: $(item).find(".intro h3 a").text(),
@@ -70,6 +71,7 @@ exports.getCommingMovies = (req, resp) => {
           category: $(item).find("ul .dt:nth-child(2)").text(),
           country: $(item).find("ul .dt:nth-child(3)").text(),
         };
+        return getFullMovieDetail(movie, { req });
       });
     }
     return sendResp(resp, { city, movies });
@@ -111,6 +113,7 @@ exports.getPopular = (req, resp) => {
         delete movies[i].rate;
         delete movies[i].id;
         delete movies[i].cover_x;
+        movies[i] = getFullMovieDetail(movies[i], { req });
       }
     }
     return sendResp(resp, {

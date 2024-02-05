@@ -28,7 +28,7 @@ exports.getFullMovieDetail = (movie, { req }) => {
     try {
       movie.douban_rating = movie.douban_rating.toFixed(1);
     } catch (error) {
-      console.error(`${movie.douban_rating} has error: ${error}`);
+      console.error(`${movie} has error: ${error}`);
     }
   }
   if (movie?.douban_id) {

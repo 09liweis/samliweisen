@@ -120,6 +120,7 @@ exports.updateSamMovie = async (req, resp) => {
 
 exports.getDoubanChart = (req, resp) => {
   sendRequest({ url: DOUBAN_CHART_URL }, function (err, { $ }) {
+    if (err) return sendErr(resp, { err: err.toString() });
     const listItems = $(".item");
     const movies = [];
     if (listItems) {
@@ -132,7 +133,8 @@ exports.getDoubanChart = (req, resp) => {
           title: item.find(".pl2 a").text().trim(),
           douban_rating: item.find(".rating_nums").text(),
         };
-        movies.push(getFullMovieDetail(movie, { req }));
+        // movies.push(getFullMovieDetail(movie, { req }));
+        movies.push(movie);
       }
     }
     return sendResp(resp, { movies });
@@ -171,7 +173,7 @@ exports.inTheatre = (req, resp) => {
         if (movie.duration) {
           movie.duration = formatDuration(movie.duration);
         }
-        movies.push(movie);
+        movies.push(getFullMovieDetail(movie, { req }));
       }
     }
     return sendResp(resp, { city, movies });

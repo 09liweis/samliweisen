@@ -26,8 +26,8 @@ exports.sendRequest = ({ url, method = "GET", body }, cb) => {
     requestOpt.data = body;
     //for post method
   }
-  axios(requestOpt)
-    .then((resp) => {
+  axios(requestOpt).then((resp) => {
+    try {
       var body = resp.data;
       var statusCode = 200;
       if (resp) {
@@ -39,10 +39,10 @@ exports.sendRequest = ({ url, method = "GET", body }, cb) => {
       }
       var $ = getCheerio(body);
       return cb(null, { statusCode, $, body });
-    })
-    .catch((err) => {
+    } catch (err) {
       return cb(err, {});
-    });
+    }
+  });
 };
 
 /**

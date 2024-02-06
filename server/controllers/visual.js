@@ -88,8 +88,12 @@ exports.getMovieDetail = async (req, resp) => {
   if (!douban_id) {
     return sendErr(resp, { msg: MISSING_DOUBAN_ID, douban_id });
   }
-  const movie = await getMovieByDoubanId(douban_id);
-  return sendResp(resp, { movie });
+  try {
+    const movie = await getMovieByDoubanId(douban_id);
+    return sendResp(resp, { movie });
+  } catch (err) {
+    return sendErr(resp, { err: err.toString() });
+  }
 };
 
 exports.updateSamMovie = async (req, resp) => {

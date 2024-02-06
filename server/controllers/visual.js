@@ -285,6 +285,7 @@ exports.getSummary = (req, resp) => {
     return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }
   getDoubanMovieSummary(douban_id, (err, visual) => {
+    if (err) return sendErr(resp, { err: err.toString() });
     return sendResp(resp, getFullMovieDetail(visual, { req }));
   });
 };

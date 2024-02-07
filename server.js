@@ -52,9 +52,6 @@ const getPathName = (dir) => {
 
 app.use(function (req, res, next) {
   var host = req.headers.host;
-  // if (host != 'localhost:8081' && req.protocol == 'http') {
-  //   return res.redirect('https://' + req.headers.host + req.url);
-  // }
   const origins = [
     "https://samliweisen.onrender.com/",
     "https://dashboard.09liweis.repl.co/",

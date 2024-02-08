@@ -147,6 +147,7 @@ exports.getPhotos = (req, resp) => {
   }
   url += `?type=${type}&start=${(page - 1) * NUM_LIMIT}`;
   sendRequest({ url }, (err, { $ }) => {
+    if (err) return sendErr(resp, { err: err.toString() });
     const title = $("#content h1").text();
     const photos = getPhotos($);
     return sendResp(resp, { title, photos, types, page, type });

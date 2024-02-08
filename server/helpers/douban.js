@@ -3,6 +3,33 @@ const DOUBAN_SITE = "https://movie.douban.com/subject/";
 exports.DOUBAN_SITE_API = "https://movie.douban.com/j/";
 
 /** 
+ * Get formated duration of a movie
+
+ * @param {string} duration - movie duration
+ * @returns {string} formated duration
+
+ * @example
+ * formatDuration('45') => '45:00'
+ * formatDuration('125') // => '2:02:00'
+*/
+function formatDuration(duration) {
+  if (!duration) return;
+  try {
+    duration = parseInt(duration);
+  } catch (durationErr) {
+    console.error(durationErr);
+    return duration;
+  }
+  const defaultMins = ":00";
+  if (duration < 60) {
+    return duration + defaultMins;
+  }
+  const hours = Math.floor(duration / 60);
+  const minutes = duration % 60;
+  return `${hours}:${minutes > 9 ? minutes : `0${minutes}`}${defaultMins}`;
+}
+
+/** 
  * Get movie episodes or 1
 
  * @param {number|null} episodes - movie episodes
@@ -31,6 +58,11 @@ exports.getFullMovieDetail = (movie, { req }) => {
       console.error(`${JSON.stringify(movie)} has error: ${error}`);
     }
   }
+
+  if (movie.duration) {
+    movie.duration = formatDuration(movie.duration);
+  }
+
   if (movie?.douban_id) {
     movie.apis = getDoubanMovieAPIs({
       douban_id: movie.douban_id,

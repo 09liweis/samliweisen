@@ -15,33 +15,6 @@ const MOVIE_NOT_FOUND = "Movie Not Found";
 const DOUBAN_CHART_URL = "https://movie.douban.com/chart";
 const DOUBAN_INTHEATRE_URL = "https://movie.douban.com/cinema/nowplaying/";
 
-/** 
- * Get formated duration of a movie
- 
- * @param {string} duration - movie duration
- * @returns {string} formated duration
-
- * @example
- * formatDuration('45') => '45:00'
- * formatDuration('125') // => '2:02:00'
-*/
-function formatDuration(duration) {
-  if (!duration) return;
-  try {
-    duration = parseInt(duration);
-  } catch (durationErr) {
-    console.error(durationErr);
-    return duration;
-  }
-  const defaultMins = ":00";
-  if (duration < 60) {
-    return duration + defaultMins;
-  }
-  const hours = Math.floor(duration / 60);
-  const minutes = duration % 60;
-  return `${hours}:${minutes > 9 ? minutes : `0${minutes}`}${defaultMins}`;
-}
-
 function getSearchQuery(query) {
   let { page = 1, limit = 10, current_episode, type, search } = query;
   limit = parseInt(limit);
@@ -173,9 +146,6 @@ exports.inTheatre = (req, resp) => {
         dataNames.forEach((name) => {
           movie[name] = item.attr(`data-${name}`);
         });
-        if (movie.duration) {
-          movie.duration = formatDuration(movie.duration);
-        }
         movies.push(getFullMovieDetail(movie, { req }));
       }
     }
@@ -394,7 +364,6 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     if (durationMatch) {
       duration = durationMatch[1].trim();
     }
-    duration = formatDuration(duration);
 
     var langsMatch = /语言:<\/span>(.*?)<br\/>/g.exec(body);
     if (langsMatch) {

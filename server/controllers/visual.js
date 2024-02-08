@@ -140,7 +140,7 @@ exports.inTheatre = (req, resp) => {
         const item = $(listItems[i]);
         const movie = {
           douban_id: item.attr("id"),
-          poster: getDoubanPoster(item.find("img").attr("src")),
+          poster: item.find("img").attr("src"),
           douban_rating: parseFloat(item.attr("data-score")),
         };
         dataNames.forEach((name) => {

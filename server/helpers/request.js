@@ -29,7 +29,7 @@ exports.sendRequest = ({ url, method = "GET", body }, cb) => {
   axios(requestOpt).then((resp) => {
     try {
       var body = resp.data;
-      var statusCode = 200;
+      let statusCode = 200;
       if (resp) {
         statusCode = resp.status;
       }

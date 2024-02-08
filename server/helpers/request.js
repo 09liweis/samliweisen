@@ -54,5 +54,5 @@ exports.sendErr = (resp, errObj) => {
 };
 
 exports.sendResp = (resp, data) => {
-  return resp.status(200).json(data);
+  return resp.status(resp.statusCode).json(data);
 };

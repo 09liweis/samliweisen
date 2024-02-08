@@ -37,7 +37,7 @@ exports.sendRequest = ({ url, method = "GET", body }, cb) => {
       if (body && typeof body == "object") {
         return cb(null, { body });
       }
-      var $ = getCheerio(body);
+      const $ = getCheerio(body);
       return cb(null, { statusCode, $, body });
     } catch (err) {
       return cb(err, {});

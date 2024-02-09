@@ -161,9 +161,7 @@ exports.getVideos = (req, resp) => {
   }
   const url = `https://movie.douban.com/subject/${douban_id}/trailer`;
   sendRequest({ url }, (err, { $ }) => {
-    if (err) {
-      return sendErr(resp, err);
-    }
+    if (err) return sendErr(resp, { err: err.toString() });
     const mods = $(".mod");
     var sections = mods.toArray().map((mod) => {
       var title = $(mod).find("h2").text();

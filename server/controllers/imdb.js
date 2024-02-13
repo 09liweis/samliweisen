@@ -15,33 +15,44 @@ function getCurrencyFormat(value) {
   return shortValue + suffixes[suffixNum];
 }
 
+function getIMDBBoxOffice(moviesData, req) {
+  const movies = [];
+  moviesData.forEach(({ node }) => {
+    try {
+      const movieNode = node.release.titles[0];
+      const movie = {
+        imdb_id: movieNode.id,
+        title: movieNode.titleText.text,
+        original_title: movieNode.originalTitleText.text,
+        poster: movieNode.primaryImage.url,
+        imdb_rating: movieNode.ratingsSummary.aggregateRating,
+        vote_count: movieNode.ratingsSummary.voteCount,
+        summary: movieNode?.plot?.plotText?.plainText,
+        totalGross: getCurrencyFormat(movieNode.lifetimeGross.total.amount),
+        currentGross: getCurrencyFormat(node.gross.total.amount),
+      };
+      movies.push(getFullMovieDetail(movie, { req }));
+    } catch (error) {
+      console.log(e);
+    }
+  });
+  return movies;
+}
+
 exports.getImdbBoxOffice = (req, resp) => {
   sendRequest({ url: IMDB_BOXOFFICE }, (err, { $ }) => {
     if (err) {
       return sendErr(resp, err);
     }
-    let boxOffice = {
+    const boxOffice = {
       title: $(".chart-layout-specific-title-text").text(),
       date: $(".chart-layout-specific-title .ipc-title__description").text(),
     };
     const jsonLdInfo = $('script[type="application/json"]').text();
     const json = JSON.parse(jsonLdInfo);
-    const movies = json?.props?.pageProps?.pageData?.topGrossingReleases?.edges;
-    boxOffice.movies = movies.map(({ node }) => {
-      let movie = node.release.titles[0];
-      movie = {
-        imdb_id: movie.id,
-        title: movie.titleText.text,
-        original_title: movie.originalTitleText.text,
-        poster: movie.primaryImage.url,
-        imdb_rating: movie.ratingsSummary.aggregateRating,
-        vote_count: movie.ratingsSummary.voteCount,
-        summary: movie.plot.plotText.plainText,
-        totalGross: getCurrencyFormat(movie.lifetimeGross.total.amount),
-        currentGross: getCurrencyFormat(node.gross.total.amount),
-      };
-      return getFullMovieDetail(movie, { req });
-    });
+    const moviesData =
+      json?.props?.pageProps?.pageData?.topGrossingReleases?.edges;
+    boxOffice.movies = getIMDBBoxOffice(moviesData, req);
     return sendResp(resp, boxOffice);
   });
 };

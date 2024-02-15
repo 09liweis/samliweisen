@@ -26,7 +26,7 @@ function getIMDBBoxOffice(moviesData, req) {
         original_title: movieNode.originalTitleText?.text,
         poster: movieNode.primaryImage?.url,
         imdb_rating: movieNode.ratingsSummary?.aggregateRating,
-        vote_count: movieNode.ratingsSummary.voteCount,
+        vote_count: movieNode.ratingsSummary?.voteCount,
         summary: movieNode?.plot?.plotText?.plainText,
         totalGross: getCurrencyFormat(movieNode.lifetimeGross.total.amount),
         currentGross: getCurrencyFormat(node.gross.total.amount),

@@ -29,7 +29,7 @@ function getIMDBBoxOffice(moviesData, req) {
         vote_count: movieNode.ratingsSummary?.voteCount,
         summary: movieNode?.plot?.plotText?.plainText,
         totalGross: getCurrencyFormat(movieNode.lifetimeGross?.total?.amount),
-        currentGross: getCurrencyFormat(node.gross.total.amount),
+        currentGross: getCurrencyFormat(node.gross?.total?.amount),
       };
       movies.push(getFullMovieDetail(movie, { req }));
     } catch (error) {

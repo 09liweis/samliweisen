@@ -22,7 +22,7 @@ function getIMDBBoxOffice(moviesData, req) {
       const movieNode = node.release.titles[0];
       const movie = {
         imdb_id: movieNode.id,
-        title: movieNode.titleText.text,
+        title: movieNode.titleText?.text,
         original_title: movieNode.originalTitleText.text,
         poster: movieNode.primaryImage.url,
         imdb_rating: movieNode.ratingsSummary.aggregateRating,

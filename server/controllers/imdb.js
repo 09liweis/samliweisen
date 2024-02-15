@@ -4,6 +4,10 @@ const { getFullMovieDetail } = require("../helpers/douban");
 const IMDB_BOXOFFICE = "https://www.imdb.com/chart/boxoffice";
 
 function getCurrencyFormat(value) {
+  if (!value) return value;
+  if (typeof value !== "number") {
+    return value;
+  }
   var suffixes = ["", "K", "M", "B", "T"];
   var suffixNum = Math.floor(("" + value).length / 3);
   var shortValue = parseFloat(

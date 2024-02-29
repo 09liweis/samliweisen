@@ -6,6 +6,7 @@ const MovieSchema = new Schema({
   douban_id: String,
   douban_rating: Number,
   poster: String,
+  summary: String,
   imdb_id: String,
   imdb_rating: Number,
   visual_type: String,

@@ -4,7 +4,7 @@ const biliAPI = require("bili-api");
 exports.getBilibili = async (req, resp) => {
   try {
     const userId = "19524235";
-    let up = await biliAPI({ mid: userId }, ["allVideos", "dynamics"]);
+    let up = await biliAPI({ mid: userId }, ["dynamics"]);
     return sendResp(resp, up);
   } catch (err) {
     return sendErr(resp, { err: err.toString() });

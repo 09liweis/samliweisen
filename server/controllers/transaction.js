@@ -4,8 +4,8 @@ const { sendRequest, sendResp, sendErr } = require("../helpers/request");
 
 function getCurrentMonth() {
   const now = new Date();
-  const month = now.getMonth() + 1;
-  return `${now.getFullYear()}-${month < 10 ? `0${month}` : month}`;
+  const month = (now.getMonth() + 1).toString().padStart(2, "0");
+  return `${now.getFullYear()}-${month}`;
 }
 
 function getFormatPrice(price) {

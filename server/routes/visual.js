@@ -14,6 +14,7 @@ const {
   getReviews,
   upsertVisual,
   updateRandomMovie,
+  getRandomMovie,
   updateSamMovie,
 } = require("../controllers/visual.js");
 const { getImdbBoxOffice } = require("../controllers/imdb.js");
@@ -64,6 +65,8 @@ router.route("/douban/:douban_id/comments").get(getComments);
 router.route("/douban/:douban_id/reviews").get(getReviews);
 
 router.route("/imdb_boxoffice").get(getImdbBoxOffice);
+
+router.route("/random").get(getRandomMovie);
 
 router.route("/douban/tags").post(getTags);
 

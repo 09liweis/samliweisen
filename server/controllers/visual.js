@@ -460,10 +460,10 @@ exports.upsertVisual = async (req, resp) => {
   });
 };
 
-exports.updateRandomMovie = (req, resp) => {
+function getRandomMovieDB(cb) {
   Movie.countDocuments().exec((err, count) => {
     if (err) {
-      return sendErr(resp, { err: err.toString() });
+      return cb(err);
     }
     var random = Math.floor(Math.random() * count);
     Movie.findOne()
@@ -471,21 +471,34 @@ exports.updateRandomMovie = (req, resp) => {
       .exec((err, movie) => {
         if (err || !movie) {
           console.error(err);
-          return sendErr(resp, { msg: MOVIE_NOT_FOUND });
+          return cb(err)
         }
-        getDoubanMovieSummary(movie.douban_id, (err, latestMovie) => {
+        return cb(null, movie);
+      })
+  })
+}
+
+exports.getRandomMovie = (req, resp) => {
+  getRandomMovieDB((err, movie)=>{
+    return sendResp(resp,movie);
+  })
+}
+
+exports.updateRandomMovie = (req, resp) => {
+  getRandomMovieDB((err, movie)=>{
+    if (err) return sendErr(resp, { err: err.toString() });
+    getDoubanMovieSummary(movie.douban_id, (err, latestMovie) => {
+      if (err) return sendErr({ msg: err.toString() });
+      Movie.updateOne(
+        { douban_id: movie.douban_id },
+        latestMovie,
+        (err, result) => {
           if (err) return sendErr({ msg: err.toString() });
-          Movie.updateOne(
-            { douban_id: movie.douban_id },
-            latestMovie,
-            (err, result) => {
-              if (err) return sendErr({ msg: err.toString() });
-              if (result.ok) {
-                return sendResp(resp, latestMovie);
-              }
-            },
-          );
-        });
-      });
-  });
+          if (result.ok) {
+            return sendResp(resp, latestMovie);
+          }
+        },
+      );
+    });
+  })
 };

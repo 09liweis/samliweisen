@@ -50,7 +50,7 @@ const getPathName = (dir) => {
   return express.static(path.join(__dirname) + "/" + dir);
 };
 
-app.use(function (req, res, next) {
+app.use(function (req, resp, next) {
   var host = req.headers.host;
   const origins = [
     "https://samliweisen.onrender.com/",
@@ -63,24 +63,24 @@ app.use(function (req, res, next) {
   ];
   // Website you wish to allow to connect
   if (origins.indexOf(req.headers.origin) > -1) {
-    res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
+    resp.setHeader("Access-Control-Allow-Origin", req.headers.origin);
   }
   if (req.query && req.query.origin && req.query.origin == "localhost") {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    resp.setHeader("Access-Control-Allow-Origin", "*");
   }
   // Request methods you wish to allow
-  res.setHeader(
+  resp.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, OPTIONS, PUT, PATCH, DELETE",
   );
   // Request headers you wish to allow
-  res.setHeader(
+  resp.setHeader(
     "Access-Control-Allow-Headers",
     "X-Requested-With,content-type,auth-token",
   );
   // Set to true if you need the website to include cookies in the requests sent
   // to the API (e.g. in case you use sessions)
-  res.setHeader("Access-Control-Allow-Credentials", true);
+  resp.setHeader("Access-Control-Allow-Credentials", true);
   // Pass to next layer of middleware
   next();
 });

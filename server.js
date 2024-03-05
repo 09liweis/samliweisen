@@ -1,27 +1,6 @@
 "use strict";
 const DEFAULT_PORT = 8081;
-const express = require("express"),
-  path = require("path"),
-  app = express(),
-  bodyParser = require("body-parser"),
-  mongoose = require("mongoose"),
-  cors = require("cors"),
-  indexRoute = require("./server/routes/index"),
-  dashboardRoute = require("./server/routes/dashboard"),
-  todoRoute = require("./server/routes/todo"),
-  transactionRoute = require("./server/routes/transaction"),
-  experienceRoute = require("./server/routes/experience"),
-  projectRoute = require("./server/routes/project"),
-  placeRoute = require("./server/routes/place"),
-  blogRoute = require("./server/routes/blog"),
-  commentRoute = require("./server/routes/comment"),
-  SiteRoute = require("./server/routes/site"),
-  userRoute = require("./server/routes/user"),
-  visualRoute = require("./server/routes/visual"),
-  videoRoute = require("./server/routes/video"),
-  categoryRoute = require("./server/routes/category"),
-  roomRoute = require("./server/routes/room"),
-  contactRoute = require("./server/routes/contact"),
+const mongoose = require("mongoose"),
   port = process.env.PORT || DEFAULT_PORT;
 
 mongoose.Promise = global.Promise;
@@ -43,6 +22,28 @@ mongoose.connection.on("disconnected", function () {
   console.error("Mongoose connection disconnected");
   //TODO: add email notification
 });
+
+const express = require("express"),
+  path = require("path"),
+  app = express(),
+  bodyParser = require("body-parser"),
+  cors = require("cors"),
+  indexRoute = require("./server/routes/index"),
+  dashboardRoute = require("./server/routes/dashboard"),
+  todoRoute = require("./server/routes/todo"),
+  transactionRoute = require("./server/routes/transaction"),
+  experienceRoute = require("./server/routes/experience"),
+  projectRoute = require("./server/routes/project"),
+  placeRoute = require("./server/routes/place"),
+  blogRoute = require("./server/routes/blog"),
+  commentRoute = require("./server/routes/comment"),
+  SiteRoute = require("./server/routes/site"),
+  userRoute = require("./server/routes/user"),
+  visualRoute = require("./server/routes/visual"),
+  videoRoute = require("./server/routes/video"),
+  categoryRoute = require("./server/routes/category"),
+  roomRoute = require("./server/routes/room"),
+  contactRoute = require("./server/routes/contact");
 
 app.use(cors());
 
@@ -88,6 +89,30 @@ app.use(function (req, resp, next) {
 app.use("/assets", getPathName("assets"));
 app.use("/resume", getPathName("resume"));
 
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "resume/resume.html"));
+});
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.use("/api", indexRoute);
+app.use("/api/dashboard", dashboardRoute);
+app.use("/api/videos", videoRoute);
+app.use("/api/movies", visualRoute);
+app.use("/api/todos", todoRoute);
+app.use("/api/transactions", transactionRoute);
+app.use("/api/experiences", experienceRoute);
+app.use("/api/projects", projectRoute);
+app.use("/api/blogs", blogRoute);
+app.use("/api/comments", commentRoute);
+app.use("/api/sites", SiteRoute);
+app.use("/api/user", userRoute);
+app.use("/api/category", categoryRoute);
+app.use("/api/places", placeRoute);
+app.use("/api/rooms", roomRoute);
+app.use("/api/contacts", contactRoute);
+
 const http = require("http").Server(app);
 
 const socketIO = require("socket.io")(http, {
@@ -116,30 +141,6 @@ socketIO.on("connection", (socket) => {
     console.log("🔥: A user disconnected");
   });
 });
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "resume/resume.html"));
-});
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-app.use("/api", indexRoute);
-app.use("/api/dashboard", dashboardRoute);
-app.use("/api/videos", videoRoute);
-app.use("/api/movies", visualRoute);
-app.use("/api/todos", todoRoute);
-app.use("/api/transactions", transactionRoute);
-app.use("/api/experiences", experienceRoute);
-app.use("/api/projects", projectRoute);
-app.use("/api/blogs", blogRoute);
-app.use("/api/comments", commentRoute);
-app.use("/api/sites", SiteRoute);
-app.use("/api/user", userRoute);
-app.use("/api/category", categoryRoute);
-app.use("/api/places", placeRoute);
-app.use("/api/rooms", roomRoute);
-app.use("/api/contacts", contactRoute);
 
 http.listen(port, () => {
   console.log(`${new Date()} Web server runs on: ${port}`);

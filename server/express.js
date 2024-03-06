@@ -66,10 +66,6 @@ class ExpressJs {
       var host = req.headers.host;
       const origins = [
         "https://samliweisen.onrender.com/",
-        "https://dashboard.09liweis.repl.co/",
-        "http://localhost:4200",
-        "http://localhost:8081",
-        "http://localhost:3000",
         "https://what-sam-watched.onrender.com/",
         "https://samliweisen.cyclic.app/",
       ];

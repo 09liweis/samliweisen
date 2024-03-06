@@ -1,27 +1,9 @@
 "use strict";
 const DEFAULT_PORT = 8081;
-const mongoose = require("mongoose"),
-  port = process.env.PORT || DEFAULT_PORT;
+const port = process.env.PORT || DEFAULT_PORT;
 
-mongoose.Promise = global.Promise;
-
-const dbUrl = process.env["MONGODB_URL"];
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
-//,{ useNewUrlParser: true, useUnifiedTopology:true,useFindAndModify:true }
-
-mongoose.connection.on("connected", function () {
-  console.info("Connected to db");
-});
-
-mongoose.connection.on("error", function () {
-  console.error("connected fail");
-  //TODO: add email notification
-});
-
-mongoose.connection.on("disconnected", function () {
-  console.error("Mongoose connection disconnected");
-  //TODO: add email notification
-});
+const Mongoose = require("./server/mongoose");
+const mongoose = new Mongoose();
 
 const ExpressJs = require("./server/express");
 const express = new ExpressJs();

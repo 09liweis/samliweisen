@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const StatisticsSchema = new Schema({
@@ -6,15 +6,15 @@ const StatisticsSchema = new Schema({
   details: Object, //{pending:Number, done:Number, in_progress:Number,total:Number}
   ts: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   mt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-StatisticsSchema.pre('save', function(next) {
+StatisticsSchema.pre("save", function (next) {
   const currentDate = new Date();
   this.mt = currentDate;
   if (!this.ts) {
@@ -23,4 +23,4 @@ StatisticsSchema.pre('save', function(next) {
   next();
 });
 
-module.exports = mongoose.model('Statistics', StatisticsSchema);
+module.exports = mongoose.model("Stat", StatisticsSchema);

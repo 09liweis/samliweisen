@@ -18,7 +18,8 @@ const indexRoute = require("./routes/index"),
   videoRoute = require("./routes/video"),
   categoryRoute = require("./routes/category"),
   roomRoute = require("./routes/room"),
-  contactRoute = require("./routes/contact");
+  contactRoute = require("./routes/contact"),
+  statRoute = require("./routes/stat");
 
 const getPathName = (dir) => {
   return express.static(path.join(__dirname) + "/" + dir);
@@ -61,6 +62,7 @@ class ExpressJs {
     this.app.use("/api/places", placeRoute);
     this.app.use("/api/rooms", roomRoute);
     this.app.use("/api/contacts", contactRoute);
+    this.app.use("/api/stats", statRoute);
 
     this.app.use(function (req, resp, next) {
       var host = req.headers.host;

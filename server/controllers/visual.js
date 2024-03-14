@@ -167,15 +167,14 @@ exports.search = (req, resp) => {
     if (results) {
       var visuals = results.toArray().map((r) => {
         const visual = $(r);
-        const [a, movie, subject, douban_id, b] = visual
-          .attr("href")
-          .split("/");
-        return {
+        const [, , , douban_id] = visual.attr("href").split("/");
+        const movie = {
           douban_id,
           poster: visual.find("img").attr("src"),
           title: visual.find(".subject-title").text(),
           douban_rating: visual.find(".rating span:nth-child(2)").text(),
         };
+        return getFullMovieDetail(movie, { req });
       });
     }
     sendResp(resp, { keyword, visuals });

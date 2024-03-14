@@ -48,13 +48,16 @@ exports.getFullMovieDetail = (movie, { req }) => {
   if (movie?.poster?.includes("doubanio")) {
     movie.poster = getDoubanPoster(movie.poster, req);
   }
-  
+
   const imdb_rating = movie.imdb_rating || 0;
   movie.imdb_rating = imdb_rating.toFixed(1);
-  
-  if (movie?.douban_rating) {
+
+  const douban_rating = movie.douban_rating;
+  if (douban_rating) {
     try {
-      movie.douban_rating = movie.douban_rating.toFixed(1);
+      if (typeof douban_rating !== "string") {
+        movie.douban_rating = douban_rating.toFixed(1);
+      }
     } catch (error) {
       console.error(`${JSON.stringify(movie)} has error: ${error}`);
     }

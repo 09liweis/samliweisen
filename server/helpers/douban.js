@@ -48,9 +48,10 @@ exports.getFullMovieDetail = (movie, { req }) => {
   if (movie?.poster?.includes("doubanio")) {
     movie.poster = getDoubanPoster(movie.poster, req);
   }
-  if (movie?.imdb_rating) {
-    movie.imdb_rating = movie.imdb_rating.toFixed(1);
-  }
+  
+  const imdb_rating = movie.imdb_rating || 0;
+  movie.imdb_rating = imdb_rating.toFixed(1);
+  
   if (movie?.douban_rating) {
     try {
       movie.douban_rating = movie.douban_rating.toFixed(1);

@@ -82,6 +82,7 @@ exports.getDoubanMovieAPIs = getDoubanMovieAPIs = ({
     comments: `https://${host}/api/movies/douban/${douban_id}/comments`,
     casts: `https://${host}/api/movies/douban/${douban_id}/casts`,
     photos: `https://${host}/api/movies/douban/${douban_id}/photos`,
+    videos: `https://${host}/api/movies/douban/${douban_id}/videos`,
   };
 };
 

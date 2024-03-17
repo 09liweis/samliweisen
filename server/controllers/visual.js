@@ -165,7 +165,7 @@ exports.search = (req, resp) => {
   sendRequest({ url }, function (err, { $ }) {
     const results = $(".search_results_subjects a");
     if (results) {
-      var visuals = results.toArray().map((r) => {
+      var movies = results.toArray().map((r) => {
         const visual = $(r);
         const [, , , douban_id] = visual.attr("href").split("/");
         const movie = {
@@ -177,7 +177,7 @@ exports.search = (req, resp) => {
         return getFullMovieDetail(movie, { req });
       });
     }
-    sendResp(resp, { keyword, visuals });
+    sendResp(resp, { keyword, movies });
   });
 };
 

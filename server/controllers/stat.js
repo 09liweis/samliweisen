@@ -12,3 +12,13 @@ exports.findList = async (req, resp) => {
     return sendErr(resp, { err: error.toString() });
   }
 };
+
+exports.findByName = async (req, resp) => {
+  const name = req.params.name;
+  try {
+    const stat = await Stat.findOne({ name: name });
+    return sendResp(resp, stat)
+  } catch (error) {
+    return sendErr(resp, { err: error.toString() });
+  }
+}

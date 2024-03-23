@@ -16,7 +16,15 @@ const DOUBAN_CHART_URL = "https://movie.douban.com/chart";
 const DOUBAN_INTHEATRE_URL = "https://movie.douban.com/cinema/nowplaying/";
 
 function getSearchQuery(query) {
-  let { page = 1, limit = 10, current_episode, type, lang, search } = query;
+  let {
+    page = 1,
+    limit = 10,
+    current_episode,
+    type,
+    lang,
+    genre,
+    search,
+  } = query;
   limit = parseInt(limit);
   const skip = (page - 1) * limit;
 
@@ -26,6 +34,9 @@ function getSearchQuery(query) {
   }
   if (lang) {
     filter.languages = lang;
+  }
+  if (genre) {
+    filter.genres = genre;
   }
   if (current_episode) {
     filter.current_episode = current_episode;

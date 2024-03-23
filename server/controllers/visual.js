@@ -44,13 +44,15 @@ function getSearchQuery(query) {
   if (type) {
     filter.visual_type = type;
   }
-  return { filter, skip, limit };
+  return { filter, skip, limit, page };
 }
 
 exports.samVisuals = async (req, resp) => {
-  const { filter, skip, limit } = getSearchQuery(req.query);
+  const { filter, skip, limit, page } = getSearchQuery(req.query);
   let movies = [];
+  let total = 0;
   try {
+    total = await Movie.countDocuments(filter);
     movies = await Movie.find(filter)
       .skip(skip)
       .limit(limit)
@@ -62,7 +64,7 @@ exports.samVisuals = async (req, resp) => {
     let movie = { ...m._doc };
     return getFullMovieDetail(movie, { req });
   });
-  return sendResp(resp, { movies });
+  return sendResp(resp, { total, page, movies });
 };
 
 async function getMovieByDoubanId(douban_id) {

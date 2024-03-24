@@ -23,6 +23,7 @@ function getSearchQuery(query) {
     type,
     lang,
     genre,
+    country,
     search,
   } = query;
   limit = parseInt(limit);
@@ -37,6 +38,9 @@ function getSearchQuery(query) {
   }
   if (genre) {
     filter.genres = genre;
+  }
+  if (country) {
+    filter.countries = country;
   }
   if (current_episode) {
     filter.current_episode = current_episode;

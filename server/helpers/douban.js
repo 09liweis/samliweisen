@@ -123,7 +123,7 @@ exports.getDoubanPoster = getDoubanPoster = (poster, opt = {}) => {
   //not working for web browser, but work for app https://img2.doubanio.com/view/photo/s_ratio_poster/public/
   //https://img1.doubanio.com/view/photo/sqxs/public/
   // return poster;
-  const imgServer = opt.query.imgserver;
+  const imgServer = opt?.query?.imgserver;
   if (imgServer) {
     return poster.replace(/img[1-9]/g, imgServer);
   } else {

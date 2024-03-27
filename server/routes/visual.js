@@ -11,6 +11,7 @@ const {
   getSummary,
   getPhotoDetail,
   getComments,
+  getHongkong,
   getReviews,
   upsertVisual,
   updateRandomMovie,
@@ -37,6 +38,8 @@ router.route("/search").get(search);
 router.route("/in_theatre").get(inTheatre);
 
 router.route("/comming").get(getCommingMovies);
+
+router.route("/hongkong").get(getHongkong);
 
 router.route("/maoyan").get(getMaoyan);
 

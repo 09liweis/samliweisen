@@ -173,6 +173,22 @@ exports.inTheatre = (req, resp) => {
   });
 };
 
+exports.getHongkong = (req, resp) => {
+  sendRequest({ url: "https://hkmovie6.com/showing" }, function (err, { $ }) {
+    const movieResults = $(".shows .movie");
+    let movies = [];
+    if (movieResults) {
+      movies = movieResults.toArray().map((m) => {
+        const movie = $(m);
+        const poster = movie.find("img").attr("src");
+        const title = movie.find(".img").attr("alt");
+        return { title, poster };
+      });
+    }
+    return sendResp(resp, { movies });
+  });
+};
+
 exports.search = (req, resp) => {
   let { keyword } = req.query;
   keyword = keyword?.trim();

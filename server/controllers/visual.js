@@ -181,8 +181,13 @@ exports.getHongkong = (req, resp) => {
       movies = movieResults.toArray().map((m) => {
         const movie = $(m);
         const poster = movie.find("img").attr("src");
-        const title = movie.find(".img").attr("alt");
-        return { title, poster };
+        const video = movie.find("video").attr("src");
+        const title = movie.find(".name").text();
+        if (video) {
+          return { title, video };
+        } else {
+          return { title, poster };
+        }
       });
     }
     return sendResp(resp, { movies });

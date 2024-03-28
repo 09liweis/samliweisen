@@ -46,6 +46,7 @@ exports.getDefaultEpisodes = getDefaultEpisodes = (episodes) => {
 exports.getFullMovieDetail = (movie, { req }) => {
   movie.episodes = getDefaultEpisodes(movie?.episodes);
   if (movie?.poster?.includes("doubanio")) {
+    movie.origin_poster = movie.poster;
     movie.poster = getDoubanPoster(movie.poster, req);
   }
 

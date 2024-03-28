@@ -62,11 +62,14 @@ exports.getFullMovieDetail = (movie, { req }) => {
   }
 
   if (movie?.douban_id) {
+    movie.origin_url = `${DOUBAN_SITE}${movie.douban_id}`;
     movie.apis = getDoubanMovieAPIs({
       douban_id: movie.douban_id,
       protocol: req.protocol,
       host: req.hostname,
     });
+  } else if (movie?.imdb_id) {
+    movie.origin_url = `https://www.imdb.com/title/${movie.imdb_id}`;
   }
   return movie;
 };

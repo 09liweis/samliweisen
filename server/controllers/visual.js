@@ -6,6 +6,7 @@ const {
   getCast,
   getDoubanPoster,
   getFullMovieDetail,
+  getMovieYear,
 } = require("../helpers/douban");
 const { getImdbSummary } = require("../helpers/imdb");
 const Movie = require("../models/movie");
@@ -445,6 +446,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       summary: $('span[property="v:summary"]').text().trim(),
       casts,
       release_dates: dates,
+      year: getMovieYear(dates),
       recommends,
       reviews: getReviews($),
       comments: getComments($),

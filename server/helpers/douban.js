@@ -75,6 +75,17 @@ exports.getFullMovieDetail = (movie, { req }) => {
   return movie;
 };
 
+exports.getMovieYear = (dates) => {
+  if (!dates) return "";
+  try {
+    const [year] = dates[0].split("-");
+    return year;
+  } catch (err) {
+    console.error(dates, err);
+    return "";
+  }
+};
+
 exports.getDoubanMovieAPIs = getDoubanMovieAPIs = ({
   protocol,
   host,

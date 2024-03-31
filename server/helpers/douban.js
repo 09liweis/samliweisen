@@ -75,6 +75,10 @@ exports.getFullMovieDetail = (movie, { req }) => {
   return movie;
 };
 
+/**
+ * @param {array} dates
+ * @returns {string} four letters year
+ */
 exports.getMovieYear = (dates) => {
   if (!dates) return "";
   try {

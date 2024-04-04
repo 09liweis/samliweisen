@@ -190,7 +190,7 @@ exports.getVideos = (req, resp) => {
 };
 
 exports.getVideo = (req, resp) => {
-  var { video_id, tp } = req.body;
+  var { video_id, tp } = req.params;
   if (!video_id) {
     return sendErr(resp, "No video id");
   }

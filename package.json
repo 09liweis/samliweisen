@@ -1,7 +1,7 @@
 {
   "name": "samliweisen_portfolio_webserver",
   "description": "This is web service for portfolio of Sam",
-  "version": "11.48.26",
+  "version": "12.48.26",
   "engines": {
     "node": ">=12"
   },

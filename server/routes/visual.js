@@ -73,7 +73,7 @@ router.route("/douban/:douban_id/comments").get(getComments);
 
 router.route("/douban/:douban_id/reviews").get(getReviews);
 
-router.route("/imdb_boxoffice").get(getImdbBoxOffice);
+router.route("/imdb/:name").get(getImdbBoxOffice);
 
 router.route("/random").get(getRandomMovie);
 

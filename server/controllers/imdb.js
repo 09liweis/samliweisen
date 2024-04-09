@@ -48,6 +48,7 @@ function getIMDBBoxOffice(moviesData, req) {
 }
 
 exports.getImdbBoxOffice = (req, resp) => {
+  let { name } = req.params;
   sendRequest({ url: IMDB_BOXOFFICE }, (err, { $ }) => {
     if (err) {
       return sendErr(resp, err);

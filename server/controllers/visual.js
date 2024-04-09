@@ -195,6 +195,29 @@ exports.getHongkong = (req, resp) => {
   });
 };
 
+exports.getTaiwan = (req, resp) => {
+  sendRequest(
+    {
+      url: "https://www.ambassador.com.tw/home/MovieList?Type=1",
+    },
+    function (err, { $ }) {
+      let movies = [];
+      const movieResults = $(".movie-list .cell");
+      if (movieResults) {
+        movies = movieResults.toArray().map((m) => {
+          const movie = $(m);
+          return {
+            title: movie.find(".title h6").text(),
+            original_title: movie.find(".show-for-large").text(),
+            poster: movie.find("img").attr("src"),
+          };
+        });
+      }
+      return sendResp(resp, { movies });
+    },
+  );
+};
+
 exports.getCineplex = (req, resp) => {
   sendRequest(
     {

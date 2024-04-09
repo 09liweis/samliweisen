@@ -3,6 +3,10 @@ const { getFullMovieDetail } = require("../helpers/douban");
 
 const IMDB_BOXOFFICE = "https://www.imdb.com/chart/boxoffice";
 
+/**
+ * @param {number} value
+ * @return {string} Return formatted amount
+ */
 function getCurrencyFormat(value) {
   if (!value) return value;
   if (typeof value !== "number") {

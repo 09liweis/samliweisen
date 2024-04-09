@@ -195,6 +195,26 @@ exports.getHongkong = (req, resp) => {
   });
 };
 
+exports.getCineplex = (req, resp) => {
+  sendRequest(
+    {
+      url: "https://apis.cineplex.com/prod/cpx/theatrical/api/v1/movies/bookable?language=en",
+    },
+    function (err, { $, body }) {
+      let movies = [];
+      if (body && Array.isArray(body)) {
+        movies = body.map((m) => {
+          return {
+            title: m.name,
+            poster: m.mediumPosterImageUrl,
+          };
+        });
+      }
+      return sendResp(resp, { movies });
+    },
+  );
+};
+
 exports.search = (req, resp) => {
   let { keyword } = req.query;
   keyword = keyword?.trim();

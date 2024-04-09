@@ -10,6 +10,7 @@ exports.getCheerio = getCheerio = (body) => {
 };
 
 const headers = {
+  "Ocp-Apim-Subscription-Key": "dcdac5601d864addbc2675a2e96cb1f8", //for cineplex
   "Accept-Language": "zh-CN,zh;q=0.8",
   "Accept-Charset": "utf-8, iso-8859-1;q=0.5",
   "User-Agent":

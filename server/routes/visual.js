@@ -12,6 +12,7 @@ const {
   getPhotoDetail,
   getComments,
   getHongkong,
+  getCineplex,
   getReviews,
   upsertVisual,
   updateRandomMovie,
@@ -40,6 +41,8 @@ router.route("/in_theatre").get(inTheatre);
 router.route("/comming").get(getCommingMovies);
 
 router.route("/hongkong").get(getHongkong);
+
+router.route("/cineplex").get(getCineplex);
 
 router.route("/maoyan").get(getMaoyan);
 

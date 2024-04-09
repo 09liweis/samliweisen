@@ -175,7 +175,8 @@ exports.inTheatre = (req, resp) => {
 };
 
 exports.getHongkong = (req, resp) => {
-  sendRequest({ url: "https://hkmovie6.com/showing" }, function (err, { $ }) {
+  let { name = "showing" } = req.params;
+  sendRequest({ url: `https://hkmovie6.com/${name}` }, function (err, { $ }) {
     const movieResults = $(".shows .movie");
     let movies = [];
     if (movieResults) {
@@ -184,10 +185,11 @@ exports.getHongkong = (req, resp) => {
         const poster = movie.find("img").attr("src");
         const video = movie.find("video").attr("src");
         const title = movie.find(".name").text();
+        const release = movie.find(".comingTitle").text();
         if (video) {
-          return { title, video };
+          return { title, release, video };
         } else {
-          return { title, poster };
+          return { title, release, poster };
         }
       });
     }

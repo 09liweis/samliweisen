@@ -177,6 +177,7 @@ exports.inTheatre = (req, resp) => {
 exports.getHongkong = (req, resp) => {
   let { name = "showing" } = req.params;
   sendRequest({ url: `https://hkmovie6.com/${name}` }, function (err, { $ }) {
+    if (err) return sendErr(resp, { err: err.toString() });
     const movieResults = $(".shows .movie.show");
     let movies = [];
     if (movieResults) {

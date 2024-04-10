@@ -15,6 +15,7 @@ const indexRoute = require("./routes/index"),
   SiteRoute = require("./routes/site"),
   userRoute = require("./routes/user"),
   moviesRoute = require("./routes/movies"),
+  movieRoute = require("./routes/movie"),
   videoRoute = require("./routes/video"),
   categoryRoute = require("./routes/category"),
   roomRoute = require("./routes/room"),
@@ -50,6 +51,7 @@ class ExpressJs {
     this.app.use("/api/dashboard", dashboardRoute);
     this.app.use("/api/videos", videoRoute);
     this.app.use("/api/movies", moviesRoute);
+    this.app.use("/api/movie", movieRoute);
     this.app.use("/api/todos", todoRoute);
     this.app.use("/api/transactions", transactionRoute);
     this.app.use("/api/experiences", experienceRoute);

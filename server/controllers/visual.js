@@ -320,6 +320,7 @@ exports.getComments = (req, resp) => {
   }
   const douban_url = getDoubanUrl(douban_id, { apiName: "comments" });
   sendRequest({ url: douban_url }, (err, { statusCode, $, body }) => {
+    if (err) return sendErr(resp, { err: err.toString() });
     const comments = getComments($);
     return sendResp(resp, { comments });
   });
@@ -332,6 +333,7 @@ exports.getReviews = (req, resp) => {
   }
   const douban_url = getDoubanUrl(douban_id, { apiName: "reviews" });
   sendRequest({ url: douban_url }, (err, { statusCode, $, body }) => {
+    if (err) return sendErr(resp, { err: err.toString() });
     const reviews = getReviews($);
     return sendResp(resp, { reviews });
   });

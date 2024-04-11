@@ -570,6 +570,7 @@ function getRandomMovieDB(cb) {
 
 exports.getRandomMovie = (req, resp) => {
   getRandomMovieDB((err, movie) => {
+    if (err) return sendErr(resp, { err: err.toString() });
     return sendResp(resp, movie);
   });
 };

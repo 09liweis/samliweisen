@@ -57,6 +57,6 @@ router.route("/maoyan").get(getMaoyan);
 
 router.route("/imdb/:name").get(getImdbBoxOffice);
 
-router.route("/douban/tags").post(getTags);
+router.route("/douban/tags").get(getTags);
 
 module.exports = router;

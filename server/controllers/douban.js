@@ -79,14 +79,16 @@ exports.getCommingMovies = (req, resp) => {
 };
 
 exports.getTags = (req, resp) => {
-  var { type } = req.body;
+  let { type } = req.query;
   type = type || "movie";
   const url = `${DOUBAN_SITE_API}search_tags?type=${type}&source=`;
   sendRequest({ url }, (err, { body }) => {
+    if (err) return sendErr(resp, { err: err.toString() });
+    let tags = [];
     try {
-      var tags = JSON.parse(body).tags;
+      tags = body.tags;
     } catch (error) {
-      var tags = [];
+      console.error(error);
     }
     return sendResp(resp, { type, tags, sorts: SORTS });
   });

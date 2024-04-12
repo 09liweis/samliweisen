@@ -3,31 +3,17 @@ var router = express.Router();
 
 const {
   samVisuals,
-  getMovieDetail,
   search,
   inTheatre,
   getDoubanChart,
-  getCelebrities,
-  getSummary,
-  getPhotoDetail,
-  getComments,
   getHongkong,
   getTaiwan,
   getCineplex,
-  getReviews,
-  upsertVisual,
-  updateRandomMovie,
-  getRandomMovie,
-  updateSamMovie,
 } = require("../controllers/visual.js");
 const { getImdbBoxOffice } = require("../controllers/imdb.js");
 const {
   getPopular,
   getTags,
-  getPhotos,
-  getVideos,
-  getVideo,
-  getCast,
   getCommingMovies,
   getAlltimeBoxOffice,
 } = require("../controllers/douban.js");

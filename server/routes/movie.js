@@ -14,7 +14,6 @@ const {
   updateSamMovie,
 } = require("../controllers/visual.js");
 const {
-  getTags,
   getPhotos,
   getVideos,
   getVideo,

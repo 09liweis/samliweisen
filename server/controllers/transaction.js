@@ -35,11 +35,7 @@ exports.getStatistics = (req, resp) => {
   Transaction.find(filter, "_id title price date category")
     .populate("place")
     .sort("-date")
-    .exec((err, transactions) => {
-      if (err) {
-        return sendErr(resp, { err: err.toString() });
-      }
-
+    .then((transactions) => {
       statistics.categoryPrice = {};
       if (transactions.length == 0) {
         statistics.total = getFormatPrice(0);
@@ -72,6 +68,9 @@ exports.getStatistics = (req, resp) => {
       statistics.total = getFormatPrice(statistics.total);
       statistics.categoryPrice = categoryPriceArr;
       sendResp(resp, statistics);
+    })
+    .catch((err) => {
+      return sendErr(resp, { err: err.toString() });
     });
 };
 
@@ -112,9 +111,11 @@ exports.findList = (req, resp) => {
   Transaction.find(filter, "_id title price date category", opt)
     .populate("place", "_id name address lat lng icon")
     .sort("-date")
-    .exec((err, transactions) => {
-      handleError(resp, err);
+    .then((transactions) => {
       sendResp(resp, transactions);
+    })
+    .catch((err) => {
+      handleError(resp, err);
     });
 };
 

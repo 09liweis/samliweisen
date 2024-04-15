@@ -1,27 +1,31 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-const Comment = require('../models/comment');
+const Comment = require("../models/comment");
 
-router.get('/', (req, res, next) => {
+router.get("/", (req, res, next) => {
   let commentLimit = 5;
-  const {limit} = req.body;
+  const { limit } = req.body;
   if (limit) {
     commentLimit = limit;
   }
-  Comment.find({},'',{limit:commentLimit}).sort('-created_at').exec((err, comments) => {
-    if (err) throw err;
-    res.send(comments);
-  });
+  Comment.find({}, "", { limit: commentLimit })
+    .sort("-created_at")
+    .then((comments) => {
+      res.send(comments);
+    })
+    .catch((err) => {
+      if (err) throw err;
+    });
 });
 
-router.post('/', (req, res, next) => {
+router.post("/", (req, res, next) => {
   const name = req.body.name;
   const content = req.body.content;
   const comment = Comment({
     ip: req.ip,
     name: name,
-    content: content
+    content: content,
   });
 
   comment.save((err) => {

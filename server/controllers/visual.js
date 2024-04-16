@@ -585,14 +585,14 @@ exports.updateRandomMovie = (req, resp) => {
       if (err) return sendErr({ msg: err.toString() });
       Movie.updateOne(
         { douban_id: movie.douban_id },
-        latestMovie,
-        (err, result) => {
-          if (err) return sendErr({ msg: err.toString() });
+        latestMovie).then((result) => {
           if (result.ok) {
             return sendResp(resp, latestMovie);
           }
         },
-      );
+      ).catch((err)=>{
+        if (err) return sendErr({ msg: err.toString() });
+      });
     });
   });
 };

@@ -120,10 +120,13 @@ exports.findList = (req, resp) => {
 };
 
 exports.category_list = (req, resp) => {
-  Transaction.distinct("category", (err, categories) => {
-    handleError(resp, err);
-    sendResp(resp, categories);
-  });
+  Transaction.distinct("category")
+    .then((categories) => {
+      sendResp(resp, categories);
+    })
+    .catch((err) => {
+      handleError(resp, err);
+    });
 };
 upsertTransaction = async (req, resp) => {
   const user = req.user;

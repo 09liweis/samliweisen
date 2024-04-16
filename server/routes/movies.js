@@ -35,7 +35,7 @@ router.route("/douban/alltime_boxoffice").get(getAlltimeBoxOffice);
 
 router.route("/hongkong/:name").get(getHongkong);
 
-router.route("/taiwan").get(getTaiwan);
+router.route("/taiwan/:name").get(getTaiwan);
 
 router.route("/cineplex").get(getCineplex);
 

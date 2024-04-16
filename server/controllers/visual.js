@@ -199,6 +199,8 @@ exports.getHongkong = (req, resp) => {
 };
 
 exports.getTaiwan = (req, resp) => {
+  let { name } = req.params;
+  name = name === "showing" ? "1" : "0";
   sendRequest(
     {
       url: "https://www.ambassador.com.tw/home/MovieList?Type=1",
@@ -213,6 +215,7 @@ exports.getTaiwan = (req, resp) => {
             title: movie.find(".title h6").text(),
             original_title: movie.find(".show-for-large").text(),
             poster: movie.find("img").attr("src"),
+            date: movie.find(".date").text(),
           };
         });
       }
@@ -551,18 +554,21 @@ exports.upsertVisual = async (req, resp) => {
 };
 
 function getRandomMovieDB(cb) {
-  Movie.countDocuments().then((count) => {
-    var random = Math.floor(Math.random() * count);
-    Movie.findOne()
-      .skip(random)
-      .then((movie) => {
-        return cb(null, movie);
-      }).catch((err)=>{
-        return cb(err);
-      });
-  }).catch((err)=>{
-    return cb(err);
-  });
+  Movie.countDocuments()
+    .then((count) => {
+      var random = Math.floor(Math.random() * count);
+      Movie.findOne()
+        .skip(random)
+        .then((movie) => {
+          return cb(null, movie);
+        })
+        .catch((err) => {
+          return cb(err);
+        });
+    })
+    .catch((err) => {
+      return cb(err);
+    });
 }
 
 exports.getRandomMovie = (req, resp) => {

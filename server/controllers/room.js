@@ -1,13 +1,20 @@
-var mongoose = require('mongoose'),
-  Room = require('../models/room');
-var { sendResp } = require('../helpers/request');
+var mongoose = require("mongoose"),
+  Room = require("../models/room");
+var { sendResp } = require("../helpers/request");
 
 const STRINGS = {
-  BAD_ID: 'Invalid room id',
-  STEP_NAME: 'Missing step name'
+  BAD_ID: "Invalid room id",
+  STEP_NAME: "Missing step name",
 };
 
-const ROOM_FIELDS = ['nm', 'startDate', 'endDate', 'isAvailable', 'cmts', 'lastChecked'];
+const ROOM_FIELDS = [
+  "nm",
+  "startDate",
+  "endDate",
+  "isAvailable",
+  "cmts",
+  "lastChecked",
+];
 function getRoomDetailFromObj(requestBody) {
   const roomDetail = {};
   ROOM_FIELDS.forEach((roomField) => {
@@ -23,23 +30,23 @@ const getTimeDiff = (lastChecked) => {
   const lastCheckedTime = new Date(lastChecked);
   const timeDiff = now - lastCheckedTime;
   if (timeDiff < 1000) {
-    return 'now';
-  } else if (timeDiff < 1000*60) {
-    return timeDiff/(1000*60) + ' mins';
-  } else if (timeDiff < 1000*60*60) {
-    return timeDiff/(1000*60*60) + ' hrs'
-  } else if (timeDiff < 1000*60*60*24) {
-    return timeDiff/(1000*60*60*24) + ' days';
-  } else if (timeDiff < 1000*60*60*24*365) {
-    return timeDiff/(1000*60*60*24*365) + ' years';
+    return "now";
+  } else if (timeDiff < 1000 * 60) {
+    return timeDiff / (1000 * 60) + " mins";
+  } else if (timeDiff < 1000 * 60 * 60) {
+    return timeDiff / (1000 * 60 * 60) + " hrs";
+  } else if (timeDiff < 1000 * 60 * 60 * 24) {
+    return timeDiff / (1000 * 60 * 60 * 24) + " days";
+  } else if (timeDiff < 1000 * 60 * 60 * 24 * 365) {
+    return timeDiff / (1000 * 60 * 60 * 24 * 365) + " years";
   }
-}
+};
 
 exports.findRoomList = findRoomList = ({ page, limit, status }, cb) => {
   let options = {};
   let query = {};
   if (status) {
-    query.status = status
+    query.status = status;
   }
   //TODO: fix pagination
   if (page) {
@@ -50,15 +57,20 @@ exports.findRoomList = findRoomList = ({ page, limit, status }, cb) => {
   if (limit) {
     options.limit = parseInt(limit);
   }
-  Room.find(query, 'nm startDate endDate isAvailable lastChecked cmts', options).sort('-mt').exec((err, rooms) => {
-    rooms.forEach((room) => {
-      if (room.lastChecked) {
-        room.lastCheckedDiff = getTimeDiff(room.lastChecked);
-      }
+  Room.find(query, "nm startDate endDate isAvailable lastChecked cmts", options)
+    .sort("-mt")
+    .then((rooms) => {
+      rooms.forEach((room) => {
+        if (room.lastChecked) {
+          room.lastCheckedDiff = getTimeDiff(room.lastChecked);
+        }
+      });
+      cb(null, rooms);
+    })
+    .catch((err) => {
+      cb(err);
     });
-    cb(err, rooms);
-  });
-}
+};
 
 exports.findList = (req, resp) => {
   findRoomList(req.query, (err, rooms) => {
@@ -69,14 +81,14 @@ exports.findList = (req, resp) => {
 
 exports.createRoom = createRoom = (input, cb) => {
   if (!input.nm) {
-    return cb('No Room Name');
+    return cb("No Room Name");
   }
   const room = getRoomDetailFromObj(input);
   const newTodo = new Room(room);
   newTodo.save((err, room) => {
     cb(err, room);
   });
-}
+};
 
 exports.create = (req, res) => {
   createRoom(req.body, (err, room) => {
@@ -103,13 +115,18 @@ exports.findDetail = (req, resp) => {
 exports.update = (req, resp) => {
   let room = getRoomDetailFromObj(req.body);
   if (room.lastChecked) {
-    room.lastChecked = Date.now()
+    room.lastChecked = Date.now();
   }
   room.update_at = new Date();
-  Room.findOneAndUpdate({ _id: req.params.id }, room, { upsert: true, new: true }, (err, room) => {
-    handleError(resp, err);
-    resp.status(200).json(room);
-  });
+  Room.findOneAndUpdate(
+    { _id: req.params.id },
+    room,
+    { upsert: true, new: true },
+    (err, room) => {
+      handleError(resp, err);
+      resp.status(200).json(room);
+    },
+  );
 };
 
 exports.remove = (req, resp) => {

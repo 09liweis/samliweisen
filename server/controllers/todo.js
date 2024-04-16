@@ -1,17 +1,17 @@
-var mongoose = require('mongoose'),
-  Todo = require('../models/todo');
-var { sendResp } = require('../helpers/request');
+var mongoose = require("mongoose"),
+  Todo = require("../models/todo");
+var { sendResp } = require("../helpers/request");
 
 const STRINGS = {
-  BAD_ID: 'Invalid todo id',
-  STEP_NAME: 'Missing step name'
+  BAD_ID: "Invalid todo id",
+  STEP_NAME: "Missing step name",
 };
 
 exports.findTodoList = findTodoList = ({ page, limit, status }, cb) => {
   let options = {};
   let query = {};
   if (status) {
-    query.status = status
+    query.status = status;
   }
   //TODO: fix pagination
   if (page) {
@@ -22,10 +22,15 @@ exports.findTodoList = findTodoList = ({ page, limit, status }, cb) => {
   if (limit) {
     options.limit = parseInt(limit);
   }
-  Todo.find(query, '_id name date steps status', options).sort('date').exec((err, todos) => {
-    cb(err, todos);
-  });
-}
+  Todo.find(query, "_id name date steps status", options)
+    .sort("date")
+    .then((todos) => {
+      cb(null, todos);
+    })
+    .catch((err) => {
+      cb(err);
+    });
+};
 
 exports.findList = (req, resp) => {
   findTodoList(req.query, (err, todos) => {
@@ -40,19 +45,19 @@ exports.createTodo = createTodo = (input, cb) => {
     name,
     date,
     status,
-  }
+  };
   if (steps) {
     todo.steps = steps;
   }
   //handle post data from wechat mini program
-  if (typeof steps == 'string') {
+  if (typeof steps == "string") {
     todo.steps = JSON.parse(steps);
   }
   const newTodo = new Todo(todo);
   newTodo.save((err, todo) => {
     cb(err, todo);
   });
-}
+};
 
 exports.create = (req, res) => {
   createTodo(req.body, (err, todo) => {
@@ -76,8 +81,7 @@ exports.findDetail = (req, resp) => {
 
 exports.update = (req, resp) => {
   const { steps, name, date, status } = req.body;
-  let todo = {
-  };
+  let todo = {};
   if (name) {
     todo.name = name;
   }
@@ -91,14 +95,19 @@ exports.update = (req, resp) => {
     todo.steps = steps;
   }
   //handle post data from wechat mini program
-  if (typeof steps == 'string') {
+  if (typeof steps == "string") {
     todo.steps = JSON.parse(steps);
   }
   todo.update_at = new Date();
-  Todo.findOneAndUpdate({ _id: req.params.id }, todo, { upsert: true, new: true }, (err, todo) => {
-    handleError(resp, err);
-    resp.status(200).json(todo);
-  });
+  Todo.findOneAndUpdate(
+    { _id: req.params.id },
+    todo,
+    { upsert: true, new: true },
+    (err, todo) => {
+      handleError(resp, err);
+      resp.status(200).json(todo);
+    },
+  );
 };
 
 exports.remove = (req, resp) => {
@@ -116,41 +125,45 @@ exports.updateStep = (req, resp) => {
     return resp.status(400).json({ msg: STRINGS.STEP_NAME });
   }
   if (!step.status) {
-    step.status = 'pending';
+    step.status = "pending";
   }
   if (!mode) {
-    mode = 'add';
+    mode = "add";
   }
   let update = {};
   switch (mode) {
-    case 'add':
-      update['$push'] = { steps: step };
+    case "add":
+      update["$push"] = { steps: step };
       break;
-    case 'delete':
-      update['$pull'] = { steps: { _id: step._id } }
+    case "delete":
+      update["$pull"] = { steps: { _id: step._id } };
       break;
-    case 'update':
-      if (step.idx == '') {
-        return resp.status(400).json({ msg: 'Missing step idx' });
+    case "update":
+      if (step.idx == "") {
+        return resp.status(400).json({ msg: "Missing step idx" });
       }
-      query['steps._id'] = step._id;
+      query["steps._id"] = step._id;
       delete step._id;
-      var key = 'steps.' + step.idx;
-      update['$set'] = {};
+      var key = "steps." + step.idx;
+      update["$set"] = {};
       delete step.idx;
-      update['$set'][key] = step;
+      update["$set"][key] = step;
       break;
     default:
       break;
   }
-  Todo.findOneAndUpdate(query, update, { returnNewDocument: true }, (err, todo) => {
-    if (err) {
-      return resp.status(400).json({ err });
-    }
-    resp.status(200).json({ msg: 'Update Success' });
-  });
-}
-
+  Todo.findOneAndUpdate(
+    query,
+    update,
+    { returnNewDocument: true },
+    (err, todo) => {
+      if (err) {
+        return resp.status(400).json({ err });
+      }
+      resp.status(200).json({ msg: "Update Success" });
+    },
+  );
+};
 
 function handleError(res, err) {
   if (err) {

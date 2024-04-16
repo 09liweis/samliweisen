@@ -1,11 +1,15 @@
-const { sendResp, sendErr } = require('../helpers/request');
-const Contact = require('../models/contact');
+const { sendResp, sendErr } = require("../helpers/request");
+const Contact = require("../models/contact");
 
 exports.findList = (req, resp) => {
-  Contact.find().sort('-groups').exec((err, contacts) => {
-    handleError(resp, err);
-    return sendResp(resp, contacts);
-  });
+  Contact.find()
+    .sort("-groups")
+    .then((contacts) => {
+      return sendResp(resp, contacts);
+    })
+    .catch((err) => {
+      handleError(resp, err);
+    });
 };
 
 exports.add = (req, resp) => {
@@ -29,16 +33,21 @@ exports.update = (req, resp) => {
     updateContact.groups = group;
   }
   updateContact.mt = new Date();
-  Contact.findOneAndUpdate({ _id: req.params.id }, updateContact, { upsert: true }, (err, contact) => {
-    handleError(resp, err);
-    return sendResp(resp, contact);
-  });
+  Contact.findOneAndUpdate(
+    { _id: req.params.id },
+    updateContact,
+    { upsert: true },
+    (err, contact) => {
+      handleError(resp, err);
+      return sendResp(resp, contact);
+    },
+  );
 };
 
 exports.remove = (req, resp) => {
   Contact.remove({ _id: req.params.id }, (err) => {
     handleError(resp, err);
-    return sendResp(resp, 'ok');
+    return sendResp(resp, "ok");
   });
 };
 

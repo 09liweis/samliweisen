@@ -551,20 +551,17 @@ exports.upsertVisual = async (req, resp) => {
 };
 
 function getRandomMovieDB(cb) {
-  Movie.countDocuments().exec((err, count) => {
-    if (err) {
-      return cb(err);
-    }
+  Movie.countDocuments().then((count) => {
     var random = Math.floor(Math.random() * count);
     Movie.findOne()
       .skip(random)
-      .exec((err, movie) => {
-        if (err || !movie) {
-          console.error(err);
-          return cb(err);
-        }
+      .then((movie) => {
         return cb(null, movie);
+      }).catch((err)=>{
+        return cb(err);
       });
+  }).catch((err)=>{
+    return cb(err);
   });
 }
 

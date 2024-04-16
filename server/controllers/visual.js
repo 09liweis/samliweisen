@@ -84,7 +84,11 @@ exports.getMovieDetail = async (req, resp) => {
   }
   try {
     const movie = await getMovieByDoubanId(douban_id);
-    return sendResp(resp, { movie: getFullMovieDetail(movie, { req }) });
+    if (movie) {
+      return sendResp(resp, { movie: getFullMovieDetail(movie, { req }) });
+    } else {
+      return sendErr(resp, { err: MOVIE_NOT_FOUND, douban_id });
+    }
   } catch (err) {
     return sendErr(resp, { err: err.toString() });
   }
@@ -583,16 +587,15 @@ exports.updateRandomMovie = (req, resp) => {
     if (err) return sendErr(resp, { err: err.toString() });
     getDoubanMovieSummary(movie.douban_id, (err, latestMovie) => {
       if (err) return sendErr({ msg: err.toString() });
-      Movie.updateOne(
-        { douban_id: movie.douban_id },
-        latestMovie).then((result) => {
+      Movie.updateOne({ douban_id: movie.douban_id }, latestMovie)
+        .then((result) => {
           if (result.ok) {
             return sendResp(resp, latestMovie);
           }
-        },
-      ).catch((err)=>{
-        if (err) return sendErr({ msg: err.toString() });
-      });
+        })
+        .catch((err) => {
+          if (err) return sendErr({ msg: err.toString() });
+        });
     });
   });
 };

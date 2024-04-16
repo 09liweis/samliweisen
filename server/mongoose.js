@@ -5,7 +5,7 @@ class Mongoose {
     mongoose.Promise = global.Promise;
 
     const dbUrl = process.env["MONGODB_URL"];
-    mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+    mongoose.connect(dbUrl, {});
     //,{ useNewUrlParser: true, useUnifiedTopology:true,useFindAndModify:true }
 
     mongoose.connection.on("connected", function () {

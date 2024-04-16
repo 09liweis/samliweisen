@@ -1,11 +1,15 @@
-var mongoose = require('mongoose'),
-Project = require('../models/project');
+var mongoose = require("mongoose"),
+  Project = require("../models/project");
 
 exports.getList = (req, resp) => {
-  Project.find({}).sort('-created_at').exec((err, projects) => {
-    handleError(resp, err);
-    resp.json(projects);
-  });
+  Project.find({})
+    .sort("-created_at")
+    .then((projects) => {
+      resp.json(projects);
+    })
+    .catch((err) => {
+      handleError(resp, err);
+    });
 };
 
 exports.create = (req, resp) => {
@@ -26,19 +30,23 @@ exports.findDetail = (req, resp) => {
 exports.update = (req, resp) => {
   let updateProject = req.body;
   updateProject.update_at = new Date();
-  Project.findOneAndUpdate({_id: req.params.id}, updateProject, {upsert: true}, (err, project) => {
-    handleError(resp, err);
-    resp.json(project);
-  });
+  Project.findOneAndUpdate(
+    { _id: req.params.id },
+    updateProject,
+    { upsert: true },
+    (err, project) => {
+      handleError(resp, err);
+      resp.json(project);
+    },
+  );
 };
 
-exports.remove = (req, resp) =>{
-  Project.remove({_id: req.params.id}, (err) =>{
+exports.remove = (req, resp) => {
+  Project.remove({ _id: req.params.id }, (err) => {
     handleError(resp, err);
-    resp.json({ok:1,msg:'Project Deleted'});
+    resp.json({ ok: 1, msg: "Project Deleted" });
   });
 };
-
 
 function handleError(res, err) {
   if (err) {

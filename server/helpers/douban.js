@@ -80,10 +80,13 @@ exports.getFullMovieDetail = (movie, { req }) => {
  * @returns {string} four letters year
  */
 exports.getMovieYear = (dates) => {
-  if (!dates) return "";
+  if (!dates && !Array.isArray(dates) && dates.length == 0) return "";
   try {
-    const [year] = dates[0].split("-");
-    return year;
+    const date = dates[0];
+    if (date) {
+      const [year] = date.split("-");
+      return year;
+    }
   } catch (err) {
     console.error(dates, err);
     return "";

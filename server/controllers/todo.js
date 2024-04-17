@@ -54,9 +54,14 @@ exports.createTodo = createTodo = (input, cb) => {
     todo.steps = JSON.parse(steps);
   }
   const newTodo = new Todo(todo);
-  newTodo.save((err, todo) => {
-    cb(err, todo);
-  });
+  newTodo
+    .save()
+    .then((todo) => {
+      cb(null, todo);
+    })
+    .catch((err) => {
+      cb(err);
+    });
 };
 
 exports.create = (req, res) => {

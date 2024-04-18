@@ -542,17 +542,13 @@ exports.upsertVisual = async (req, resp) => {
         movie.date_watched = new Date();
       }
       movie.date_updated = new Date();
-      Movie.findOneAndUpdate(
-        { douban_id },
-        movie,
-        { upsert: true },
-        (err, newMovie) => {
-          if (err) {
-            return sendErr(resp, { err: err.toString() });
-          }
+      Movie.findOneAndUpdate({ douban_id }, movie, { upsert: true })
+        .then((newMovie) => {
           return sendResp(resp, movie);
-        },
-      );
+        })
+        .catch((err) => {
+          return sendErr(resp, { err: err.toString() });
+        });
     });
   });
 };

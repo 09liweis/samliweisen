@@ -534,22 +534,23 @@ exports.upsertVisual = async (req, resp) => {
     if (!movie.douban_id) {
       return sendErr(resp, { msg: "Can not get movie" });
     }
-    Movie.findOne({ douban_id }, (err, oldMovie) => {
-      if (err) {
+    Movie.findOne({ douban_id })
+      .then((oldMovie) => {
+        if (!oldMovie) {
+          movie.date_watched = new Date();
+        }
+        movie.date_updated = new Date();
+        Movie.findOneAndUpdate({ douban_id }, movie, { upsert: true })
+          .then((newMovie) => {
+            return sendResp(resp, movie);
+          })
+          .catch((err) => {
+            return sendErr(resp, { err: err.toString() });
+          });
+      })
+      .catch((err) => {
         return sendErr(resp, { err: err.toString() });
-      }
-      if (!oldMovie) {
-        movie.date_watched = new Date();
-      }
-      movie.date_updated = new Date();
-      Movie.findOneAndUpdate({ douban_id }, movie, { upsert: true })
-        .then((newMovie) => {
-          return sendResp(resp, movie);
-        })
-        .catch((err) => {
-          return sendErr(resp, { err: err.toString() });
-        });
-    });
+      });
   });
 };
 

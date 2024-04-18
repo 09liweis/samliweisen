@@ -163,23 +163,29 @@ upsertTransaction = async (req, resp) => {
   if (_id) {
     transaction = transactionData;
     transaction.update_at = new Date();
-    Transaction.findOneAndUpdate(
-      { _id },
-      transaction,
-      { returnNewDocument: true, upsert: true },
-      (err, t) => {
+    Transaction.findOneAndUpdate({ _id }, transaction, {
+      returnNewDocument: true,
+      upsert: true,
+    })
+      .then((t) => {
         console.error(err);
         t.place = p;
         return sendResp(resp, t);
-      },
-    );
+      })
+      .catch((err) => {
+        return sendErr(resp, { err: err.toString() });
+      });
   } else {
     transaction = new Transaction(transactionData);
-    transaction.save(function (err, t) {
-      handleError(resp, err);
-      t.place = p;
-      return sendResp(resp, t);
-    });
+    transaction
+      .save()
+      .then((t) => {
+        t.place = p;
+        return sendResp(resp, t);
+      })
+      .catch((err) => {
+        handleError(resp, err);
+      });
   }
 };
 exports.create = (req, resp) => {

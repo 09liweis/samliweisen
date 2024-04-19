@@ -234,6 +234,7 @@ exports.getCineplex = (req, resp) => {
       url: "https://apis.cineplex.com/prod/cpx/theatrical/api/v1/movies/bookable?language=en",
     },
     function (err, { $, body }) {
+      if (err) return sendErr(resp, { err: err.toString() });
       let movies = [];
       if (body && Array.isArray(body)) {
         movies = body.map((m) => {

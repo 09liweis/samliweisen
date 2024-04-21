@@ -85,8 +85,10 @@ exports.createRoom = createRoom = (input, cb) => {
   }
   const room = getRoomDetailFromObj(input);
   const newTodo = new Room(room);
-  newTodo.save((err, room) => {
-    cb(err, room);
+  newTodo.save().then((room) => {
+    cb(null, room);
+  }).catch((err)=>{
+    cb(err);
   });
 };
 

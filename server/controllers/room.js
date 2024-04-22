@@ -85,11 +85,14 @@ exports.createRoom = createRoom = (input, cb) => {
   }
   const room = getRoomDetailFromObj(input);
   const newTodo = new Room(room);
-  newTodo.save().then((room) => {
-    cb(null, room);
-  }).catch((err)=>{
-    cb(err);
-  });
+  newTodo
+    .save()
+    .then((room) => {
+      cb(null, room);
+    })
+    .catch((err) => {
+      cb(err);
+    });
 };
 
 exports.create = (req, res) => {
@@ -101,17 +104,16 @@ exports.create = (req, res) => {
   });
 };
 
-exports.findDetail = (req, resp) => {
+exports.findDetail = async (req, resp) => {
   const rendId = req.params.id;
   if (!rendId) {
     return resp.status(404).json({ msg: STRINGS.BAD_ID });
   }
-  Room.findById(rendId, (err, room) => {
-    if (err) {
-      return handleError(resp, err);
-    }
-    resp.status(200).json(room);
-  });
+  try {
+    const room = await Room.findById(rendId);
+  } catch (err) {
+    return handleError(resp, err);
+  }
 };
 
 exports.update = (req, resp) => {

@@ -122,15 +122,16 @@ exports.update = (req, resp) => {
     room.lastChecked = Date.now();
   }
   room.update_at = new Date();
-  Room.findOneAndUpdate(
-    { _id: req.params.id },
-    room,
-    { upsert: true, new: true },
-    (err, room) => {
-      handleError(resp, err);
+  Room.findOneAndUpdate({ _id: req.params.id }, room, {
+    upsert: true,
+    new: true,
+  })
+    .then((room) => {
       resp.status(200).json(room);
-    },
-  );
+    })
+    .catch((err) => {
+      handleError(resp, err);
+    });
 };
 
 exports.remove = (req, resp) => {

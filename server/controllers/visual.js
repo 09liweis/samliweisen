@@ -368,6 +368,11 @@ const getDoubanMovieSummary = (douban_id, cb) => {
       return cb(err);
     }
 
+    const title = $('span[property="v:itemreviewed"]').text();
+    if (!title) {
+      return cb(`Movie ${douban_id} does not exist on Douban anymore`);
+    }
+
     const genresMatch = $('span[property="v:genre"]');
     if (genresMatch) {
       var genres = genresMatch.toArray().map((g) => $(g).text());
@@ -484,7 +489,7 @@ const getDoubanMovieSummary = (douban_id, cb) => {
     let visual = {
       douban_id,
       // douban_url,
-      title: $('span[property="v:itemreviewed"]').text(),
+      title,
       original_title,
       poster: $('img[rel="v:image"]').attr("src"),
       douban_rating: parseFloat($('strong[property="v:average"]').text() || 0),
@@ -584,15 +589,16 @@ exports.updateRandomMovie = (req, resp) => {
   getRandomMovieDB((err, movie) => {
     if (err) return sendErr(resp, { err: err.toString() });
     getDoubanMovieSummary(movie.douban_id, (err, latestMovie) => {
-      if (err) return sendErr({ msg: err.toString() });
+      console.log(latestMovie.title, latestMovie.douban_id);
+      if (err) return sendErr({ err: err.toString() });
       Movie.updateOne({ douban_id: movie.douban_id }, latestMovie)
         .then((result) => {
-          if (result.ok) {
+          if (result.acknowledged) {
             return sendResp(resp, latestMovie);
           }
         })
         .catch((err) => {
-          if (err) return sendErr({ msg: err.toString() });
+          if (err) return sendErr({ err: err.toString() });
         });
     });
   });

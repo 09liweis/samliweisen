@@ -366,160 +366,167 @@ exports.getSummary = (req, resp) => {
   });
 };
 
-const getDoubanMovieSummary = (douban_id, cb) => {
-  const douban_url = getDoubanUrl(douban_id);
-  sendRequest({ url: douban_url }, function (err, { statusCode, $, body }) {
-    if (err) {
-      return cb(err);
-    }
+const handleDoubanMovieSummary = ({ $, body }) => {
+  const genresMatch = $('span[property="v:genre"]');
+  if (genresMatch) {
+    var genres = genresMatch.toArray().map((g) => $(g).text());
+  }
 
-    const title = $('span[property="v:itemreviewed"]').text();
+  const recommendsMatch = $(".recommendations-bd dl");
+  if (recommendsMatch) {
+    var recommends = recommendsMatch.toArray().map((r) => {
+      var recommend = $(r);
+      var url = recommend.find("dd a").attr("href");
+      if (url) {
+        var douban_id = url.split("/")[4];
+      }
+      return {
+        douban_rating: recommend.find(".subject-rate").text(),
+        poster: recommend.find("dt img").attr("src"),
+        title: recommend.find("dd a").text(),
+        douban_id,
+      };
+    });
+  }
+
+  const photosMatch = $(".related-pic-bd li");
+  if (photosMatch) {
+    var photos = photosMatch.toArray().map((p) => {
+      const media = $(p);
+      let tp = "photo";
+      let src = media.find("img").attr("src");
+      let href = media.find("a").attr("href");
+      const mediaType = media.attr("class");
+      if (mediaType) {
+        tp = mediaType.replace("label-", "");
+        var imgStyle = media.find("a").attr("style");
+        var imgMatches = /url\((.*?)\)/g.exec(imgStyle);
+        if (imgMatches) {
+          src = imgMatches[1];
+        }
+      }
+      return { tp, src, href };
+    });
+  }
+
+  const awardsMatch = $(".award");
+  if (awardsMatch) {
+    var awards = awardsMatch.toArray().map((a) => {
+      return {
+        nm: $(a).find("li:first-child a").text(),
+        award: $(a).find("li:nth-child(2)").text(),
+      };
+    });
+  }
+
+  const castMatches = $(".celebrity");
+  if (castMatches) {
+    var casts = castMatches.toArray().map((c) => getCast($(c), $));
+  }
+
+  var websiteMatch = /官方网站:<\/span>(.*?)<br\/>/g.exec(body);
+  if (websiteMatch) {
+    var website = $(websiteMatch[1]).text().trim();
+    if (website.indexOf("http") == -1) {
+      website = `https://${website}`;
+    }
+  }
+  var originalTitleMatch = /又名:<\/span>(.*?)<br\/>/g.exec(body);
+  if (originalTitleMatch) {
+    var original_title = originalTitleMatch[1].trim();
+  }
+
+  const seasonMatch = /季数:<\/span>(.*?)<br\/>/g.exec(body);
+  if (seasonMatch) {
+    var season = seasonMatch[1].trim();
+    //if season is null, try to get select tag of season
+    if (isNaN(season)) {
+      season = $("#season option[selected]").text();
+    }
+    try {
+      season = parseInt(season);
+    } catch (seasonError) {
+      console.error(`Season parse error: ${seasonError}`);
+    }
+  }
+
+  var episodesMatch = /集数:<\/span>(.*?)<br\/>/g.exec(body);
+  if (episodesMatch) {
+    var episodes = parseInt(episodesMatch[1].trim());
+  }
+
+  var durationMatch = /单集片长:<\/span>(.*?)<br\/>/g.exec(body);
+  let duration = $('span[property="v:runtime"]').attr("content");
+  if (durationMatch) {
+    duration = durationMatch[1].trim();
+  }
+
+  var langsMatch = /语言:<\/span>(.*?)<br\/>/g.exec(body);
+  if (langsMatch) {
+    var languages = langsMatch[1].trim().split(" / ");
+  }
+
+  var countryMatch = /制片国家\/地区:<\/span>(.*?)<br\/>/g.exec(body);
+  if (countryMatch) {
+    var countries = countryMatch[1].trim().split(" / ");
+  }
+
+  const imdbMatches = body.match(/tt[\d]{7,8}/g);
+  const imdb_id = imdbMatches?.length ? imdbMatches[0] : "";
+
+  //2018-03-16(美国/中国大陆)
+  const dateMatches = body.match(
+    /[\d]{4}-[\d]{2}-[\d]{2}\([\u4e00-\u9fff\/]+\)/g,
+  );
+  const dates = [...new Set(dateMatches)];
+
+  return {
+    // douban_url,
+    title: $('span[property="v:itemreviewed"]').text(),
+    original_title,
+    poster: $('img[rel="v:image"]').attr("src"),
+    douban_rating: parseFloat($('strong[property="v:average"]').text() || 0),
+    douban_vote_count: parseInt($('span[property="v:votes"]').text()),
+    genres,
+    website,
+    duration,
+    episodes: getDefaultEpisodes(episodes),
+    season,
+    visual_type: episodes > 1 ? "tv" : "movie",
+    photos,
+    awards,
+    languages,
+    countries,
+    summary: $('span[property="v:summary"]').text().trim(),
+    casts,
+    release_dates: dates,
+    year: getMovieYear(dates),
+    recommends,
+    reviews: getReviews($),
+    comments: getComments($),
+    imdb_id,
+  };
+};
+
+const getDoubanMovieSummary = async (douban_id, cb) => {
+  const douban_url = getDoubanUrl(douban_id);
+  try {
+    const resp = await sendRequest({ url: douban_url });
+
+    const title = resp.$('span[property="v:itemreviewed"]').text();
     if (!title) {
       return cb(`Movie ${douban_id} does not exist on Douban anymore`);
     }
 
-    const genresMatch = $('span[property="v:genre"]');
-    if (genresMatch) {
-      var genres = genresMatch.toArray().map((g) => $(g).text());
-    }
-
-    const recommendsMatch = $(".recommendations-bd dl");
-    if (recommendsMatch) {
-      var recommends = recommendsMatch.toArray().map((r) => {
-        var recommend = $(r);
-        var url = recommend.find("dd a").attr("href");
-        if (url) {
-          var douban_id = url.split("/")[4];
-        }
-        return {
-          douban_rating: recommend.find(".subject-rate").text(),
-          poster: recommend.find("dt img").attr("src"),
-          title: recommend.find("dd a").text(),
-          douban_id,
-        };
-      });
-    }
-
-    const photosMatch = $(".related-pic-bd li");
-    if (photosMatch) {
-      var photos = photosMatch.toArray().map((p) => {
-        const media = $(p);
-        let tp = "photo";
-        let src = media.find("img").attr("src");
-        let href = media.find("a").attr("href");
-        const mediaType = media.attr("class");
-        if (mediaType) {
-          tp = mediaType.replace("label-", "");
-          var imgStyle = media.find("a").attr("style");
-          var imgMatches = /url\((.*?)\)/g.exec(imgStyle);
-          if (imgMatches) {
-            src = imgMatches[1];
-          }
-        }
-        return { tp, src, href };
-      });
-    }
-
-    const awardsMatch = $(".award");
-    if (awardsMatch) {
-      var awards = awardsMatch.toArray().map((a) => {
-        return {
-          nm: $(a).find("li:first-child a").text(),
-          award: $(a).find("li:nth-child(2)").text(),
-        };
-      });
-    }
-
-    const castMatches = $(".celebrity");
-    if (castMatches) {
-      var casts = castMatches.toArray().map((c) => getCast($(c), $));
-    }
-
-    var websiteMatch = /官方网站:<\/span>(.*?)<br\/>/g.exec(body);
-    if (websiteMatch) {
-      var website = $(websiteMatch[1]).text().trim();
-      if (website.indexOf("http") == -1) {
-        website = `https://${website}`;
-      }
-    }
-    var originalTitleMatch = /又名:<\/span>(.*?)<br\/>/g.exec(body);
-    if (originalTitleMatch) {
-      var original_title = originalTitleMatch[1].trim();
-    }
-
-    const seasonMatch = /季数:<\/span>(.*?)<br\/>/g.exec(body);
-    if (seasonMatch) {
-      var season = seasonMatch[1].trim();
-      //if season is null, try to get select tag of season
-      if (isNaN(season)) {
-        season = $("#season option[selected]").text();
-      }
-      try {
-        season = parseInt(season);
-      } catch (seasonError) {
-        console.error(`Season parse error: ${seasonError}`);
-      }
-    }
-
-    var episodesMatch = /集数:<\/span>(.*?)<br\/>/g.exec(body);
-    if (episodesMatch) {
-      var episodes = parseInt(episodesMatch[1].trim());
-    }
-
-    var durationMatch = /单集片长:<\/span>(.*?)<br\/>/g.exec(body);
-    let duration = $('span[property="v:runtime"]').attr("content");
-    if (durationMatch) {
-      duration = durationMatch[1].trim();
-    }
-
-    var langsMatch = /语言:<\/span>(.*?)<br\/>/g.exec(body);
-    if (langsMatch) {
-      var languages = langsMatch[1].trim().split(" / ");
-    }
-
-    var countryMatch = /制片国家\/地区:<\/span>(.*?)<br\/>/g.exec(body);
-    if (countryMatch) {
-      var countries = countryMatch[1].trim().split(" / ");
-    }
-
-    const imdbMatches = body.match(/tt[\d]{7,8}/g);
-    const imdb_id = imdbMatches?.length ? imdbMatches[0] : "";
-
-    //2018-03-16(美国/中国大陆)
-    const dateMatches = body.match(
-      /[\d]{4}-[\d]{2}-[\d]{2}\([\u4e00-\u9fff\/]+\)/g,
-    );
-    const dates = [...new Set(dateMatches)];
-
-    let visual = {
-      douban_id,
-      // douban_url,
-      title,
-      original_title,
-      poster: $('img[rel="v:image"]').attr("src"),
-      douban_rating: parseFloat($('strong[property="v:average"]').text() || 0),
-      douban_vote_count: parseInt($('span[property="v:votes"]').text()),
-      genres,
-      website,
-      duration,
-      episodes: getDefaultEpisodes(episodes),
-      season,
-      visual_type: episodes > 1 ? "tv" : "movie",
-      photos,
-      awards,
-      languages,
-      countries,
-      summary: $('span[property="v:summary"]').text().trim(),
-      casts,
-      release_dates: dates,
-      year: getMovieYear(dates),
-      recommends,
-      reviews: getReviews($),
-      comments: getComments($),
-      imdb_id,
-    };
+    let visual = handleDoubanMovieSummary(resp);
+    visual.douban_id = douban_id;
+    const imdb_id = visual.imdb_id;
     if (!imdb_id) {
-      return cb(null, visual);
+      if (cb) {
+        return cb(null, visual);
+      } else {
+        return visual;
+      }
     }
     //handle scraping imdb data
     getImdbSummary(imdb_id, (err, imdbObj) => {
@@ -527,9 +534,15 @@ const getDoubanMovieSummary = (douban_id, cb) => {
         return cb(err);
       }
       visual = Object.assign(visual, imdbObj);
-      return cb(null, visual);
+      if (cb) {
+        return cb(null, visual);
+      } else {
+        return visual;
+      }
     });
-  });
+  } catch (err) {
+    return cb(err);
+  }
 };
 
 exports.upsertVisual = async (req, resp) => {

@@ -337,17 +337,19 @@ exports.getComments = (req, resp) => {
   });
 };
 
-exports.getReviews = (req, resp) => {
+exports.getReviews = async (req, resp) => {
   let { douban_id } = req.params;
   if (!douban_id) {
     return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }
   const douban_url = getDoubanUrl(douban_id, { apiName: "reviews" });
-  sendRequest({ url: douban_url }, (err, { statusCode, $, body }) => {
-    if (err) return sendErr(resp, { err: err.toString() });
+  try {
+    const { $ } = await sendRequest({ url: douban_url });
     const reviews = getReviews($);
     return sendResp(resp, { reviews });
-  });
+  } catch (err) {
+    return sendErr(resp, { err: er.toString() });
+  }
 };
 
 exports.getSummary = (req, resp) => {

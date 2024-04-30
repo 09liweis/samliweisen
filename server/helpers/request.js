@@ -17,33 +17,48 @@ const headers = {
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36",
 };
 
+const handleRequestResp = (resp) => {
+  try {
+    var body = resp.data;
+    let statusCode = 200;
+    if (resp) {
+      statusCode = resp.status;
+    }
+    //handle json api result
+    if (body && typeof body == "object") {
+      return { body };
+    }
+    const $ = getCheerio(body);
+    return { statusCode, $, body };
+  } catch (err) {
+    return err;
+  }
+};
+
 /**
  * @param {object} {url, method, body}
  * @param {function} cb
  */
-exports.sendRequest = ({ url, method = "GET", body }, cb) => {
+exports.sendRequest = async ({ url, method = "GET", body }, cb) => {
   requestOpt = { url, method, headers };
   if (body) {
     requestOpt.data = body;
     //for post method
   }
-  axios(requestOpt).then((resp) => {
-    try {
-      var body = resp.data;
-      let statusCode = 200;
-      if (resp) {
-        statusCode = resp.status;
-      }
-      //handle json api result
-      if (body && typeof body == "object") {
-        return cb(null, { body });
-      }
-      const $ = getCheerio(body);
-      return cb(null, { statusCode, $, body });
-    } catch (err) {
-      return cb(err, {});
+  try {
+    const resp = await axios(requestOpt);
+    const result = handleRequestResp(resp);
+    if (cb) {
+      return cb(null, result);
+    } else {
+      return result;
     }
-  });
+  } catch (err) {
+    if (cb) {
+      return cb(err);
+    }
+    return err;
+  }
 };
 
 /**

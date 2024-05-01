@@ -98,13 +98,14 @@ exports.getDoubanMovieAPIs = getDoubanMovieAPIs = ({
   host,
   douban_id,
 }) => {
+  const summary = `https://${host}/api/movie/douban/${douban_id}`;
   return {
-    summary: `https://${host}/api/movies/douban/${douban_id}`,
-    reviews: `https://${host}/api/movies/douban/${douban_id}/reviews`,
-    comments: `https://${host}/api/movies/douban/${douban_id}/comments`,
-    casts: `https://${host}/api/movies/douban/${douban_id}/casts`,
-    photos: `https://${host}/api/movies/douban/${douban_id}/photos`,
-    videos: `https://${host}/api/movies/douban/${douban_id}/videos`,
+    summary,
+    reviews: `${summary}/reviews`,
+    comments: `${summary}/comments`,
+    casts: `${summary}/casts`,
+    photos: `${summary}/photos`,
+    videos: `${summary}/videos`,
   };
 };
 

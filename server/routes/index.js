@@ -1,40 +1,41 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-router.route('/').get(function(req, resp) {
+router.route("/").get(function (req, resp) {
   resp.status(200).json({
     todos: {
-      base: 'todos',
+      base: "todos",
     },
     movies: {
-      base: 'movies'
+      base: "movies",
     },
     blogs: {
-      base: 'blogs'
+      base: "blogs",
     },
     expenses: {
-      base: 'transactions',
-      statistics: 'statistics'
+      base: "transactions",
+      statistics: "statistics",
     },
     rents: {
-      base: 'rents'
-    }
+      base: "rents",
+    },
   });
 });
 
-var os = require('os');
-router.route('/sysdata').post((req, resp) => {
+var os = require("os");
+router.route("/sysdata").get((req, resp) => {
   var cpus = os.cpus();
   for (var i = 0, len = cpus.length; i < len; i++) {
     console.log("CPU %s:", i);
-    var cpu = cpus[i], total = 0;
+    var cpu = cpus[i],
+      total = 0;
 
     for (var type in cpu.times) {
       total += cpu.times[type];
     }
 
     for (type in cpu.times) {
-      console.log("\t", type, Math.round(100 * cpu.times[type] / total));
+      console.log("\t", type, Math.round((100 * cpu.times[type]) / total));
     }
   }
   var totalmem = os.totalmem();

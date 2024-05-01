@@ -577,46 +577,42 @@ exports.upsertVisual = async (req, resp) => {
   });
 };
 
-function getRandomMovieDB(cb) {
-  Movie.countDocuments()
-    .then((count) => {
-      var random = Math.floor(Math.random() * count);
-      Movie.findOne()
-        .skip(random)
-        .then((movie) => {
-          return cb(null, movie);
-        })
-        .catch((err) => {
-          return cb(err);
-        });
-    })
-    .catch((err) => {
-      return cb(err);
-    });
+async function getRandomMovieDB() {
+  try {
+    const count = await Movie.countDocuments();
+    var random = Math.floor(Math.random() * count);
+    const movie = await Movie.findOne().skip(random);
+    return movie;
+  } catch (err) {
+    return err;
+  }
 }
 
-exports.getRandomMovie = (req, resp) => {
-  getRandomMovieDB((err, movie) => {
-    if (err) return sendErr(resp, { err: err.toString() });
+exports.getRandomMovie = async (req, resp) => {
+  try {
+    const movie = await getRandomMovieDB();
     return sendResp(resp, movie);
-  });
+  } catch (err) {
+    return sendErr(resp, { err: err.toString() });
+  }
 };
 
-exports.updateRandomMovie = (req, resp) => {
-  getRandomMovieDB((err, movie) => {
-    if (err) return sendErr(resp, { err: err.toString() });
-    getDoubanMovieSummary(movie.douban_id, (err, latestMovie) => {
-      console.log(latestMovie.title, latestMovie.douban_id);
-      if (err) return sendErr({ err: err.toString() });
-      Movie.updateOne({ douban_id: movie.douban_id }, latestMovie)
-        .then((result) => {
-          if (result.acknowledged) {
-            return sendResp(resp, latestMovie);
-          }
-        })
-        .catch((err) => {
-          if (err) return sendErr({ err: err.toString() });
-        });
-    });
-  });
+exports.updateRandomMovie = async (req, resp) => {
+  try {
+    const movie = await getRandomMovieDB();
+    const latestMovie = await getDoubanMovieSummary(movie.douban_id);
+    const result = await Movie.updateOne(
+      { douban_id: movie.douban_id },
+      latestMovie,
+    );
+    if (result.acknowledged) {
+      console.info(movie.title, movie.douban_id, "updated");
+      return sendResp(resp, latestMovie);
+    } else {
+      console.error(result, movie.douban_id);
+      return sendResp(resp, result);
+    }
+  } catch (err) {
+    return sendErr({ err: err.toString() });
+  }
 };

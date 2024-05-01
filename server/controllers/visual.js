@@ -352,7 +352,7 @@ exports.getReviews = async (req, resp) => {
   }
 };
 
-exports.getSummary = (req, resp) => {
+exports.getSummary = async (req, resp) => {
   let { douban_id } = req.params;
   if (douban_id) {
     douban_id = douban_id.trim();
@@ -360,10 +360,13 @@ exports.getSummary = (req, resp) => {
   if (!douban_id) {
     return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }
-  getDoubanMovieSummary(douban_id, (err, visual) => {
-    if (err) return sendErr(resp, { err: err.toString() });
+  try {
+    const visual = await getDoubanMovieSummary(douban_id);
+    console.log(visual);
     return sendResp(resp, getFullMovieDetail(visual, { req }));
-  });
+  } catch (err) {
+    return sendErr(resp, { err: err.toString() });
+  }
 };
 
 const handleDoubanMovieSummary = ({ $, body }) => {
@@ -529,17 +532,13 @@ const getDoubanMovieSummary = async (douban_id, cb) => {
       }
     }
     //handle scraping imdb data
-    getImdbSummary(imdb_id, (err, imdbObj) => {
-      if (err) {
-        return cb(err);
-      }
-      visual = Object.assign(visual, imdbObj);
-      if (cb) {
-        return cb(null, visual);
-      } else {
-        return visual;
-      }
-    });
+    const imdbObj = await getImdbSummary(imdb_id);
+    visual = Object.assign(visual, imdbObj);
+    if (cb) {
+      return cb(null, visual);
+    } else {
+      return visual;
+    }
   } catch (err) {
     return cb(err);
   }

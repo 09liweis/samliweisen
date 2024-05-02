@@ -260,7 +260,7 @@ exports.search = (req, resp) => {
   }
   const url = `https://m.douban.com/search/?query=${encodeURIComponent(
     keyword,
-  )}&type=movie`;
+  )}&type=1002`;
   sendRequest({ url }, function (err, { $ }) {
     const results = $(".search_results_subjects a");
     if (results) {

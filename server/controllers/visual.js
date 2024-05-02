@@ -362,7 +362,7 @@ exports.getSummary = async (req, resp) => {
   }
   try {
     const visual = await getDoubanMovieSummary(douban_id);
-    console.log(visual);
+    // console.log(visual);
     return sendResp(resp, getFullMovieDetail(visual, { req }));
   } catch (err) {
     return sendErr(resp, { err: err.toString() });
@@ -550,31 +550,21 @@ exports.upsertVisual = async (req, resp) => {
   if (!douban_id) {
     return sendErr(resp, { msg: MISSING_DOUBAN_ID, body: req.body });
   }
-  getDoubanMovieSummary(douban_id, (err, movie) => {
-    if (err) {
-      return sendErr(resp, { err: err.toString() });
-    }
+  try {
+    const movie = await getDoubanMovieSummary(douban_id);
     if (!movie.douban_id) {
       return sendErr(resp, { msg: "Can not get movie" });
     }
-    Movie.findOne({ douban_id })
-      .then((oldMovie) => {
-        if (!oldMovie) {
-          movie.date_watched = new Date();
-        }
-        movie.date_updated = new Date();
-        Movie.findOneAndUpdate({ douban_id }, movie, { upsert: true })
-          .then((newMovie) => {
-            return sendResp(resp, movie);
-          })
-          .catch((err) => {
-            return sendErr(resp, { err: err.toString() });
-          });
-      })
-      .catch((err) => {
-        return sendErr(resp, { err: err.toString() });
-      });
-  });
+    const oldMovie = await Movie.findOne({ douban_id });
+    if (!oldMovie) {
+      movie.date_watched = new Date();
+    }
+    movie.date_updated = new Date();
+    const newMovie = await Movie.findOneAndUpdate({ douban_id }, movie, { upsert: true });
+    return sendResp(resp, movie);
+  } catch (err) {
+    return sendErr(resp, { err: err.toString() });
+  }
 };
 
 async function getRandomMovieDB() {

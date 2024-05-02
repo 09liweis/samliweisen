@@ -16,15 +16,25 @@ exports.getImdbSummary = async (imdb_id) => {
   try {
     const { $ } = await sendRequest({ url });
     var imdbObj = {};
-    const jsonLdInfo = $('script[type="application/ld+json"]').text();
+    const jsonLdInfo = $("#__NEXT_DATA__").text();
     const parseJSONInfo = JSON.parse(jsonLdInfo);
-    // console.log(parseJSONInfo);
-    const { name, image, description, aggregateRating, genre } = parseJSONInfo;
-    imdbObj.imdb_title = name;
-    imdbObj.imdb_rating = aggregateRating?.ratingValue;
+    const { aboveTheFoldData, mainColumnData } = parseJSONInfo.props.pageProps;
+    const {
+      titleText: { text },
+      certificate: { rating },
+      ratingsSummary: { aggregateRating },
+      primaryImage: { url: image },
+      plot: {
+        plotText: { plainText },
+      },
+      genres: { genres },
+    } = aboveTheFoldData;
+    imdbObj.imdb_title = text;
+    imdbObj.imdb_rating = aggregateRating;
     imdbObj.imdb_poster = image;
-    imdbObj.imdb_description = description;
-    imdbObj.imdb_genres = genre;
+    imdbObj.imdb_description = plainText;
+    imdbObj.imdb_genres = genres.map((genre) => genre.text);
+    imdbObj.certificate = rating;
     return imdbObj;
   } catch (err) {
     return err;

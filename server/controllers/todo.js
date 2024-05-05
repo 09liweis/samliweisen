@@ -84,7 +84,7 @@ exports.findDetail = (req, resp) => {
   });
 };
 
-exports.update = (req, resp) => {
+exports.update = async (req, resp) => {
   const { steps, name, date, status } = req.body;
   let todo = {};
   if (name) {
@@ -104,15 +104,15 @@ exports.update = (req, resp) => {
     todo.steps = JSON.parse(steps);
   }
   todo.update_at = new Date();
-  Todo.findOneAndUpdate(
-    { _id: req.params.id },
-    todo,
-    { upsert: true, new: true },
-    (err, todo) => {
-      handleError(resp, err);
-      resp.status(200).json(todo);
-    },
-  );
+  try {
+    todo = await Todo.findOneAndUpdate({ _id: req.params.id }, todo, {
+      upsert: true,
+      new: true,
+    });
+    resp.status(200).json(todo);
+  } catch (err) {
+    return handleError(resp, err);
+  }
 };
 
 exports.remove = (req, resp) => {

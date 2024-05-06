@@ -8,7 +8,7 @@ const {
   getFullMovieDetail,
 } = require("../helpers/douban");
 
-const CAST_DOUBAN_URL = "https://movie.douban.com/celebrity/";
+const CAST_DOUBAN_URL = "https://www.douban.com/personage/";
 const SORTS = ["recommend", "time", "rank"];
 
 const NUM_LIMIT = 30;
@@ -234,7 +234,7 @@ exports.getCast = (req, resp) => {
   const { cast_id } = req.params;
   const url = `${CAST_DOUBAN_URL}${cast_id}/`;
   sendRequest({ url }, (err, { $ }) => {
-    const infoMatch = $("#headline .info li");
+    const infoMatch = $(".subject-property li");
     const infos = {};
     if (infoMatch) {
       for (let i = 0; i < infoMatch.length; i++) {

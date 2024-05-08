@@ -109,6 +109,10 @@ exports.getDoubanMovieAPIs = getDoubanMovieAPIs = ({
   };
 };
 
+exports.getDoubanCastAPI = getDoubanCastAPI = (cast_id) => {
+  return `${process.env["HOST_URL"]}/api/movie/cast/${cast_id}`;
+};
+
 exports.getPhotos = ($) => {
   const photosMatch = $(".poster-col3 li");
   var photos = [];
@@ -175,12 +179,9 @@ exports.getCast = (cast, $) => {
   }
   const name = cast.find("a.name");
   const href = name.attr("href");
-  var id;
-  if (href) {
-    const hrefArray = href.split("/");
-    id = hrefArray[hrefArray.length - 2];
-  }
+  const [, , , , id] = href?.split("/");
   return {
+    cast_api: getDoubanCastAPI(id),
     id,
     name: name.text(),
     avt: getAvtUrl(cast),

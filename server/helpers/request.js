@@ -48,11 +48,7 @@ exports.sendRequest = async ({ url, method = "GET", body }, cb) => {
   try {
     const resp = await axios(requestOpt);
     const result = handleRequestResp(resp);
-    if (cb) {
-      return cb(null, result);
-    } else {
-      return result;
-    }
+    return cb ? cb(null, result) : result;
   } catch (err) {
     if (cb) {
       return cb(err);

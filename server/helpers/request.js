@@ -50,10 +50,7 @@ exports.sendRequest = async ({ url, method = "GET", body }, cb) => {
     const result = handleRequestResp(resp);
     return cb ? cb(null, result) : result;
   } catch (err) {
-    if (cb) {
-      return cb(err);
-    }
-    return err;
+    return cb ? cb(err) : err;
   }
 };
 

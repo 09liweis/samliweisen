@@ -1,7 +1,7 @@
 var axios = require("axios");
 var cheerio = require("cheerio");
 
-exports.getCheerio = getCheerio = (body) => {
+const getCheerio = (body) => {
   var body = body.replace(/(\r\n|\n|\r)/gm, "").replace(/ +(?= )/g, "");
   return cheerio.load(body.toString(), {
     normalizeWhitespace: true,

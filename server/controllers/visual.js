@@ -362,7 +362,6 @@ exports.getSummary = async (req, resp) => {
   }
   try {
     const visual = await getDoubanMovieSummary(douban_id);
-    // console.log(visual);
     return sendResp(resp, getFullMovieDetail(visual, { req }));
   } catch (err) {
     return sendErr(resp, { err: err.toString() });
@@ -511,36 +510,22 @@ const handleDoubanMovieSummary = ({ $, body }) => {
   };
 };
 
-const getDoubanMovieSummary = async (douban_id, cb) => {
+const getDoubanMovieSummary = async (douban_id) => {
   const douban_url = getDoubanUrl(douban_id);
   try {
     const resp = await sendRequest({ url: douban_url });
-
-    const title = resp.$('span[property="v:itemreviewed"]').text();
-    if (!title) {
-      return cb(`Movie ${douban_id} does not exist on Douban anymore`);
-    }
-
     let visual = handleDoubanMovieSummary(resp);
     visual.douban_id = douban_id;
     const imdb_id = visual.imdb_id;
     if (!imdb_id) {
-      if (cb) {
-        return cb(null, visual);
-      } else {
-        return visual;
-      }
+      return visual;
     }
     //handle scraping imdb data
     const imdbObj = await getImdbSummary(imdb_id);
     visual = Object.assign(visual, imdbObj);
-    if (cb) {
-      return cb(null, visual);
-    } else {
-      return visual;
-    }
+    return visual;
   } catch (err) {
-    return cb(err);
+    return err;
   }
 };
 
@@ -560,7 +545,9 @@ exports.upsertVisual = async (req, resp) => {
       movie.date_watched = new Date();
     }
     movie.date_updated = new Date();
-    const newMovie = await Movie.findOneAndUpdate({ douban_id }, movie, { upsert: true });
+    const newMovie = await Movie.findOneAndUpdate({ douban_id }, movie, {
+      upsert: true,
+    });
     return sendResp(resp, movie);
   } catch (err) {
     return sendErr(resp, { err: err.toString() });

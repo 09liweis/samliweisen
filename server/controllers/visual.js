@@ -590,6 +590,6 @@ exports.updateRandomMovie = async (req, resp) => {
       return sendResp(resp, result);
     }
   } catch (err) {
-    return sendErr({ err: err.toString() });
+    return sendErr(resp,{ err: err.toString() });
   }
 };

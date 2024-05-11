@@ -57,19 +57,20 @@ exports.getCommingMovies = (req, resp) => {
     if (err) {
       return sendErr(resp, err);
     }
-    const listItems = $("#showing-soon .item");
+    const listItems = $.getNode("#showing-soon .item");
     var movies = [];
     if (listItems) {
       movies = listItems.toArray().map((item) => {
-        var movieUrl = $(item).find(".thumb").attr("href");
-        var poster = $(item).find(".thumb img").attr("src");
+        const movieNode = $.getNode(item);
+        var movieUrl = movieNode.find(".thumb").attr("href");
+        var poster = movieNode.find(".thumb img").attr("src");
         let movie = {
           douban_id: movieUrl.split("/")[4],
           poster: getDoubanPoster(poster),
-          title: $(item).find(".intro h3 a").text(),
-          release: $(item).find("ul .dt:nth-child(1)").text(),
-          category: $(item).find("ul .dt:nth-child(2)").text(),
-          country: $(item).find("ul .dt:nth-child(3)").text(),
+          title: movieNode.find(".intro h3 a").text(),
+          release: movieNode.find("ul .dt:nth-child(1)").text(),
+          category: movieNode.find("ul .dt:nth-child(2)").text(),
+          country: movieNode.find("ul .dt:nth-child(3)").text(),
         };
         return getFullMovieDetail(movie, { req });
       });

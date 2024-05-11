@@ -150,7 +150,7 @@ exports.inTheatre = (req, resp) => {
   }
   sendRequest({ url: `${DOUBAN_INTHEATRE_URL}${city}` }, function (err, { $ }) {
     if (err) return sendErr(resp, { err: err.toString() });
-    const listItems = $(".list-item");
+    const listItems = $.getNode(".list-item");
     const movies = [];
     if (listItems) {
       const dataNames = [
@@ -162,7 +162,7 @@ exports.inTheatre = (req, resp) => {
         "category",
       ];
       for (let i = 0; i < listItems.length; i++) {
-        const item = $(listItems[i]);
+        const item = $.getNode(listItems[i]);
         const movie = {
           douban_id: item.attr("id"),
           poster: item.find("img").attr("src"),

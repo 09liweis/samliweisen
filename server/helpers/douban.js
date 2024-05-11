@@ -166,7 +166,7 @@ exports.getCast = (cast, $) => {
   let works = [];
   if (worksMatch) {
     for (let i = 0; i < worksMatch.length; i++) {
-      const work = $(worksMatch[i]);
+      const work = $.getNode(worksMatch[i]);
       works.push({
         url: work.attr("href"),
         tl: work.attr("title"),

@@ -287,12 +287,14 @@ exports.getCelebrities = (req, resp) => {
   }
   const douban_url = getDoubanUrl(douban_id, { apiName: "celebrities" });
   sendRequest({ url: douban_url }, function (err, { statusCode, $, body }) {
-    const castsMatches = $(".list-wrapper");
+    const castsMatches = $.getNode(".list-wrapper");
     let casts = castsMatches.toArray().map((c) => {
-      const castSection = $(c);
+      const castSection = $.getNode(c);
       let castTl = castSection.find("h2").text();
       const celebritiesMatch = castSection.find(".celebrity");
-      let celebrities = celebritiesMatch.toArray().map((c) => getCast($(c), $));
+      let celebrities = celebritiesMatch
+        .toArray()
+        .map((c) => getCast($.getNode(c), $));
       return { tl: castTl, celebrities };
     });
     sendResp(resp, { douban_url, casts });

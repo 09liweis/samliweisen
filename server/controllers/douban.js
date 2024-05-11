@@ -166,25 +166,27 @@ exports.getVideos = (req, resp) => {
   const url = `https://movie.douban.com/subject/${douban_id}/trailer`;
   sendRequest({ url }, (err, { $ }) => {
     if (err) return sendErr(resp, { err: err.toString() });
-    const mods = $(".mod");
+    const mods = $.getNode(".mod");
     var sections = mods.toArray().map((mod) => {
-      var title = $(mod).find("h2").text();
+      const modNode = $.getNode(mod);
+      var title = modNode.find("h2").text();
       var videos = { title };
-      videos.videos = $(mod)
+      videos.videos = modNode
         .find(".video-list li")
         .toArray()
         .map((v) => {
-          var [protocol, a, domain, type, video_id, left] = $(v)
+          const videoNode = $.getNode(v);
+          var [protocol, a, domain, type, video_id, left] = videoNode
             .find(".pr-video")
             .attr("href")
             .split("/");
           return {
-            title: $(v).find("p:nth-child(2) a").text(),
+            title: videoNode.find("p:nth-child(2) a").text(),
             type,
             video_id,
-            length: $(v).find(".pr-video em").text(),
-            photo: $(v).find(".pr-video img").attr("src"),
-            date: $(v).find(".trail-meta span").text(),
+            length: videoNode.find(".pr-video em").text(),
+            photo: videoNode.find(".pr-video img").attr("src"),
+            date: videoNode.find(".trail-meta span").text(),
           };
         });
       return videos;

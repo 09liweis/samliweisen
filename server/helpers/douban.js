@@ -110,11 +110,11 @@ exports.getDoubanCastAPI = getDoubanCastAPI = (cast_id) => {
 };
 
 exports.getPhotos = ($) => {
-  const photosMatch = $(".poster-col3 li");
+  const photosMatch = $.getNode(".poster-col3 li");
   var photos = [];
   if (photosMatch) {
     for (let i = 0; i < photosMatch.length; i++) {
-      const photo = $(photosMatch[i]);
+      const photo = $.getNode(photosMatch[i]);
       const href = photo.find("a").attr("href").split("/");
       if (href && href.length > 5) {
         var photo_id = href[5];

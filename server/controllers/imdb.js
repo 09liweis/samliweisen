@@ -54,10 +54,12 @@ exports.getImdbBoxOffice = (req, resp) => {
       return sendErr(resp, err);
     }
     const boxOffice = {
-      title: $(".chart-layout-specific-title-text").text(),
-      date: $(".chart-layout-specific-title .ipc-title__description").text(),
+      title: $.getNodeText(".chart-layout-specific-title-text"),
+      date: $.getNodeText(
+        ".chart-layout-specific-title .ipc-title__description",
+      ),
     };
-    const jsonLdInfo = $('script[type="application/json"]').text();
+    const jsonLdInfo = $.getNodeText('script[type="application/json"]');
     const json = JSON.parse(jsonLdInfo);
     const moviesData =
       json?.props?.pageProps?.pageData?.topGrossingReleases?.edges;

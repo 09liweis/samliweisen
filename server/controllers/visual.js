@@ -369,15 +369,15 @@ exports.getSummary = async (req, resp) => {
 };
 
 const handleDoubanMovieSummary = ({ $, body }) => {
-  const genresMatch = $('span[property="v:genre"]');
+  const genresMatch = $.getNode('span[property="v:genre"]');
   if (genresMatch) {
-    var genres = genresMatch.toArray().map((g) => $(g).text());
+    var genres = genresMatch.toArray().map((g) => $.getNodeText(g));
   }
 
-  const recommendsMatch = $(".recommendations-bd dl");
+  const recommendsMatch = $.getNode(".recommendations-bd dl");
   if (recommendsMatch) {
     var recommends = recommendsMatch.toArray().map((r) => {
-      var recommend = $(r);
+      var recommend = $.getNode(r);
       var url = recommend.find("dd a").attr("href");
       if (url) {
         var douban_id = url.split("/")[4];
@@ -391,10 +391,10 @@ const handleDoubanMovieSummary = ({ $, body }) => {
     });
   }
 
-  const photosMatch = $(".related-pic-bd li");
+  const photosMatch = $.getNode(".related-pic-bd li");
   if (photosMatch) {
     var photos = photosMatch.toArray().map((p) => {
-      const media = $(p);
+      const media = $.getNode(p);
       let tp = "photo";
       let src = media.find("img").attr("src");
       let href = media.find("a").attr("href");
@@ -411,24 +411,24 @@ const handleDoubanMovieSummary = ({ $, body }) => {
     });
   }
 
-  const awardsMatch = $(".award");
+  const awardsMatch = $.getNode(".award");
   if (awardsMatch) {
     var awards = awardsMatch.toArray().map((a) => {
       return {
-        nm: $(a).find("li:first-child a").text(),
-        award: $(a).find("li:nth-child(2)").text(),
+        nm: $.getNode(a).find("li:first-child a").text(),
+        award: $.getNode(a).find("li:nth-child(2)").text(),
       };
     });
   }
 
-  const castMatches = $(".celebrity");
+  const castMatches = $.getNode(".celebrity");
   if (castMatches) {
-    var casts = castMatches.toArray().map((c) => getCast($(c), $));
+    var casts = castMatches.toArray().map((c) => getCast($.getNode(c), $));
   }
 
   var websiteMatch = /官方网站:<\/span>(.*?)<br\/>/g.exec(body);
   if (websiteMatch) {
-    var website = $(websiteMatch[1]).text().trim();
+    var website = $.getNodeText(websiteMatch[1]).trim();
     if (website.indexOf("http") == -1) {
       website = `https://${website}`;
     }
@@ -458,7 +458,7 @@ const handleDoubanMovieSummary = ({ $, body }) => {
   }
 
   var durationMatch = /单集片长:<\/span>(.*?)<br\/>/g.exec(body);
-  let duration = $('span[property="v:runtime"]').attr("content");
+  let duration = $.getAttr('span[property="v:runtime"]', "content");
   if (durationMatch) {
     duration = durationMatch[1].trim();
   }
@@ -484,11 +484,13 @@ const handleDoubanMovieSummary = ({ $, body }) => {
 
   return {
     // douban_url,
-    title: $('span[property="v:itemreviewed"]').text(),
+    title: $.getNodeText('span[property="v:itemreviewed"]'),
     original_title,
-    poster: $('img[rel="v:image"]').attr("src"),
-    douban_rating: parseFloat($('strong[property="v:average"]').text() || 0),
-    douban_vote_count: parseInt($('span[property="v:votes"]').text()),
+    poster: $.getAttr('img[rel="v:image"]', "src"),
+    douban_rating: parseFloat(
+      $.getNodeText('strong[property="v:average"]') || 0,
+    ),
+    douban_vote_count: parseInt($.getNodeText('span[property="v:votes"]')),
     genres,
     website,
     duration,
@@ -499,7 +501,7 @@ const handleDoubanMovieSummary = ({ $, body }) => {
     awards,
     languages,
     countries,
-    summary: $('span[property="v:summary"]').text().trim(),
+    summary: $.getNodeText('span[property="v:summary"]').trim(),
     casts,
     release_dates: dates,
     year: getMovieYear(dates),
@@ -590,6 +592,6 @@ exports.updateRandomMovie = async (req, resp) => {
       return sendResp(resp, result);
     }
   } catch (err) {
-    return sendErr(resp,{ err: err.toString() });
+    return sendErr(resp, { err: err.toString() });
   }
 };

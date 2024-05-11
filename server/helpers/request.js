@@ -1,5 +1,6 @@
 var axios = require("axios");
 var cheerio = require("cheerio");
+var ParseSelector = require("./parseSelector");
 
 const getCheerio = (body) => {
   var body = body.replace(/(\r\n|\n|\r)/gm, "").replace(/ +(?= )/g, "");
@@ -28,7 +29,7 @@ const handleRequestResp = (resp) => {
     if (body && typeof body == "object") {
       return { body };
     }
-    const $ = getCheerio(body);
+    const $ = new ParseSelector(getCheerio(body));
     return { statusCode, $, body };
   } catch (err) {
     return err;

@@ -187,13 +187,13 @@ exports.getCast = (cast, $) => {
 };
 
 exports.getReviews = ($) => {
-  const reviewsMatch = $(".main.review-item");
+  const reviewsMatch = $.getNode(".main.review-item");
   var reviews = [];
   if (!reviewsMatch) {
     return reviews;
   }
   reviewsMatch.toArray().forEach((item) => {
-    var review = $(item);
+    var review = $.getNode(item);
     var rating = review.find(".main-title-rating").attr("class");
     if (typeof rating == "string") {
       try {
@@ -224,13 +224,13 @@ exports.getReviews = ($) => {
 };
 
 exports.getComments = ($) => {
-  const commentsMatch = $(".comment-item");
+  const commentsMatch = $.getNode(".comment-item");
   var comments = [];
   if (!commentsMatch) {
     return comments;
   }
   for (var i = 0; i < commentsMatch.length; i++) {
-    var comment = $(commentsMatch[i]);
+    var comment = $.getNode(commentsMatch[i]);
     var rating = comment.find(".rating").attr("class");
     if (typeof rating == "string") {
       try {

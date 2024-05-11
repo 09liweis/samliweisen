@@ -185,11 +185,11 @@ exports.getHongkong = (req, resp) => {
   }
   sendRequest({ url: `https://hkmovie6.com/${name}` }, function (err, { $ }) {
     if (err) return sendErr(resp, { err: err.toString() });
-    const movieResults = $(".shows .movie.show");
+    const movieResults = $.getNode(".shows .movie.show");
     let movies = [];
     if (movieResults) {
       movies = movieResults.toArray().map((m) => {
-        const movie = $(m);
+        const movie = $.getNode(m);
         const poster = movie.find("img").attr("src");
         const video = movie.find("video").attr("src");
         const title = movie.find(".name").text();

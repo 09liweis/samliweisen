@@ -123,11 +123,11 @@ exports.updateSamMovie = async (req, resp) => {
 exports.getDoubanChart = (req, resp) => {
   sendRequest({ url: DOUBAN_CHART_URL }, function (err, { $ }) {
     if (err) return sendErr(resp, { err: err.toString() });
-    const listItems = $(".item");
+    const listItems = $.getNode(".item");
     const movies = [];
     if (listItems) {
       for (let i = 0; i < listItems.length; i++) {
-        const item = $(listItems[i]);
+        const item = $.getNode(listItems[i]);
         const linkArray = item.find(".nbg").attr("href").split("/");
         const movie = {
           douban_id: linkArray[4],

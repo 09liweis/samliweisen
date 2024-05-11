@@ -24,14 +24,15 @@ exports.getAlltimeBoxOffice = (req, resp) => {
     if (err) {
       return sendErr(resp, { err: err.toString() });
     }
-    const results = $(".doulist-item");
+    const results = $.getNode(".doulist-item");
     const movies = results.toArray().map((movie) => {
+      const movieNode = $.getNode(movie);
       return {
-        title: $(movie).find(".title a").text(),
-        douban_rating: $(movie).find(".rating_nums").text(),
-        poster: getDoubanPoster($(movie).find(".post img").attr("src")),
-        release_date: $(movie).find(".abstract").html().split("<br>").pop(),
-        totalGross: $(movie)
+        title: movieNode.find(".title a").text(),
+        douban_rating: movieNode.find(".rating_nums").text(),
+        poster: getDoubanPoster(movieNode.find(".post img").attr("src")),
+        release_date: movieNode.find(".abstract").html().split("<br>").pop(),
+        totalGross: movieNode
           .find(".comment")
           .text()
           .replace("评语：", "")

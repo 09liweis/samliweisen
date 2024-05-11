@@ -214,10 +214,10 @@ exports.getTaiwan = (req, resp) => {
     },
     function (err, { $ }) {
       let movies = [];
-      const movieResults = $(".movie-list .cell");
+      const movieResults = $.getNode(".movie-list .cell");
       if (movieResults) {
         movies = movieResults.toArray().map((m) => {
-          const movie = $(m);
+          const movie = $.getNode(m);
           return {
             title: movie.find(".title h6").text(),
             original_title: movie.find(".show-for-large").text(),

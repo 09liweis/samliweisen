@@ -262,10 +262,10 @@ exports.search = (req, resp) => {
     keyword,
   )}&type=1002`;
   sendRequest({ url }, function (err, { $ }) {
-    const results = $(".search_results_subjects a");
+    const results = $.getNode(".search_results_subjects a");
     if (results) {
       var movies = results.toArray().map((r) => {
-        const visual = $(r);
+        const visual = $.getNode(r);
         const [, , , douban_id] = visual.attr("href").split("/");
         const movie = {
           douban_id,

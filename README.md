@@ -30,8 +30,10 @@ World Time/holiday: http://www.shijian.cc
 - [x] movie detail route /api/movies/[douban_id]
 - [x] douban chat api
 - [x] douban box office api
-- [ ] Hongkong box office
-- [ ] Japanese box office 
+- [X] Hongkong box office
+- [ ] Japanese box office
+- [ ] Add TypeScript support
+- [ ] add test framework
 - [ ] integrate sendgrid email service
 - [ ] api rate limiter
 - [ ] user resume

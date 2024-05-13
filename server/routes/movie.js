@@ -32,7 +32,7 @@ router.route("/video/:video_id").get(getVideo);
 
 router.route("/douban/:douban_id/photos").get(getPhotos);
 
-router.route("/photo").post(getPhotoDetail);
+router.route("/photo/:photo_id").get(getPhotoDetail);
 
 router.route("/douban/:douban_id/comments").get(getComments);
 

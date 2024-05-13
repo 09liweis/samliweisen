@@ -302,18 +302,18 @@ exports.getCelebrities = (req, resp) => {
 };
 
 exports.getPhotoDetail = (req, resp) => {
-  const { photo_id } = req.body;
+  const { photo_id } = req.params;
   if (!photo_id) {
     return resp.json({ msg: "No Photo Id" });
   }
   const douban_url = `https://movie.douban.com/photos/photo/${photo_id}`;
   sendRequest({ url: douban_url }, (err, { $ }) => {
-    const commentsMatch = $(".comment-item");
-    const uploader = $(".poster-info li:nth-child(5) a").text();
-    const upload_date = $(".poster-info li:nth-child(6)").text();
+    const commentsMatch = $.getNode(".comment-item");
+    const uploader = $.getNodeText(".poster-info li:nth-child(5) a");
+    const upload_date = $.getNodeText(".poster-info li:nth-child(6)");
     if (commentsMatch) {
       var comments = commentsMatch.toArray().map((c) => {
-        const comment = $(c);
+        const comment = $.getNode(c);
         return {
           pic: comment.find("img").attr("src"),
           date: comment.find(".author span").text(),

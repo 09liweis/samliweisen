@@ -445,7 +445,7 @@ const handleDoubanMovieSummary = ({ $, body }) => {
     var season = seasonMatch[1].trim();
     //if season is null, try to get select tag of season
     if (isNaN(season)) {
-      season = $("#season option[selected]").text();
+      season = $.getNodeText("#season option[selected]");
     }
     try {
       season = parseInt(season);

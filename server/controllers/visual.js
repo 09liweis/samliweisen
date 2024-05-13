@@ -315,7 +315,7 @@ exports.getPhotoDetail = (req, resp) => {
       var comments = commentsMatch.toArray().map((c) => {
         const comment = $.getNode(c);
         return {
-          pic: comment.find("img").attr("src"),
+          src: comment.find("img").attr("src"),
           date: comment.find(".author span").text(),
           author: comment.find(".author a").text(),
           content: comment.find("p").text(),

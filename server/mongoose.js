@@ -5,6 +5,10 @@ class Mongoose {
     mongoose.Promise = global.Promise;
 
     const dbUrl = process.env["MONGODB_URL"];
+    if (!dbUrl) {
+      console.error("MONGODB_URL is not set");
+      return;
+    }
     mongoose.connect(dbUrl, {});
     //,{ useNewUrlParser: true, useUnifiedTopology:true,useFindAndModify:true }
 

@@ -73,7 +73,7 @@ exports.samVisuals = async (req, resp) => {
 };
 
 async function getMovieByDoubanId(douban_id) {
-  return await Movie.findOne({ douban_id });
+  return await movieModel.findOne({ douban_id });
 }
 
 exports.getMovieDetail = async (req, resp) => {
@@ -544,7 +544,7 @@ exports.upsertVisual = async (req, resp) => {
     if (!movie.douban_id) {
       return sendErr(resp, { msg: "Can not get movie" });
     }
-    const oldMovie = await Movie.findOne({ douban_id });
+    const oldMovie = await movieModel.findOne({ douban_id });
     if (!oldMovie) {
       movie.date_watched = new Date();
     }
@@ -562,7 +562,7 @@ async function getRandomMovieDB() {
   try {
     const count = await movieModel.countDocuments();
     var random = Math.floor(Math.random() * count);
-    const movie = await Movie.findOne().skip(random);
+    const movie = await movieModel.findOne(null, { skip: random });
     return movie;
   } catch (err) {
     return err;

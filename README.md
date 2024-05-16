@@ -17,6 +17,7 @@ World Time/holiday: http://www.shijian.cc
 - [x] douban chat api
 - [x] douban box office api
 - [X] Hongkong box office
+- [ ] add modelFacade to encapsulate mongoose model
 - [ ] Japanese box office
 - [ ] Add TypeScript support
 - [ ] add test framework

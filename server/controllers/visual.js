@@ -10,6 +10,8 @@ const {
 } = require("../helpers/douban");
 const { getImdbSummary } = require("../helpers/imdb");
 const Movie = require("../models/movie");
+const ModelFacade = require("../models/modelFacade");
+const movieModel = new ModelFacade(Movie);
 
 const MISSING_DOUBAN_ID = "Missing Douban Id";
 const MOVIE_NOT_FOUND = "Movie Not Found";
@@ -57,11 +59,9 @@ exports.samVisuals = async (req, resp) => {
   let movies = [];
   let total = 0;
   try {
-    total = await Movie.countDocuments(filter);
-    movies = await Movie.find(filter)
-      .skip(skip)
-      .limit(limit)
-      .sort("-date_updated");
+    total = await movieModel.countDocuments(filter);
+    const options = { skip, limit, sort: "-date_updated" };
+    movies = await movieModel.findList(filter, options);
   } catch (err) {
     return sendErr(resp, { err: err.toString() });
   }
@@ -560,7 +560,7 @@ exports.upsertVisual = async (req, resp) => {
 
 async function getRandomMovieDB() {
   try {
-    const count = await Movie.countDocuments();
+    const count = await movieModel.countDocuments();
     var random = Math.floor(Math.random() * count);
     const movie = await Movie.findOne().skip(random);
     return movie;

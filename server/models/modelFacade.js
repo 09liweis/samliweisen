@@ -13,6 +13,9 @@ class ModelFacade {
     const { skip } = options;
     return await this.model.findOne(filter).skip(skip);
   }
+  async updateOne(filter, update) {
+    return await this.model.updateOne(filter, update);
+  }
 }
 
 module.exports = ModelFacade;

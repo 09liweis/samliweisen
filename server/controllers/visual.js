@@ -110,7 +110,7 @@ exports.updateSamMovie = async (req, resp) => {
     } else {
       update.current_episode = getDefaultEpisodes(foundMovie.episodes);
     }
-    const movie = await Movie.updateOne({ douban_id }, update);
+    const movie = await movieModel.updateOne({ douban_id }, update);
     return sendResp(resp, movie);
   } catch (updateSamMovieErr) {
     return sendErr(resp, {

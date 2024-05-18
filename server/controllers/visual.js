@@ -582,7 +582,7 @@ exports.updateRandomMovie = async (req, resp) => {
   try {
     const movie = await getRandomMovieDB();
     const latestMovie = await getDoubanMovieSummary(movie.douban_id);
-    const result = await Movie.updateOne(
+    const result = await movieModel.updateOne(
       { douban_id: movie.douban_id },
       latestMovie,
     );

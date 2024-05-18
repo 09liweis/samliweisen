@@ -549,7 +549,7 @@ exports.upsertVisual = async (req, resp) => {
       movie.date_watched = new Date();
     }
     movie.date_updated = new Date();
-    const newMovie = await Movie.findOneAndUpdate({ douban_id }, movie, {
+    const newMovie = await movieModel.findOneAndUpdate({ douban_id }, movie, {
       upsert: true,
     });
     return sendResp(resp, movie);

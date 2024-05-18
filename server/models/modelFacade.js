@@ -16,6 +16,9 @@ class ModelFacade {
   async updateOne(filter, update) {
     return await this.model.updateOne(filter, update);
   }
+  async findOneAndUpdate(filter, update, options = { upsert: true }) {
+    return await this.model.findOneAndUpdate(filter, update, options);
+  }
 }
 
 module.exports = ModelFacade;

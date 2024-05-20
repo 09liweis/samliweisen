@@ -291,11 +291,9 @@ exports.getCelebrities = (req, resp) => {
     let casts = castsMatches.toArray().map((c) => {
       const castSection = $.getNode(c);
       let castTl = castSection.find("h2").text();
-      const celebritiesMatch = castSection.find(".celebrity");
-      let celebrities = celebritiesMatch
-        .toArray()
-        .map((c) => getCast($.getNode(c), $));
-      return { tl: castTl, celebrities };
+      const castsMatch = castSection.find(".celebrity");
+      let casts = castsMatch.toArray().map((c) => getCast($.getNode(c), $));
+      return { tl: castTl, casts };
     });
     sendResp(resp, { douban_url, casts });
   });

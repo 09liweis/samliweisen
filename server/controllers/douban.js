@@ -167,7 +167,7 @@ exports.getVideos = (req, resp) => {
   sendRequest({ url }, (err, { $ }) => {
     if (err) return sendErr(resp, { err: err.toString() });
     const mods = $.getNode(".mod");
-    var sections = mods.toArray().map((mod) => {
+    const videos = mods.toArray().map((mod) => {
       const modNode = $.getNode(mod);
       var title = modNode.find("h2").text();
       var videos = { title };
@@ -176,7 +176,7 @@ exports.getVideos = (req, resp) => {
         .toArray()
         .map((v) => {
           const videoNode = $.getNode(v);
-          var [protocol, a, domain, type, video_id, left] = videoNode
+          var [, , , type, video_id] = videoNode
             .find(".pr-video")
             .attr("href")
             .split("/");
@@ -191,7 +191,7 @@ exports.getVideos = (req, resp) => {
         });
       return videos;
     });
-    return sendResp(resp, { douban_id, sections });
+    return sendResp(resp, { douban_id, videos });
   });
 };
 

@@ -1,16 +1,17 @@
 const { sendResp, sendErr } = require("../helpers/request");
 const Blog = require("../models/blog");
+const ModelFacade = require("../models/modelFacade");
+const blogModel = new ModelFacade(Blog);
 
 exports.findList = async (req, resp) => {
   try {
-    const blogs = await Blog.find({}, "_id title url content created_at", {
-      limit: 10,
-    }).sort("-created_at");
+    const options = { limit: 10, sort: "-created_at" };
+    const blogs = await blogModel.findList({}, options);
     if (!blogs || blogs?.length == 0) {
       return sendResp(resp, []);
     }
     blogs.forEach((blog) => {
-      blog.content = blog.content.substr(0, 100) + " ...";
+      blog.content = blog.content.substring(0, 100) + " ...";
     });
     return sendResp(resp, blogs);
   } catch (error) {

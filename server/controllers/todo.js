@@ -1,5 +1,7 @@
 var mongoose = require("mongoose"),
   Todo = require("../models/todo");
+const ModelFacade = require("../models/modelFacade");
+const todoModel = new ModelFacade(Todo);
 var { sendResp } = require("../helpers/request");
 
 const STRINGS = {
@@ -7,8 +9,8 @@ const STRINGS = {
   STEP_NAME: "Missing step name",
 };
 
-exports.findTodoList = findTodoList = ({ page, limit, status }, cb) => {
-  let options = {};
+exports.findTodoList = findTodoList = async ({ page, limit, status }, cb) => {
+  let options = { sort: "date" };
   let query = {};
   if (status) {
     query.status = status;
@@ -22,14 +24,12 @@ exports.findTodoList = findTodoList = ({ page, limit, status }, cb) => {
   if (limit) {
     options.limit = parseInt(limit);
   }
-  Todo.find(query, "_id name date steps status", options)
-    .sort("date")
-    .then((todos) => {
-      cb(null, todos);
-    })
-    .catch((err) => {
-      cb(err);
-    });
+  try {
+    const todos = await todoModel.findList(query, options);
+    cb(null, todos);
+  } catch (err) {
+    cb(err);
+  }
 };
 
 exports.findList = (req, resp) => {

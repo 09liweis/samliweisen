@@ -47,24 +47,26 @@ class ExpressJs {
       res.sendFile(path.join(__dirname, "../resume/resume.html"));
     });
 
-    this.app.use("/api", indexRoute);
-    this.app.use("/api/dashboard", dashboardRoute);
-    this.app.use("/api/videos", videoRoute);
-    this.app.use("/api/movies", moviesRoute);
-    this.app.use("/api/movie", movieRoute);
-    this.app.use("/api/todos", todoRoute);
-    this.app.use("/api/transactions", transactionRoute);
-    this.app.use("/api/experiences", experienceRoute);
-    this.app.use("/api/projects", projectRoute);
-    this.app.use("/api/blogs", blogRoute);
-    this.app.use("/api/comments", commentRoute);
-    this.app.use("/api/sites", SiteRoute);
-    this.app.use("/api/user", userRoute);
-    this.app.use("/api/category", categoryRoute);
-    this.app.use("/api/places", placeRoute);
-    this.app.use("/api/rooms", roomRoute);
-    this.app.use("/api/contacts", contactRoute);
-    this.app.use("/api/stats", statRoute);
+    const API_PREFIX = "/api";
+
+    this.app.use(API_PREFIX + "", indexRoute);
+    this.app.use(API_PREFIX + "/dashboard", dashboardRoute);
+    this.app.use(API_PREFIX + "/videos", videoRoute);
+    this.app.use(API_PREFIX + "/movies", moviesRoute);
+    this.app.use(API_PREFIX + "/movie", movieRoute);
+    this.app.use(API_PREFIX + "/todos", todoRoute);
+    this.app.use(API_PREFIX + "/transactions", transactionRoute);
+    this.app.use(API_PREFIX + "/experiences", experienceRoute);
+    this.app.use(API_PREFIX + "/projects", projectRoute);
+    this.app.use(API_PREFIX + "/blogs", blogRoute);
+    this.app.use(API_PREFIX + "/comments", commentRoute);
+    this.app.use(API_PREFIX + "/sites", SiteRoute);
+    this.app.use(API_PREFIX + "/user", userRoute);
+    this.app.use(API_PREFIX + "/category", categoryRoute);
+    this.app.use(API_PREFIX + "/places", placeRoute);
+    this.app.use(API_PREFIX + "/rooms", roomRoute);
+    this.app.use(API_PREFIX + "/contacts", contactRoute);
+    this.app.use(API_PREFIX + "/stats", statRoute);
 
     this.app.use(function (req, resp, next) {
       var host = req.headers.host;

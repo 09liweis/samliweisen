@@ -115,15 +115,15 @@ exports.getPhotos = ($) => {
   if (photosMatch) {
     for (let i = 0; i < photosMatch.length; i++) {
       const photo = $.getNode(photosMatch[i]);
-      const href = photo.find("a").attr("href").split("/");
+      const href = $.getNodeChildAttr(photo, "a", "href").split("/");
       if (href && href.length > 5) {
         var photo_id = href[5];
       }
       photos.push({
-        thumb: photo.find("img").attr("src"),
+        thumb: $.getNodeChildAttr(photo, "img", "src"),
         origin: `https://img9.doubanio.com/view/photo/l/public/p${photo_id}.jpg`,
-        name: photo.find(".name").text().trim(),
-        prop: photo.find(".prop").text().trim(),
+        name: $.getNodeChildText(photo, ".name"),
+        prop: $.getNodeChildText(photo, ".prop"),
         photo_id,
       });
     }

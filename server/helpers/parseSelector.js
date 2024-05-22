@@ -14,6 +14,18 @@ class ParseSelector {
   getAttr(tag, attr) {
     return this.selector(tag).attr(attr);
   }
+
+  getChildNodes(node, tag) {
+    return node.find(tag);
+  }
+
+  getNodeChildText(node, tag) {
+    return node.find(tag).text();
+  }
+
+  getNodeChildAttr(node, tag, attr) {
+    return node.find(tag).attr(attr);
+  }
 }
 
 module.exports = ParseSelector;

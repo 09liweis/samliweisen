@@ -169,24 +169,24 @@ exports.getVideos = (req, resp) => {
     const mods = $.getNode(".mod");
     const videos = mods.toArray().map((mod) => {
       const modNode = $.getNode(mod);
-      var title = modNode.find("h2").text();
+      const title = $.getNodeChildText(modNode, "h2");
       var videos = { title };
-      videos.videos = modNode
-        .find(".video-list li")
+      videos.videos = $.getChildNodes(modNode, ".video-list li")
         .toArray()
         .map((v) => {
           const videoNode = $.getNode(v);
-          var [, , , type, video_id] = videoNode
-            .find(".pr-video")
-            .attr("href")
-            .split("/");
+          var [, , , type, video_id] = $.getNodeChildAttr(
+            videoNode,
+            ".pr-video",
+            "href",
+          ).split("/");
           return {
-            title: videoNode.find("p:nth-child(2) a").text(),
+            title: $.getNodeChildText(videoNode, "p:nth-child(2) a"),
             type,
             video_id,
-            length: videoNode.find(".pr-video em").text(),
-            photo: videoNode.find(".pr-video img").attr("src"),
-            date: videoNode.find(".trail-meta span").text(),
+            length: $.getNodeChildText(videoNode, ".pr-video em"),
+            photo: $.getNodeChildAttr(videoNode, ".pr-video img", "src"),
+            date: $.getNodeChildText(videoNode, ".trail-meta span"),
           };
         });
       return videos;

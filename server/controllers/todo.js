@@ -9,7 +9,10 @@ const STRINGS = {
   STEP_NAME: "Missing step name",
 };
 
-exports.findTodoList = findTodoList = async ({ page, limit, status }, cb) => {
+exports.findTodoList = findTodoList = async (
+  { page, limit = 20, status },
+  cb,
+) => {
   let options = { sort: "date" };
   let query = {};
   if (status) {
@@ -115,11 +118,9 @@ exports.update = async (req, resp) => {
   }
 };
 
-exports.remove = (req, resp) => {
-  Todo.remove({ _id: req.params.id }, (err) => {
-    handleError(resp, err);
-    resp.status(200).json({ ok: 1 });
-  });
+exports.remove = async (req, resp) => {
+  await Todo.deleteOne({ _id: req.params.id });
+  resp.status(200).json({ ok: 1 });
 };
 
 exports.updateStep = (req, resp) => {

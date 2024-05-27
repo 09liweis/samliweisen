@@ -119,7 +119,7 @@ exports.update = async (req, resp) => {
 };
 
 exports.remove = async (req, resp) => {
-  await Todo.deleteOne({ _id: req.params.id });
+  const removedTodo = await todoModel.deleteOne({ _id: req.params.id });
   resp.status(200).json({ ok: 1 });
 };
 

@@ -41,7 +41,7 @@ function getIMDBBoxOffice(moviesData, req) {
       };
       movies.push(getFullMovieDetail(movie, { req }));
     } catch (error) {
-      console.log(e);
+      console.error(e);
     }
   });
   return movies;

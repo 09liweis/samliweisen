@@ -27,7 +27,10 @@ function getIMDBBoxOffice(moviesData, req) {
   const movies = [];
   moviesData.forEach(({ node }) => {
     try {
-      const movieNode = node.release.titles[0];
+      const movieNode = node?.release?.titles[0];
+      if (!movieNode) {
+        return;
+      }
       const movie = {
         imdb_id: movieNode.id,
         title: movieNode.titleText?.text,

@@ -69,7 +69,10 @@ exports.samVisuals = async (req, resp) => {
     const movie = { ...m._doc };
     return getFullMovieDetail(movie, { req });
   });
-  return sendResp(resp, { total, page, movies });
+  const pages = Array(Math.floor(total / limit))
+    .fill()
+    .map((v, i) => i + 1);
+  return sendResp(resp, { total, page, pages, movies });
 };
 
 async function getMovieByDoubanId(douban_id) {

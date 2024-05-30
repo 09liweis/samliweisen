@@ -69,7 +69,7 @@ exports.samVisuals = async (req, resp) => {
     const movie = { ...m._doc };
     return getFullMovieDetail(movie, { req });
   });
-  const pages = Array(Math.floor(total / limit))
+  const pages = Array(Math.ceil(total / limit))
     .fill()
     .map((v, i) => i + 1);
   return sendResp(resp, { total, page, pages, movies });

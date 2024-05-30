@@ -66,7 +66,7 @@ exports.samVisuals = async (req, resp) => {
     return sendErr(resp, { err: err.toString() });
   }
   movies = movies.map((m) => {
-    let movie = { ...m._doc };
+    const movie = { ...m._doc };
     return getFullMovieDetail(movie, { req });
   });
   return sendResp(resp, { total, page, movies });

@@ -70,6 +70,9 @@ exports.getFullMovieDetail = (movie, { req }) => {
   } else if (movie?.imdb_id) {
     movie.origin_url = `https://www.imdb.com/title/${movie.imdb_id}`;
   }
+  if (movie?.current_episode === movie?.episodes) {
+    movie.is_done = true;
+  }
   return movie;
 };
 

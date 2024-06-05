@@ -289,7 +289,8 @@ exports.getCelebrities = (req, resp) => {
     return resp.status(400).json({ msg: MISSING_DOUBAN_ID });
   }
   const douban_url = getDoubanUrl(douban_id, { apiName: "celebrities" });
-  sendRequest({ url: douban_url }, function (err, { statusCode, $, body }) {
+  sendRequest({ url: douban_url }, (err, { $ }) => {
+    if (err) return sendErr(resp, { err: err.toString() });
     const castsMatches = $.getNode(".list-wrapper");
     let casts = castsMatches.toArray().map((c) => {
       const castSection = $.getNode(c);

@@ -554,7 +554,7 @@ exports.upsertVisual = async (req, resp) => {
     const newMovie = await movieModel.findOneAndUpdate({ douban_id }, movie, {
       upsert: true,
     });
-    return sendResp(resp, movie);
+    return sendResp(resp, newMovie);
   } catch (err) {
     return sendErr(resp, { err: err.toString() });
   }

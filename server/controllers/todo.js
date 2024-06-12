@@ -103,6 +103,7 @@ exports.update = async (req, resp) => {
   }
   if (status) {
     todo.status = status;
+    todo.is_done = status === "done";
   }
   if (steps) {
     todo.steps = steps;
@@ -113,10 +114,11 @@ exports.update = async (req, resp) => {
   }
   todo.update_at = new Date();
   try {
-    todo = await Todo.findOneAndUpdate({ _id: req.params.id }, todo, {
+    await Todo.findOneAndUpdate({ _id: req.params.id }, todo, {
       upsert: true,
       new: true,
     });
+    console.log(todo);
     resp.status(200).json(todo);
   } catch (err) {
     return handleError(resp, err);

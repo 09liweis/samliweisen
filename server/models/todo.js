@@ -51,4 +51,16 @@ TodoSchema.pre("save", (next) => {
   next();
 });
 
+TodoSchema.pre(
+  ["updateOne", "findByIdAndUpdate", "findOneAndUpdate"],
+  (next) => {
+    this.update_at = new Date();
+    const data = this.getUpdate();
+    if (data.status) {
+      this.is_done = data.status === "done";
+    }
+    next();
+  },
+);
+
 module.exports = mongoose.model("Todo", TodoSchema);

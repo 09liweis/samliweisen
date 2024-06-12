@@ -29,6 +29,11 @@ exports.findTodoList = findTodoList = async (
   }
   try {
     const todos = await todoModel.findList(query, options);
+    if (todos.length > 0) {
+      todos.forEach((todo) => {
+        todo.is_done = todo.status === "done";
+      });
+    }
     cb(null, todos);
   } catch (err) {
     cb(err);

@@ -213,7 +213,7 @@ exports.remove = async (req, resp) => {
     return resp.status(400).json({ msg: "Login Required" });
   }
   try {
-    await Transaction.remove({ _id: req.params.id });
+    await Transaction.deleteOne({ _id: req.params.id });
     resp.status(200).json({ ok: 1, msg: "Transaction Deleted" });
   } catch (err) {
     handleError(resp, err);

@@ -47,8 +47,8 @@ exports.findList = (req, resp) => {
   });
 };
 
-exports.createTodo = createTodo = (input, cb) => {
-  const { steps, name, date, status } = input;
+exports.createTodo = createTodo = (requestBody, cb) => {
+  const { steps, name, date, status } = requestBody;
   const todo = {
     name,
     date,

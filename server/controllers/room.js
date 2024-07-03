@@ -115,7 +115,7 @@ exports.update = (req, resp) => {
   if (room.lastChecked) {
     room.lastChecked = Date.now();
   }
-  room.update_at = new Date();
+  room.mt = new Date();
   Room.findOneAndUpdate({ _id: req.params.id }, room, {
     upsert: true,
     new: true,

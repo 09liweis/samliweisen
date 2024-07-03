@@ -104,6 +104,7 @@ exports.findDetail = async (req, resp) => {
   }
   try {
     const room = await Room.findById(rendId);
+    return sendResp(resp, room);
   } catch (err) {
     return handleError(resp, err);
   }

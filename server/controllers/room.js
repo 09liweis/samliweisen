@@ -7,14 +7,7 @@ const STRINGS = {
   STEP_NAME: "Missing step name",
 };
 
-const ROOM_FIELDS = [
-  "nm",
-  "startDate",
-  "endDate",
-  "isAvailable",
-  "cmts",
-  "lastChecked",
-];
+const ROOM_FIELDS = ["nm", "isAvailable", "cmts", "lastChecked"];
 function getRoomDetailFromObj(requestBody) {
   const roomDetail = {};
   ROOM_FIELDS.forEach((roomField) => {

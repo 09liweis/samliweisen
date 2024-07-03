@@ -1,5 +1,6 @@
 var mongoose = require("mongoose"),
   Room = require("../models/room");
+Rentee = require("../models/rentee");
 var { sendResp } = require("../helpers/request");
 
 const STRINGS = {
@@ -98,12 +99,14 @@ exports.create = (req, res) => {
 };
 
 exports.findDetail = async (req, resp) => {
-  const rendId = req.params.id;
-  if (!rendId) {
+  const roomId = req.params.id;
+  if (!roomId) {
     return resp.status(404).json({ msg: STRINGS.BAD_ID });
   }
   try {
-    const room = await Room.findById(rendId);
+    const foundRoom = await Room.findById(roomId);
+    const rentees = await Rentee.find({ room: roomId });
+    const room = { ...foundRoom._doc, rentees };
     return sendResp(resp, room);
   } catch (err) {
     return handleError(resp, err);

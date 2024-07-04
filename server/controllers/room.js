@@ -42,7 +42,6 @@ exports.findRoomList = findRoomList = ({ page, limit, status }, cb) => {
   if (status) {
     query.status = status;
   }
-  //TODO: fix pagination
   if (page) {
     options.skip = parseInt(page);
   } else {
@@ -51,8 +50,8 @@ exports.findRoomList = findRoomList = ({ page, limit, status }, cb) => {
   if (limit) {
     options.limit = parseInt(limit);
   }
-  Room.find(query, "nm startDate endDate isAvailable lastChecked cmts", options)
-    .sort("-mt")
+  Room.find(query, "nm isAvailable lastChecked cmts", options)
+    .sort("nm")
     .then((rooms) => {
       rooms.forEach((room) => {
         if (room.lastChecked) {

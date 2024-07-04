@@ -15,7 +15,7 @@ const RENTEE_FIELDS = [
   "monthlyRent",
   "room",
 ];
-function getRoomDetailFromObj(requestBody) {
+function getRenteeDetailFromObj(requestBody) {
   const renteeDetail = {};
   RENTEE_FIELDS.forEach((roomField) => {
     if (requestBody[roomField]) {
@@ -83,11 +83,11 @@ exports.findList = (req, resp) => {
   });
 };
 
-exports.createRoom = createRoom = (input, cb) => {
+exports.createRentee = createRentee = (input, cb) => {
   if (!input.nm) {
     return cb("No Rentee Name");
   }
-  const rentee = getRoomDetailFromObj(input);
+  const rentee = getRenteeDetailFromObj(input);
   const newTodo = new Rentee(rentee);
   newTodo
     .save()
@@ -100,7 +100,7 @@ exports.createRoom = createRoom = (input, cb) => {
 };
 
 exports.create = (req, res) => {
-  createRoom(req.body, (err, rentee) => {
+  createRentee(req.body, (err, rentee) => {
     if (err) {
       return handleError(res, err);
     }
@@ -122,7 +122,7 @@ exports.findDetail = async (req, resp) => {
 };
 
 exports.update = (req, resp) => {
-  let rentee = getRoomDetailFromObj(req.body);
+  let rentee = getRenteeDetailFromObj(req.body);
   if (rentee.lastChecked) {
     rentee.lastChecked = Date.now();
   }

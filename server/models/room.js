@@ -10,6 +10,7 @@ var RoomSchema = new Schema({
   cmts: String, //comments
   lastChecked: {
     type: Date,
+    defaut: Date.now,
   },
   ts: {
     type: Date,

@@ -58,7 +58,7 @@ exports.findRoomList = findRoomList = ({ page, limit, status }, cb) => {
           room.lastCheckedDiff = getTimeDiff(room.lastChecked);
         }
       });
-      cb(null, rooms);
+      cb(null, { rooms });
     })
     .catch((err) => {
       cb(err);

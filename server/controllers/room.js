@@ -104,7 +104,7 @@ exports.findDetail = async (req, resp) => {
   }
   try {
     const foundRoom = await Room.findById(roomId);
-    const rentees = await Rentee.find({ room: roomId });
+    const rentees = await Rentee.find({ room: roomId }).sort("-startDate");
     const room = { ...foundRoom._doc, rentees };
     return sendResp(resp, room);
   } catch (err) {

@@ -8,6 +8,7 @@ var RoomSchema = new Schema({
   cmts: String, //comments
   deposits: Number,
   monthlyRent: Number,
+  rentAmounts: Array,
   room: {
     type: Schema.Types.ObjectId,
     ref: "Room",

@@ -13,6 +13,7 @@ const RENTEE_FIELDS = [
   "endDate",
   "deposits",
   "monthlyRent",
+  "rentAmounts",
   "room",
 ];
 function getRenteeDetailFromObj(requestBody) {

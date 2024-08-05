@@ -60,9 +60,11 @@ exports.getStatistics = (req, resp) => {
       });
       const categoryPrice = statistics.categoryPrice;
       const categoryPriceArr = Object.keys(categoryPrice).map((category) => {
+        const categoryTotal = categoryPrice[category].total;
         return {
           category,
-          total: getFormatPrice(categoryPrice[category].total),
+          percentage: (categoryTotal / statistics.total) * 100,
+          total: getFormatPrice(categoryTotal),
           items: getFormatExpenses(categoryPrice[category].items),
         };
       });

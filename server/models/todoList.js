@@ -1,17 +1,26 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var TodoSchema = new Schema({
+var TodoListSchema = new Schema({
   name: {
     type: String,
     required: "Kindly enter the name of the task",
   },
-  date: String,
-  created_at: {
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  items: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Todo",
+    },
+  ],
+  ts: {
     type: Date,
     default: Date.now,
   },
-  update_at: {
+  mt: {
     type: Date,
     default: Date.now,
   },
@@ -21,19 +30,19 @@ var TodoSchema = new Schema({
   },
 });
 
-TodoSchema.pre("save", (next) => {
+TodoListSchema.pre("save", (next) => {
   const currentDate = new Date();
-  this.update_at = currentDate;
-  if (!this.created_at) {
-    this.created_at = currentDate;
+  this.mt = currentDate;
+  if (!this.ts) {
+    this.ts = currentDate;
   }
   next();
 });
 
-TodoSchema.pre(
+TodoListSchema.pre(
   ["updateOne", "findByIdAndUpdate", "findOneAndUpdate"],
   (next) => {
-    this.update_at = new Date();
+    this.mt = new Date();
     const data = this.getUpdate();
     // if (data.status) {
     //   this.is_done = data.status === "done";
@@ -42,4 +51,4 @@ TodoSchema.pre(
   },
 );
 
-module.exports = mongoose.model("Todo", TodoSchema);
+module.exports = mongoose.model("TodoList", TodoListSchema);

@@ -5,6 +5,11 @@ class ModelFacade {
   async countDocuments(filter) {
     return await this.model.countDocuments(filter);
   }
+
+  async create(data) {
+    return await this.model.create(data);
+  }
+  
   async findList(filter, options = {}) {
     const { skip = 0, limit = 10, sort = "-ts" } = options;
     return await this.model.find(filter).skip(skip).limit(limit).sort(sort);

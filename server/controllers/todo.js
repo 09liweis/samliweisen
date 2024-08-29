@@ -1,7 +1,9 @@
 var mongoose = require("mongoose"),
-  Todo = require("../models/todo");
+  Todo = require("../models/todo"),
+  TodoList = require("../models/todoList");
 const ModelFacade = require("../models/modelFacade");
 const todoModel = new ModelFacade(Todo);
+const todoListModel = new ModelFacade(TodoList);
 var { sendResp } = require("../helpers/request");
 
 const STRINGS = {
@@ -9,7 +11,27 @@ const STRINGS = {
   STEP_NAME: "Missing step name",
 };
 
-exports.findTodoList = findTodoList = async (
+exports.findTodoList = async (req, resp) => {
+  try {
+    const todoLists = await todoListModel.findList({ user: req.user._id });
+    return sendResp(resp, {todoLists});
+  } catch (err) {
+    return sendErr(resp, err);
+  }
+}
+
+exports.createTodoList = async (req, resp) => {
+  try {
+    const {name} = req.body;
+    const user = req.user;
+    const todoList = await todoListModel.create({name,user:user._id});
+    return sendResp(resp, {msg:'Created', todoList});
+  } catch (err) {
+    return sendErr(resp, err);
+  }
+}
+
+exports.findTodos = findTodos = async (
   { page, limit = 20, status },
   cb,
 ) => {
@@ -41,7 +63,7 @@ exports.findTodoList = findTodoList = async (
 };
 
 exports.findList = (req, resp) => {
-  findTodoList(req.query, (err, todos) => {
+  findTodos(req.query, (err, todos) => {
     handleError(resp, err);
     return sendResp(resp, todos);
   });

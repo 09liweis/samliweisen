@@ -4,7 +4,7 @@ var mongoose = require("mongoose"),
 const ModelFacade = require("../models/modelFacade");
 const todoModel = new ModelFacade(Todo);
 const todoListModel = new ModelFacade(TodoList);
-var { sendResp } = require("../helpers/request");
+var { sendResp, sendErr } = require("../helpers/request");
 
 const STRINGS = {
   BAD_ID: "Invalid todo id",
@@ -13,49 +13,53 @@ const STRINGS = {
 
 exports.findTodoList = async (req, resp) => {
   try {
-    const todoLists = await todoListModel.findList({ user: req.user._id });
-    return sendResp(resp, {todoLists});
+    let query = { user: req.user._id };
+    const todoLists = await todoListModel.findList(query);
+    return sendResp(resp, { todoLists });
   } catch (err) {
     return sendErr(resp, err);
   }
-}
+};
 
 exports.createTodoList = async (req, resp) => {
   try {
-    const {name} = req.body;
+    const { name } = req.body;
     const user = req.user;
-    const todoList = await todoListModel.create({name,user:user._id});
-    return sendResp(resp, {msg:'Created', todoList});
+    const todoList = await todoListModel.create({ name, user: user._id });
+    return sendResp(resp, { msg: "Created", todoList });
   } catch (err) {
     return sendErr(resp, err);
   }
-}
+};
 
 exports.getTodoListDetail = async (req, resp) => {
   try {
-    const {id} = req.params;
-    const todoList = await todoListModel.findOne({ _id: id, user: req.user._id });
-    return sendResp(resp, {todoList});
+    const { id } = req.params;
+    const todoList = await todoListModel.findOne({
+      _id: id,
+      user: req.user._id,
+    });
+    return sendResp(resp, { todoList });
   } catch (err) {
     return sendErr(resp, err);
   }
-}
+};
 
 exports.updateTodoList = async (req, resp) => {
   try {
-    const {id} = req.params;
-    const {name,items} = req.body;
-    const todoList = await todoListModel.updateOne({ _id: id, user: req.user._id }, {name,items});
-    return sendResp(resp, {msg:'Updated', todoList});
+    const { id } = req.params;
+    const { name, items } = req.body;
+    const todoList = await todoListModel.updateOne(
+      { _id: id, user: req.user._id },
+      { name, items },
+    );
+    return sendResp(resp, { msg: "Updated", todoList });
   } catch (err) {
     return sendErr(resp, err);
   }
-}
+};
 
-exports.findTodos = findTodos = async (
-  { page, limit = 20, status },
-  cb,
-) => {
+exports.findTodos = findTodos = async ({ page, limit = 20, status }, cb) => {
   let options = { sort: "date" };
   let query = {};
   if (status) {

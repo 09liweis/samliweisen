@@ -14,7 +14,12 @@ const STRINGS = {
 exports.findTodoList = async (req, resp) => {
   try {
     let query = { user: req.user._id };
+    const unassignedTodosQuery = {todoList:{$exists:false}};
+    const unassignedTodos = await todoModel.findList(unassignedTodosQuery);
     const todoLists = await todoListModel.findList(query);
+    if (unassignedTodos.length > 0) {
+      todoLists.unshift({name:"Unassigned Todos",_id:'unassignedTodos'});
+    }
     return sendResp(resp, { todoLists });
   } catch (err) {
     return sendErr(resp, err);
@@ -35,11 +40,21 @@ exports.createTodoList = async (req, resp) => {
 exports.getTodoListDetail = async (req, resp) => {
   try {
     const { id } = req.params;
+    if (id === "unassignedTodos") {
+      const todos = await todoModel.findList({todoList:{$exists:false}});
+      return sendResp(resp, { todos });
+    }
     const todoList = await todoListModel.findOne({
       _id: id,
       user: req.user._id,
     });
-    return sendResp(resp, { todoList });
+    let todos = [];
+    if (todoList?.items?.length > 0) {
+      todos = await todoModel.findList({
+        _id: { $in: todoList.items },
+      });
+    }
+    return sendResp(resp, { todos });
   } catch (err) {
     return sendErr(resp, err);
   }
@@ -61,7 +76,7 @@ exports.updateTodoList = async (req, resp) => {
 
 exports.findTodos = findTodos = async ({ page, limit = 20, status }, cb) => {
   let options = { sort: "date" };
-  let query = {};
+  let query = {todoList:{$exists:false}};
   if (status) {
     query.status = status;
   }
@@ -94,24 +109,21 @@ exports.findList = (req, resp) => {
   });
 };
 
-exports.createTodo = createTodo = (requestBody, cb) => {
-  const { steps, name, date, status } = requestBody;
+exports.createTodo = createTodo = (req, cb) => {
+  const user = req.user;
+  const { name, date, status,todoList } = req.body;
   const todo = {
     name,
     date,
     status,
+    todoList,
+    user:user._id
   };
-  if (steps) {
-    todo.steps = steps;
-  }
-  //handle post data from wechat mini program
-  if (typeof steps == "string") {
-    todo.steps = JSON.parse(steps);
-  }
   const newTodo = new Todo(todo);
   newTodo
     .save()
     .then((todo) => {
+      todoListModel.updateOne({_id:todoList,user:req.user._id},{$push:{items:newTodo._id}});
       cb(null, todo);
     })
     .catch((err) => {
@@ -120,7 +132,7 @@ exports.createTodo = createTodo = (requestBody, cb) => {
 };
 
 exports.create = (req, res) => {
-  createTodo(req.body, (err, todo) => {
+  createTodo(req, (err, todo) => {
     handleError(res, err);
     return sendResp(res, todo);
   });
@@ -140,8 +152,9 @@ exports.findDetail = (req, resp) => {
 };
 
 exports.update = async (req, resp) => {
-  const { steps, name, date, status } = req.body;
-  let todo = {};
+  const user = req.user;
+  const { name, date, status, todoList } = req.body;
+  let todo = {todoList,user:user._id};
   if (name) {
     todo.name = name;
   }
@@ -152,20 +165,12 @@ exports.update = async (req, resp) => {
     todo.status = status;
     todo.is_done = status === "done";
   }
-  if (steps) {
-    todo.steps = steps;
-  }
-  //handle post data from wechat mini program
-  if (typeof steps == "string") {
-    todo.steps = JSON.parse(steps);
-  }
   todo.update_at = new Date();
   try {
     await Todo.findOneAndUpdate({ _id: req.params.id }, todo, {
       upsert: true,
       new: true,
     });
-    console.log(todo);
     resp.status(200).json(todo);
   } catch (err) {
     return handleError(resp, err);

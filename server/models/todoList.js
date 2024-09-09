@@ -43,7 +43,7 @@ TodoListSchema.pre(
   ["updateOne", "findByIdAndUpdate", "findOneAndUpdate"],
   (next) => {
     this.mt = new Date();
-    const data = this.getUpdate();
+    // const data = this.getUpdate();
     // if (data.status) {
     //   this.is_done = data.status === "done";
     // }

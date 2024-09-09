@@ -10,6 +10,10 @@ var TodoSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  todoList: {
+    type: Schema.Types.ObjectId,
+    ref:"TodoList"
+  },
   date: String,
   created_at: {
     type: Date,
@@ -38,7 +42,6 @@ TodoSchema.pre(
   ["updateOne", "findByIdAndUpdate", "findOneAndUpdate"],
   (next) => {
     this.update_at = new Date();
-    const data = this.getUpdate();
     // if (data.status) {
     //   this.is_done = data.status === "done";
     // }

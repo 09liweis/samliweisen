@@ -6,6 +6,10 @@ var TodoSchema = new Schema({
     type: String,
     required: "Kindly enter the name of the task",
   },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   date: String,
   created_at: {
     type: Date,

@@ -31,6 +31,27 @@ exports.createTodoList = async (req, resp) => {
   }
 }
 
+exports.getTodoListDetail = async (req, resp) => {
+  try {
+    const {id} = req.params;
+    const todoList = await todoListModel.findOne({ _id: id, user: req.user._id });
+    return sendResp(resp, {todoList});
+  } catch (err) {
+    return sendErr(resp, err);
+  }
+}
+
+exports.updateTodoList = async (req, resp) => {
+  try {
+    const {id} = req.params;
+    const {name,items} = req.body;
+    const todoList = await todoListModel.updateOne({ _id: id, user: req.user._id }, {name,items});
+    return sendResp(resp, {msg:'Updated', todoList});
+  } catch (err) {
+    return sendErr(resp, err);
+  }
+}
+
 exports.findTodos = findTodos = async (
   { page, limit = 20, status },
   cb,

@@ -15,7 +15,7 @@ function getFormatPrice(price) {
 function getFormatExpenses(inputExpenses) {
   return inputExpenses.map(({ _id, title, date, price, category, place }) => {
     return {
-      id: _id,
+      _id,
       title,
       date,
       price: getFormatPrice(price),

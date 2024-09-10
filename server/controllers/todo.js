@@ -111,11 +111,12 @@ exports.findList = (req, resp) => {
 
 exports.createTodo = createTodo = (req, cb) => {
   const user = req.user;
-  const { name, date, status,todoList } = req.body;
+  const { name, date, status,todoList,loc } = req.body;
   const todo = {
     name,
     date,
     status,
+    loc,
     todoList,
     user:user._id
   };
@@ -153,8 +154,8 @@ exports.findDetail = (req, resp) => {
 
 exports.update = async (req, resp) => {
   const user = req.user;
-  const { name, date, status, todoList } = req.body;
-  let todo = {todoList,user:user._id};
+  const { name, date, status, todoList,loc } = req.body;
+  let todo = {todoList,user:user._id,loc};
   if (name) {
     todo.name = name;
   }
@@ -163,7 +164,6 @@ exports.update = async (req, resp) => {
   }
   if (status) {
     todo.status = status;
-    todo.is_done = status === "done";
   }
   todo.update_at = new Date();
   try {

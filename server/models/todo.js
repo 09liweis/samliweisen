@@ -14,6 +14,11 @@ var TodoSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref:"TodoList"
   },
+  loc:{
+    addr:String,
+    lat:Number,
+    lng:Number
+  },
   date: String,
   created_at: {
     type: Date,

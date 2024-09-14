@@ -104,7 +104,9 @@ exports.findTodos = findTodos = async ({ page, limit = 20, status }, cb) => {
 
 exports.findList = (req, resp) => {
   findTodos(req.query, (err, todos) => {
-    handleError(resp, err);
+    if (err) {
+      return sendErr(resp, err);
+    }
     return sendResp(resp, todos);
   });
 };
@@ -132,10 +134,12 @@ exports.createTodo = createTodo = (req, cb) => {
     });
 };
 
-exports.create = (req, res) => {
+exports.create = (req, resp) => {
   createTodo(req, (err, todo) => {
-    handleError(res, err);
-    return sendResp(res, todo);
+    if (err) {
+      return sendErr(resp, err);
+    }
+    return sendResp(resp, todo);
   });
 };
 
@@ -146,7 +150,7 @@ exports.findDetail = (req, resp) => {
   }
   Todo.findById(todoId, (err, todo) => {
     if (err) {
-      return handleError(resp, err);
+      return sendErr(resp, err);
     }
     resp.status(200).json(todo);
   });
@@ -173,7 +177,7 @@ exports.update = async (req, resp) => {
     });
     resp.status(200).json(todo);
   } catch (err) {
-    return handleError(resp, err);
+    return sendErr(resp, err);
   }
 };
 

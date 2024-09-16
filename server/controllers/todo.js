@@ -14,15 +14,15 @@ const STRINGS = {
 exports.findTodoList = async (req, resp) => {
   try {
     let query = { user: req.user._id };
-    const unassignedTodosQuery = {todoList:{$exists:false}};
+    const unassignedTodosQuery = { todoList: { $exists: false } };
     const unassignedTodos = await todoModel.findList(unassignedTodosQuery);
     const todoLists = await todoListModel.findList(query);
     if (unassignedTodos.length > 0) {
-      todoLists.unshift({name:"Unassigned Todos",_id:'unassignedTodos'});
+      todoLists.unshift({ name: "Unassigned Todos", _id: "unassignedTodos" });
     }
     return sendResp(resp, { todoLists });
   } catch (err) {
-    return sendErr(resp, err);
+    return sendErr(resp, { err });
   }
 };
 
@@ -33,7 +33,7 @@ exports.createTodoList = async (req, resp) => {
     const todoList = await todoListModel.create({ name, user: user._id });
     return sendResp(resp, { msg: "Created", todoList });
   } catch (err) {
-    return sendErr(resp, err);
+    return sendErr(resp, { err });
   }
 };
 
@@ -41,7 +41,7 @@ exports.getTodoListDetail = async (req, resp) => {
   try {
     const { id } = req.params;
     if (id === "unassignedTodos") {
-      const todos = await todoModel.findList({todoList:{$exists:false}});
+      const todos = await todoModel.findList({ todoList: { $exists: false } });
       return sendResp(resp, { todos });
     }
     const todoList = await todoListModel.findOne({
@@ -56,7 +56,7 @@ exports.getTodoListDetail = async (req, resp) => {
     }
     return sendResp(resp, { todos });
   } catch (err) {
-    return sendErr(resp, err);
+    return sendErr(resp, { err });
   }
 };
 
@@ -70,13 +70,13 @@ exports.updateTodoList = async (req, resp) => {
     );
     return sendResp(resp, { msg: "Updated", todoList });
   } catch (err) {
-    return sendErr(resp, err);
+    return sendErr(resp, { err });
   }
 };
 
 exports.findTodos = findTodos = async ({ page, limit = 20, status }, cb) => {
   let options = { sort: "date" };
-  let query = {todoList:{$exists:false}};
+  let query = { todoList: { $exists: false } };
   if (status) {
     query.status = status;
   }
@@ -105,7 +105,7 @@ exports.findTodos = findTodos = async ({ page, limit = 20, status }, cb) => {
 exports.findList = (req, resp) => {
   findTodos(req.query, (err, todos) => {
     if (err) {
-      return sendErr(resp, err);
+      return sendErr(resp, { err });
     }
     return sendResp(resp, todos);
   });
@@ -113,20 +113,23 @@ exports.findList = (req, resp) => {
 
 exports.createTodo = createTodo = (req, cb) => {
   const user = req.user;
-  const { name, date, status,todoList,loc } = req.body;
+  const { name, date, status, todoList, loc } = req.body;
   const todo = {
     name,
     date,
     status,
     loc,
     todoList,
-    user:user._id
+    user: user._id,
   };
   const newTodo = new Todo(todo);
   newTodo
     .save()
     .then((todo) => {
-      todoListModel.updateOne({_id:todoList,user:req.user._id},{$push:{items:newTodo._id}});
+      todoListModel.updateOne(
+        { _id: todoList, user: req.user._id },
+        { $push: { items: newTodo._id } },
+      );
       cb(null, todo);
     })
     .catch((err) => {
@@ -137,7 +140,7 @@ exports.createTodo = createTodo = (req, cb) => {
 exports.create = (req, resp) => {
   createTodo(req, (err, todo) => {
     if (err) {
-      return sendErr(resp, err);
+      return sendErr(resp, { err });
     }
     return sendResp(resp, todo);
   });
@@ -150,7 +153,7 @@ exports.findDetail = (req, resp) => {
   }
   Todo.findById(todoId, (err, todo) => {
     if (err) {
-      return sendErr(resp, err);
+      return sendErr(resp, { err });
     }
     resp.status(200).json(todo);
   });
@@ -158,8 +161,8 @@ exports.findDetail = (req, resp) => {
 
 exports.update = async (req, resp) => {
   const user = req.user;
-  const { name, date, status, todoList,loc } = req.body;
-  let todo = {todoList,user:user._id,loc};
+  const { name, date, status, todoList, loc } = req.body;
+  let todo = { todoList, user: user._id, loc };
   if (name) {
     todo.name = name;
   }
@@ -177,13 +180,13 @@ exports.update = async (req, resp) => {
     });
     resp.status(200).json(todo);
   } catch (err) {
-    return sendErr(resp, err);
+    return sendErr(resp, { err });
   }
 };
 
 exports.remove = async (req, resp) => {
   const removedTodo = await todoModel.deleteOne({ _id: req.params.id });
-  resp.status(200).json({ msg:"Deleted" });
+  resp.status(200).json({ msg: "Deleted" });
 };
 
 function handleError(res, err) {

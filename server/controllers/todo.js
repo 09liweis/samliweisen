@@ -130,7 +130,7 @@ exports.createTodo = createTodo = (req, cb) => {
         { _id: todoList, user: req.user._id },
         { $push: { items: newTodo._id } },
       );
-      cb(null, todo);
+      cb(null, { msg: "Created", todo });
     })
     .catch((err) => {
       cb(err);

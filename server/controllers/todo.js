@@ -155,7 +155,7 @@ exports.findDetail = (req, resp) => {
     if (err) {
       return sendErr(resp, { err });
     }
-    resp.status(200).json(todo);
+    resp.status(200).json({ todo });
   });
 };
 

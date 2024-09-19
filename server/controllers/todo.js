@@ -188,7 +188,7 @@ exports.remove = async (req, resp) => {
   const todoId = req.params.id;
   const removedTodo = await todoModel.deleteOne({ _id: todoId });
   //TODO: delete todo from todoList
-  resp.status(200).json({ msg: "Deleted" });
+  return sendResp(resp, { msg: "Deleted", removedTodo });
 };
 
 function handleError(res, err) {

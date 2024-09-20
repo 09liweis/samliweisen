@@ -178,7 +178,7 @@ exports.update = async (req, resp) => {
       upsert: true,
       new: true,
     });
-    resp.status(200).json(todo);
+    return sendResp(resp, { msg: "Updated", todo });
   } catch (err) {
     return sendErr(resp, { err });
   }

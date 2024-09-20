@@ -1,4 +1,5 @@
 var Experience = require("../models/experience");
+var { sendResp, sendErr } = require("../helpers/request");
 
 exports.findList = async (req, resp) => {
   try {
@@ -18,27 +19,22 @@ exports.findDetail = async (req, res) => {
   }
 };
 
-exports.create = (req, res) => {
+exports.create = async (req, resp) => {
   delete req.body._id;
   const newExperience = new Experience(req.body);
-  newExperience.save((err, experience) => {
-    handleError(res, err);
-    res.json(experience);
-  });
+  await newExperience.save();
+  return sendResp(resp, { msg: "Created", experience:newExperience });
 };
 
-exports.update = (req, res) => {
+exports.update = async (req, resp) => {
   let updateExperience = req.body;
   updateExperience.update_at = new Date();
-  Experience.findOneAndUpdate(
+  const updatedExperience = await Experience.findOneAndUpdate(
     { _id: req.params.id },
     updateExperience,
-    { upsert: true },
-    (err, experience) => {
-      handleError(res, err);
-      res.json(experience);
-    },
+    { upsert: true }
   );
+  return sendResp(resp, { msg: "Updated", experience:updatedExperience });
 };
 
 function handleError(res, err) {

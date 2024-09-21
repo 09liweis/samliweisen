@@ -15,7 +15,9 @@ exports.findTodoList = async (req, resp) => {
   try {
     let query = { user: req.user._id };
     const unassignedTodosQuery = { todoList: { $exists: false } };
-    const unassignedTodos = await todoModel.findList(unassignedTodosQuery);
+    const unassignedTodos = await todoModel.findList(unassignedTodosQuery, {
+      sort: "-created_at",
+    });
     const todoLists = await todoListModel.findList(query);
     if (unassignedTodos.length > 0) {
       todoLists.unshift({ name: "Unassigned Todos", _id: "unassignedTodos" });

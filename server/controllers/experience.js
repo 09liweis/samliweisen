@@ -4,9 +4,9 @@ var { sendResp, sendErr } = require("../helpers/request");
 exports.findList = async (req, resp) => {
   try {
     const experiences = await Experience.find({}).sort("-start_date");
-    resp.json(experiences);
+    return sendResp(resp, experiences);
   } catch (err) {
-    resp.json({ err });
+    return sendErr(resp, { err });
   }
 };
 
@@ -23,7 +23,7 @@ exports.create = async (req, resp) => {
   delete req.body._id;
   const newExperience = new Experience(req.body);
   await newExperience.save();
-  return sendResp(resp, { msg: "Created", experience:newExperience });
+  return sendResp(resp, { msg: "Created", experience: newExperience });
 };
 
 exports.update = async (req, resp) => {
@@ -32,9 +32,9 @@ exports.update = async (req, resp) => {
   const updatedExperience = await Experience.findOneAndUpdate(
     { _id: req.params.id },
     updateExperience,
-    { upsert: true }
+    { upsert: true },
   );
-  return sendResp(resp, { msg: "Updated", experience:updatedExperience });
+  return sendResp(resp, { msg: "Updated", experience: updatedExperience });
 };
 
 function handleError(res, err) {

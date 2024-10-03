@@ -78,6 +78,8 @@ exports.getStatistics = (req, resp) => {
         };
       });
       statistics.total = getFormatPrice(statistics.total);
+      statistics.incomes = getFormatPrice(statistics.incomes);
+      statistics.expenses = getFormatPrice(statistics.expenses);
       statistics.categoryPrice = categoryPriceArr;
       sendResp(resp, statistics);
     })

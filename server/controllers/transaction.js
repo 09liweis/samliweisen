@@ -19,6 +19,7 @@ function getFormatExpenses(inputExpenses) {
       title,
       date,
       price: getFormatPrice(price),
+      income: price > 0,
       category,
       place,
     };
@@ -46,7 +47,6 @@ exports.getStatistics = (req, resp) => {
 
       transactions.forEach((transaction) => {
         let { category, price } = transaction;
-        price = Math.abs(price);
         statistics.total += price;
         if (statistics.categoryPrice[category]) {
           statistics.categoryPrice[category].total += price;

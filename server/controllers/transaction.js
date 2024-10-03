@@ -28,7 +28,7 @@ function getFormatExpenses(inputExpenses) {
 
 exports.getStatistics = (req, resp) => {
   let { date } = req.body;
-  const statistics = { total: 0 };
+  const statistics = { total: 0, incomes: 0, expenses: 0 };
   if (!date) {
     date = getCurrentMonth();
   }
@@ -48,6 +48,11 @@ exports.getStatistics = (req, resp) => {
       transactions.forEach((transaction) => {
         let { category, price } = transaction;
         statistics.total += price;
+        if (price > 0) {
+          statistics.incomes += price;
+        } else {
+          statistics.expenses += price;
+        }
         if (statistics.categoryPrice[category]) {
           statistics.categoryPrice[category].total += price;
           statistics.categoryPrice[category].items.push(transaction);
@@ -63,8 +68,12 @@ exports.getStatistics = (req, resp) => {
         const categoryTotal = categoryPrice[category].total;
         return {
           category,
-          percentage: (categoryTotal / statistics.total) * 100,
+          percentage:
+            (categoryTotal /
+              (categoryTotal > 0 ? statistics.incomes : statistics.expenses)) *
+            100,
           total: getFormatPrice(categoryTotal),
+          income: categoryTotal > 0,
           items: getFormatExpenses(categoryPrice[category].items),
         };
       });

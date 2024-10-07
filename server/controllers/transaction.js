@@ -63,23 +63,21 @@ exports.getStatistics = (req, resp) => {
           };
         }
       });
-      const categoryPrice = statistics.categoryPrice;
+      const { categoryPrice, incomes, expenses } = statistics;
       const categoryPriceArr = Object.keys(categoryPrice).map((category) => {
         const categoryTotal = categoryPrice[category].total;
         return {
           category,
           percentage:
-            (categoryTotal /
-              (categoryTotal > 0 ? statistics.incomes : statistics.expenses)) *
-            100,
+            (categoryTotal / (categoryTotal > 0 ? incomes : expenses)) * 100,
           total: getFormatPrice(categoryTotal),
           income: categoryTotal > 0,
           items: getFormatExpenses(categoryPrice[category].items),
         };
       });
       statistics.total = getFormatPrice(statistics.total);
-      statistics.incomes = getFormatPrice(statistics.incomes);
-      statistics.expenses = getFormatPrice(statistics.expenses);
+      statistics.incomes = getFormatPrice(incomes);
+      statistics.expenses = getFormatPrice(expenses);
       statistics.categoryPrice = categoryPriceArr;
       sendResp(resp, statistics);
     })

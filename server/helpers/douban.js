@@ -73,6 +73,9 @@ exports.getFullMovieDetail = (movie, { req }) => {
   if (movie?.current_episode === movie?.episodes) {
     movie.is_done = true;
   }
+  if (movie?._id) {
+    movie.progress = (movie.current_episode / movie.episodes) * 100 + "%";
+  }
   return movie;
 };
 

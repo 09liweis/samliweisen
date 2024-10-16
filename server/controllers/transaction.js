@@ -68,9 +68,7 @@ exports.getStatistics = (req, resp) => {
         const categoryTotal = categoryPrice[category].total;
         return {
           category,
-          percentage:
-            (categoryTotal / (categoryTotal > 0 ? incomes : expenses)) * 100 +
-            "%",
+          percentage: `${(categoryTotal / (categoryTotal > 0 ? incomes : expenses)) * 100}%`,
           total: getFormatPrice(categoryTotal),
           income: categoryTotal > 0,
           items: getFormatExpenses(categoryPrice[category].items),

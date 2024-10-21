@@ -50,9 +50,6 @@ exports.getFullMovieDetail = (movie, { req }) => {
     movie.poster = getDoubanPoster(movie.poster, req);
   }
 
-  const imdb_rating = movie.imdb_rating || 0;
-  movie.imdb_rating = imdb_rating.toFixed(1);
-
   const douban_rating = movie.douban_rating || 0;
   if (typeof douban_rating === "number") {
     movie.douban_rating = douban_rating.toFixed(1);
@@ -69,7 +66,11 @@ exports.getFullMovieDetail = (movie, { req }) => {
     });
   }
   if (movie?.imdb_id) {
+    const imdb_rating = movie.imdb_rating || 0;
+    movie.imdb_rating = imdb_rating.toFixed(1);
     movie.imdb_url = `https://www.imdb.com/title/${movie.imdb_id}`;
+  } else {
+    delete movie.imdb_rating;
   }
   if (movie?.current_episode === movie?.episodes) {
     movie.is_done = true;

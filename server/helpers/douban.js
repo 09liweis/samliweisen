@@ -67,8 +67,9 @@ exports.getFullMovieDetail = (movie, { req }) => {
     movie.apis = getDoubanMovieAPIs({
       douban_id: movie.douban_id,
     });
-  } else if (movie?.imdb_id) {
-    movie.origin_url = `https://www.imdb.com/title/${movie.imdb_id}`;
+  }
+  if (movie?.imdb_id) {
+    movie.imdb_url = `https://www.imdb.com/title/${movie.imdb_id}`;
   }
   if (movie?.current_episode === movie?.episodes) {
     movie.is_done = true;

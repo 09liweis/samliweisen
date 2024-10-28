@@ -562,7 +562,9 @@ exports.upsertVisual = async (req, resp) => {
 
 async function getRandomMovieDB() {
   try {
-    const count = await movieModel.countDocuments();
+    const count = await movieModel.countDocuments({
+      douban_id: { $exists: true },
+    });
     var random = Math.floor(Math.random() * count);
     const movie = await movieModel.findOne(null, { skip: random });
     return movie;

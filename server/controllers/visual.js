@@ -247,6 +247,8 @@ exports.getCineplex = (req, resp) => {
           return {
             title: m.name,
             poster: m.mediumPosterImageUrl,
+            release: m.releaseDate.substr(0, 10),
+            genres: m.genres,
           };
         });
       }

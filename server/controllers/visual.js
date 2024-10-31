@@ -209,15 +209,15 @@ exports.getHongkong = (req, resp) => {
 };
 
 exports.getTaiwan = (req, resp) => {
-  let { name } = req.params;
-  name = name === "showing" ? "1" : "0";
+  const { name } = req.params;
+  const movieListId = name === "showing" ? "1" : "2";
   sendRequest(
     {
       url: "https://www.ambassador.com.tw/home/MovieList?Type=1",
     },
     function (err, { $ }) {
       let movies = [];
-      const movieResults = $.getNode(".movie-list .cell");
+      const movieResults = $.getNode(`#tab${movieListId} .movie-list .cell`);
       if (movieResults) {
         movies = movieResults.toArray().map((m) => {
           const movie = $.getNode(m);

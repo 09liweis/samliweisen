@@ -195,22 +195,23 @@ exports.getVideos = (req, resp) => {
   });
 };
 
-exports.getVideo = (req, resp) => {
+exports.getVideo = async (req, resp) => {
   var { video_id, tp } = req.params;
   if (!video_id) {
     return sendErr(resp, "No video id");
   }
   tp = tp || "trailer";
   var url = `https://movie.douban.com/${tp}/${video_id}`;
-  sendRequest({ url }, (err, { $ }) => {
-    if (err) {
-      return sendErr(resp, err);
-    }
-    var title = $("h1").text();
-    var src = $("video source").attr("src");
+  try {
+    const { $ } = await sendRequest({ url });
+    var title = $.getNodeText("h1");
+    console.log(title);
+    var src = $.getAttr("video source", "src");
     var comments = getComments($);
     return sendResp(resp, { title, src, comments });
-  });
+  } catch (err) {
+    return sendErr(resp, { err: err.toString() });
+  }
 };
 
 function getWorks($, worksName) {

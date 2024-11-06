@@ -267,6 +267,7 @@ exports.search = (req, resp) => {
     keyword,
   )}&type=1002`;
   sendRequest({ url }, function (err, { $ }) {
+    if (err) return sendErr(resp, { err: err.toString() });
     const results = $.getNode(".search_results_subjects a");
     if (results) {
       var movies = results.toArray().map((r) => {

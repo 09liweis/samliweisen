@@ -34,6 +34,7 @@ exports.getImdbSummary = async (imdb_id) => {
         total: { amount: worldwideGross },
       },
     } = mainColumnData;
+    imdbObj.budget = mainColumnData.productionBudget.budget.amount;
     imdbObj.imdb_title = text;
     imdbObj.imdb_rating = aggregateRating;
     imdbObj.imdb_poster = image;

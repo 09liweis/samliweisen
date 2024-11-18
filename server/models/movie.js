@@ -14,6 +14,7 @@ const MovieSchema = new Schema({
   genres: [String],
   languages: [String],
   countries: [String],
+  budget: Number,
   current_episode: {
     type: Number,
     default: 0,

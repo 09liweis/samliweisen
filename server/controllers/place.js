@@ -11,7 +11,7 @@ const PLACE_DETAIL_API =
   "&place_id=";
 
 exports.updateRandom = async (req, res) => {
-  const count = await Place.count();
+  const count = await Place.countDocuments();
   var random = Math.floor(Math.random() * count);
   Place.findOne()
     .skip(random)

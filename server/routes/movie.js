@@ -12,6 +12,7 @@ const {
   updateRandomMovie,
   getRandomMovie,
   updateSamMovie,
+  deleteMovie,
 } = require("../controllers/visual.js");
 const {
   getPhotos,
@@ -44,6 +45,6 @@ router.route("/upsert").post(upsertVisual);
 
 router.route("/update_random").put(updateRandomMovie);
 
-router.route("/:douban_id").get(getMovieDetail).put(updateSamMovie);
+router.route("/:douban_id").get(getMovieDetail).put(updateSamMovie).delete(deleteMovie);
 
 module.exports = router;

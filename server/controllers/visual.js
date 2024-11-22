@@ -123,6 +123,16 @@ exports.updateSamMovie = async (req, resp) => {
   }
 };
 
+exports.deleteMovie = async (req, resp) => {
+  try {
+    const { douban_id } = req.params;
+    const movie = await movieModel.findOneAndDelete({ douban_id });
+    return sendResp(resp, { msg: "delete movie success" });
+  } catch (err) {
+    return sendErr(resp, { err: err.toString() });
+  }
+};
+
 exports.getDoubanChart = (req, resp) => {
   sendRequest({ url: DOUBAN_CHART_URL }, function (err, { $ }) {
     if (err) return sendErr(resp, { err: err.toString() });

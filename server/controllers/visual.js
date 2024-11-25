@@ -440,7 +440,12 @@ const handleDoubanMovieSummary = ({ $, body }) => {
 
   const castMatches = $.getNode(".celebrity");
   if (castMatches) {
-    var casts = castMatches.toArray().map((c) => getCast($.getNode(c), $));
+    var casts = castMatches.toArray().map((c) => {
+      const cast = $.getNode(c);
+      if (!cast.hasClass("fake")) {
+        return getCast(cast, $);
+      }
+    });
   }
 
   var websiteMatch = /官方网站:<\/span>(.*?)<br\/>/g.exec(body);

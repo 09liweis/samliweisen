@@ -58,34 +58,38 @@ router.route("/:id").delete(async (req, resp) => {});
 
 router.route("/:id").get(async (req, resp) => {
   const foodcourt_id = req.params.id;
+  const foodcourt = await FoodCourt.findOne({ place_id: foodcourt_id });
   const restaurants = await Restaurant.find({ foodcourt_id });
   sendResp(resp, {
-    foodcourt: foodcourt_id,
+    foodcourt,
     restaurants,
   });
 });
 
-router.route("/:foodcournt_id/restaurants").post(async (req, resp) => {
+router.route("/:foodcourt_id/restaurants").post(async (req, resp) => {
   const { foodcourt_id } = req.params;
   const { place_id } = req.body;
-  
+
   const restaurantVO = await getPlaceDetail(place_id);
-  
+
   const found = await Restaurant.findOne({ place_id, foodcourt_id });
   if (found) {
-    await Restaurant.findOneAndUpdate({ place_id,foodcourt_id }, {restaurantVO,...foodcourt_id}, {
-      upsert: true,
-    });
+    await Restaurant.findOneAndUpdate(
+      { place_id, foodcourt_id },
+      { foodcourt_id, ...restaurantVO },
+      {
+        upsert: true,
+      },
+    );
     return sendResp(resp, { msg: "Restaurant already exists" });
   }
 
-  const restaurant = new Restaurant({restaurantVO,...foodcourt_id});
+  const restaurant = new Restaurant({ foodcourt_id, ...restaurantVO });
   await restaurant.save();
   return sendResp(resp, {
-    message: "Foodcourt added successfully",
+    message: "Restaurant added successfully",
     restaurant,
   });
-  
 });
 
 router.route("/:foodcourt_id/restaurants/:id").put(async (req, resp) => {

@@ -4,7 +4,7 @@ var Place = require("../models/place");
 var Transaction = require("../models/transaction");
 const { sendResp } = require("../helpers/request");
 
-const API_KEY = "AIzaSyA74jvNet0DufU8aoTe39dELLy2rVMeuos";
+const API_KEY = process.env["GOOGLE_API_KEY"] || "";
 const PLACE_DETAIL_API =
   "https://maps.googleapis.com/maps/api/place/details/json?key=" +
   API_KEY +

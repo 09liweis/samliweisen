@@ -21,6 +21,7 @@ const indexRoute = require("./routes/index"),
   roomRoute = require("./routes/room"),
   renteeRoute = require("./routes/rentee"),
   contactRoute = require("./routes/contact"),
+  foodCourtRoute = require("./routes/foodcourts"),
   statRoute = require("./routes/stat");
 
 const getPathName = (dir) => {
@@ -69,6 +70,8 @@ class ExpressJs {
     this.app.use(API_PREFIX + "/rentees", renteeRoute);
     this.app.use(API_PREFIX + "/contacts", contactRoute);
     this.app.use(API_PREFIX + "/stats", statRoute);
+
+    this.app.use(API_PREFIX + "/foodcourts", foodCourtRoute);
 
     this.app.use(function (req, resp, next) {
       var host = req.headers.host;

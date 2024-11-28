@@ -7,7 +7,10 @@ const Restaurant = require("../models/restaurant");
 const { sendResp, sendErr, sendRequest } = require("../helpers/request");
 
 router.route("/").get(async (req, resp) => {
-  const foodcourts = await FoodCourt.find({},'_id name address loc rating');
+  const foodcourts = await FoodCourt.find(
+    {},
+    "_id name address loc rating place_id url",
+  );
   sendResp(resp, {
     foodcourts,
   });
@@ -20,17 +23,22 @@ async function getPlaceDetail(place_id) {
     API_KEY +
     "&place_id=" +
     place_id;
-  const {
-    body: { result },
-  } = await sendRequest({ url: PLACE_DETAIL_API });
-  const foodcourtVO = {
-    name: result.name,
-    address: result.formatted_address,
-    rating: result.rating,
-    place_id,
-    loc: result.geometry.location,
-  };
-  return foodcourtVO;
+  try {
+    const {
+      body: { result },
+    } = await sendRequest({ url: PLACE_DETAIL_API });
+    const foodcourtVO = {
+      name: result.name,
+      url: result.name.toLowerCase().replace(/ /g, "-"),
+      address: result.formatted_address,
+      rating: result.rating,
+      place_id,
+      loc: result.geometry.location,
+    };
+    return foodcourtVO;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 router.route("/").post(async (req, resp) => {
@@ -56,11 +64,13 @@ router.route("/:id").put(async (req, resp) => {});
 router.route("/:id").delete(async (req, resp) => {});
 
 router.route("/:id").get(async (req, resp) => {
-  const foodcourt_id = req.params.id;
-  const foundFoodcourt = await FoodCourt.findOne({ place_id: foodcourt_id });
-  const restaurants = await Restaurant.find({ foodcourt_id });
+  const foodcourtUrl = req.params.id;
+  const foundFoodcourt = await FoodCourt.findOne({ url: foodcourtUrl });
+  const restaurants = await Restaurant.find({
+    foodcourt_id: foundFoodcourt.place_id,
+  });
   const foodcourt = {
-    ...foundFoodcourt.doc,
+    ...foundFoodcourt._doc,
     restaurants,
   };
   sendResp(resp, {

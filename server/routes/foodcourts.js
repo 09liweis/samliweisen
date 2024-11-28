@@ -78,6 +78,19 @@ router.route("/:id").get(async (req, resp) => {
   });
 });
 
+router.route("/:foodcourtUrl/restaurants/:resUrl").get(async (req, resp) => {
+  const { foodcourtUrl, resUrl } = req.params;
+
+  const restaurant = await Restaurant.findOne({
+    url: resUrl,
+  });
+  const foodcourt = await FoodCourt.findOne({ url: foodcourtUrl });
+  return sendResp(resp, {
+    ...restaurant._doc,
+    foodcourt,
+  });
+});
+
 router.route("/:foodcourt_id/restaurants").post(async (req, resp) => {
   const { foodcourt_id } = req.params;
   const { place_id } = req.body;

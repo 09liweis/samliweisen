@@ -7,9 +7,8 @@ const Restaurant = require("../models/restaurant");
 const { sendResp, sendErr, sendRequest } = require("../helpers/request");
 
 router.route("/").get(async (req, resp) => {
-  const foodcourts = await FoodCourt.find();
+  const foodcourts = await FoodCourt.find({},'_id name address loc rating');
   sendResp(resp, {
-    message: "Welcome to foodcourts API",
     foodcourts,
   });
 });
@@ -58,11 +57,14 @@ router.route("/:id").delete(async (req, resp) => {});
 
 router.route("/:id").get(async (req, resp) => {
   const foodcourt_id = req.params.id;
-  const foodcourt = await FoodCourt.findOne({ place_id: foodcourt_id });
+  const foundFoodcourt = await FoodCourt.findOne({ place_id: foodcourt_id });
   const restaurants = await Restaurant.find({ foodcourt_id });
+  const foodcourt = {
+    ...foundFoodcourt.doc,
+    restaurants,
+  };
   sendResp(resp, {
     foodcourt,
-    restaurants,
   });
 });
 

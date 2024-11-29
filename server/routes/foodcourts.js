@@ -18,7 +18,18 @@ router.route("/random").get(async (req, resp) => {
     { upsert: true },
   );
 
-  return sendResp(resp, { randomFoodCourt });
+  const restaurantCount = await Restaurant.countDocuments();
+  var random = Math.floor(Math.random() * restaurantCount);
+  const randomRestaurant = await Restaurant.findOne().skip(random);
+  const restaurant = await getPlaceDetail(randomRestaurant.place_id);
+
+  await Restaurant.findOneAndUpdate(
+    { place_id: randomRestaurant.place_id },
+    restaurant,
+    { upsert: true },
+  );
+
+  return sendResp(resp, { msg: "random update" });
 });
 
 router.route("/").get(async (req, resp) => {

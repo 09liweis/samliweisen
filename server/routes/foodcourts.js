@@ -6,10 +6,25 @@ const Restaurant = require("../models/restaurant");
 
 const { sendResp, sendErr, sendRequest } = require("../helpers/request");
 
+router.route("/random").get(async (req, resp) => {
+  const foodcourtCount = await FoodCourt.countDocuments();
+  var random = Math.floor(Math.random() * foodcourtCount);
+  const randomFoodCourt = await FoodCourt.findOne().skip(random);
+  const foodcourt = await getPlaceDetail(randomFoodCourt.place_id);
+
+  await FoodCourt.findOneAndUpdate(
+    { place_id: randomFoodCourt.place_id },
+    foodcourt,
+    { upsert: true },
+  );
+
+  return sendResp(resp, { randomFoodCourt });
+});
+
 router.route("/").get(async (req, resp) => {
   const foodcourts = await FoodCourt.find(
     {},
-    "_id name address loc rating place_id url",
+    "_id name address loc rating place_id url photos",
   );
   sendResp(resp, {
     foodcourts,
@@ -27,6 +42,19 @@ async function getPlaceDetail(place_id) {
     const {
       body: { result },
     } = await sendRequest({ url: PLACE_DETAIL_API });
+
+    const photos = [];
+    for (let pho of result.photos) {
+      const photo =
+        "https://maps.googleapis.com/maps/api/place/photo?maxwidth=" +
+        pho.width +
+        "&photoreference=" +
+        pho.photo_reference +
+        "&key=" +
+        API_KEY;
+      photos.push(photo);
+    }
+
     const foodcourtVO = {
       name: result.name,
       url: result.name.toLowerCase().replace(/ /g, "-"),
@@ -34,6 +62,7 @@ async function getPlaceDetail(place_id) {
       rating: result.rating,
       place_id,
       loc: result.geometry.location,
+      photos,
     };
     return foodcourtVO;
   } catch (err) {

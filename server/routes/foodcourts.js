@@ -91,16 +91,19 @@ router.route("/:foodcourtUrl/restaurants/:resUrl").get(async (req, resp) => {
   });
 });
 
-router.route("/:foodcourt_id/restaurants").post(async (req, resp) => {
-  const { foodcourt_id } = req.params;
+router.route("/:foodcourt_url/restaurants").post(async (req, resp) => {
+  const { foodcourt_url } = req.params;
   const { place_id } = req.body;
 
   const restaurantVO = await getPlaceDetail(place_id);
 
-  const found = await Restaurant.findOne({ place_id, foodcourt_id });
+  const foodcourt = await FoodCourt.findOne({ url: foodcourt_url });
+  const foodcourt_id = foodcourt.place_id;
+  const filter = { place_id, foodcourt_id };
+  const found = await Restaurant.findOne(filter);
   if (found) {
     await Restaurant.findOneAndUpdate(
-      { place_id, foodcourt_id },
+      filter,
       { foodcourt_id, ...restaurantVO },
       {
         upsert: true,

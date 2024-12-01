@@ -7,29 +7,34 @@ const Restaurant = require("../models/restaurant");
 const { sendResp, sendErr, sendRequest } = require("../helpers/request");
 
 router.route("/random").get(async (req, resp) => {
-  const foodcourtCount = await FoodCourt.countDocuments();
-  var random = Math.floor(Math.random() * foodcourtCount);
-  const randomFoodCourt = await FoodCourt.findOne().skip(random);
-  const foodcourt = await getPlaceDetail(randomFoodCourt.place_id);
-
-  await FoodCourt.findOneAndUpdate(
-    { place_id: randomFoodCourt.place_id },
-    foodcourt,
-    { upsert: true },
-  );
-
-  const restaurantCount = await Restaurant.countDocuments();
-  var random = Math.floor(Math.random() * restaurantCount);
-  const randomRestaurant = await Restaurant.findOne().skip(random);
-  const restaurant = await getPlaceDetail(randomRestaurant.place_id);
-
-  await Restaurant.findOneAndUpdate(
-    { place_id: randomRestaurant.place_id },
-    restaurant,
-    { upsert: true },
-  );
-
-  return sendResp(resp, { msg: "random update" });
+  try {
+    const foodcourtCount = await FoodCourt.countDocuments();
+    var random = Math.floor(Math.random() * foodcourtCount);
+    const randomFoodCourt = await FoodCourt.findOne().skip(random);
+    const foodcourt = await getPlaceDetail(randomFoodCourt.place_id);
+  
+    await FoodCourt.findOneAndUpdate(
+      { place_id: randomFoodCourt.place_id },
+      foodcourt,
+      { upsert: true },
+    );
+  
+    const restaurantCount = await Restaurant.countDocuments();
+    var random = Math.floor(Math.random() * restaurantCount);
+    const randomRestaurant = await Restaurant.findOne().skip(random);
+    const restaurant = await getPlaceDetail(randomRestaurant.place_id);
+  
+    await Restaurant.findOneAndUpdate(
+      { place_id: randomRestaurant.place_id },
+      restaurant,
+      { upsert: true },
+    );
+  
+    return sendResp(resp, { msg: "random update" });
+  } catch (err) {
+    console.error(err);
+    sendErr(resp, {err:err.toString()});
+  }
 });
 
 router.route("/").get(async (req, resp) => {

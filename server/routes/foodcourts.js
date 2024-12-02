@@ -12,28 +12,28 @@ router.route("/random").get(async (req, resp) => {
     var random = Math.floor(Math.random() * foodcourtCount);
     const randomFoodCourt = await FoodCourt.findOne().skip(random);
     const foodcourt = await getPlaceDetail(randomFoodCourt.place_id);
-  
+
     await FoodCourt.findOneAndUpdate(
       { place_id: randomFoodCourt.place_id },
       foodcourt,
       { upsert: true },
     );
-  
+
     const restaurantCount = await Restaurant.countDocuments();
     var random = Math.floor(Math.random() * restaurantCount);
     const randomRestaurant = await Restaurant.findOne().skip(random);
     const restaurant = await getPlaceDetail(randomRestaurant.place_id);
-  
+
     await Restaurant.findOneAndUpdate(
       { place_id: randomRestaurant.place_id },
       restaurant,
       { upsert: true },
     );
-  
+
     return sendResp(resp, { msg: "random update" });
   } catch (err) {
     console.error(err);
-    sendErr(resp, {err:err.toString()});
+    sendErr(resp, { err: err.toString() });
   }
 });
 
@@ -58,7 +58,6 @@ async function getPlaceDetail(place_id) {
     const {
       body: { result },
     } = await sendRequest({ url: PLACE_DETAIL_API });
-
     const photos = [];
     for (let pho of result.photos) {
       const photo =
@@ -79,6 +78,7 @@ async function getPlaceDetail(place_id) {
       place_id,
       loc: result.geometry.location,
       photos,
+      phone: result?.international_phone_number,
     };
     return foodcourtVO;
   } catch (err) {

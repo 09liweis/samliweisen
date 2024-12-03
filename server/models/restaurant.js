@@ -22,6 +22,7 @@ const RestaurantSchema = new Schema({
   photos: Array,
   phone: String,
   cover: String,
+  price_level: Number,
   foodcourt_id: String,
 });
 

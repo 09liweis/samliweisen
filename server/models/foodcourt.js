@@ -21,7 +21,8 @@ const FoodcourtSchema = new Schema({
   },
   photos:Array,
   phone:String,
-  cover: String
+  cover: String,
+  price_level: Number
 });
 
 FoodcourtSchema.pre('save', function(next) {

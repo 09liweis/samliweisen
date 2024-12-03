@@ -21,6 +21,7 @@ const FoodcourtSchema = new Schema({
   },
   photos:Array,
   phone:String,
+  cover: String
 });
 
 FoodcourtSchema.pre('save', function(next) {

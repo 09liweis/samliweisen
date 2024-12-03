@@ -40,7 +40,7 @@ router.route("/random").get(async (req, resp) => {
 router.route("/").get(async (req, resp) => {
   const foodcourts = await FoodCourt.find(
     {},
-    "_id name address loc rating place_id url photos",
+    "_id name address loc rating place_id url cover photos",
   );
   sendResp(resp, {
     foodcourts,
@@ -79,6 +79,7 @@ async function getPlaceDetail(place_id) {
       loc: result.geometry.location,
       photos,
       phone: result?.international_phone_number,
+      cover: photos[0]
     };
     return foodcourtVO;
   } catch (err) {

@@ -106,10 +106,6 @@ router.route("/").post(async (req, resp) => {
   });
 });
 
-router.route("/:id").put(async (req, resp) => {});
-
-router.route("/:id").delete(async (req, resp) => {});
-
 router.route("/:id").get(async (req, resp) => {
   const foodcourtUrl = req.params.id;
   const foundFoodcourt = await FoodCourt.findOne({ url: foodcourtUrl });
@@ -165,10 +161,6 @@ router.route("/:foodcourt_url/restaurants").post(async (req, resp) => {
     message: "Restaurant added successfully",
     restaurant,
   });
-});
-
-router.route("/:foodcourt_id/restaurants/:id").put(async (req, resp) => {
-  const { foodcourt_id, id } = req.params;
 });
 
 router.route("/:foodcourt_id/restaurants/:id").delete(async (req, resp) => {

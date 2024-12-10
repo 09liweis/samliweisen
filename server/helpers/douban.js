@@ -1,3 +1,4 @@
+const {getCurrencyFormat} = require("./imdb");
 const DOUBAN_SITE = "https://movie.douban.com/subject/";
 
 exports.DOUBAN_SITE_API = "https://movie.douban.com/j/";
@@ -77,6 +78,9 @@ exports.getFullMovieDetail = (movie, { req }) => {
   }
   if (movie?._id) {
     movie.progress = (movie.current_episode / movie.episodes) * 100 + "%";
+  }
+  if (movie.budget) {
+    movie.budget = getCurrencyFormat(movie.budget);
   }
   return movie;
 };

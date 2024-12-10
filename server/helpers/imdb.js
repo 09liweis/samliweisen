@@ -3,6 +3,26 @@ const { sendRequest } = require("./request");
 const IMDB_SITE = "https://www.imdb.com/title/";
 
 /**
+ * @param {number} value
+ * @return {string} Return formatted amount
+ */
+exports.getCurrencyFormat = (value) => {
+  if (!value) return value;
+  if (typeof value !== "number") {
+    return value;
+  }
+  var suffixes = ["", "K", "M", "B", "T"];
+  var suffixNum = Math.floor(("" + value).length / 3);
+  var shortValue = parseFloat(
+    (suffixNum != 0 ? value / Math.pow(1000, suffixNum) : value).toPrecision(2),
+  );
+  if (shortValue % 1 != 0) {
+    shortValue = shortValue.toFixed(1);
+  }
+  return shortValue + suffixes[suffixNum];
+}
+
+/**
  * Get imdb url with imdb_id
  * @param {string} imdb_id
  * @returns string imdb url

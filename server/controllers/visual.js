@@ -8,7 +8,7 @@ const {
   getFullMovieDetail,
   getMovieYear,
 } = require("../helpers/douban");
-const { getImdbSummary } = require("../helpers/imdb");
+const { getImdbSummary, getCurrencyFormat } = require("../helpers/imdb");
 const Movie = require("../models/movie");
 const ModelFacade = require("../models/modelFacade");
 const movieModel = new ModelFacade(Movie);

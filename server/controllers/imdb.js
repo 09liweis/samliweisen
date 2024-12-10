@@ -1,27 +1,8 @@
 const { sendRequest, sendResp, sendErr } = require("../helpers/request");
+const {getCurrencyFormat} = require("../helpers/imdb");
 const { getFullMovieDetail } = require("../helpers/douban");
 
 const IMDB_BOXOFFICE = "https://www.imdb.com/chart/boxoffice";
-
-/**
- * @param {number} value
- * @return {string} Return formatted amount
- */
-function getCurrencyFormat(value) {
-  if (!value) return value;
-  if (typeof value !== "number") {
-    return value;
-  }
-  var suffixes = ["", "K", "M", "B", "T"];
-  var suffixNum = Math.floor(("" + value).length / 3);
-  var shortValue = parseFloat(
-    (suffixNum != 0 ? value / Math.pow(1000, suffixNum) : value).toPrecision(2),
-  );
-  if (shortValue % 1 != 0) {
-    shortValue = shortValue.toFixed(1);
-  }
-  return shortValue + suffixes[suffixNum];
-}
 
 function getIMDBBoxOffice(moviesData, req) {
   const movies = [];

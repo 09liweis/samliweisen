@@ -36,8 +36,7 @@ exports.getImdbSummary = async (imdb_id) => {
     imdbObj.imdb_poster = image;
     imdbObj.imdb_description = plainText;
     imdbObj.imdb_genres = genres.map((genre) => genre.text);
-    imdbObj.worldwideGross = mainColumnData?.worldwideGross?.total?.amount;
-    // imdbObj.certificate = rating;
+    imdbObj.totalGross = mainColumnData?.worldwideGross?.total?.amount;
     return imdbObj;
   } catch (err) {
     throw err;

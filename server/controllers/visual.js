@@ -82,10 +82,11 @@ async function getMovieByDoubanId(douban_id) {
 exports.getQuizMovie = async (req, resp) => {
   const randomMovies = await movieModel.aggregate([{ $sample: { size: 4 } }]);
   const answers = randomMovies.map((movie)=>movie.title);
+  const randomMovie = randomMovies[Math.floor(Math.random() * randomMovies.length)];
   const quiz = {
-    correctTitle: randomMovies[0].title,
-    summary: randomMovies[0].summary,
-    poster: randomMovies[0].poster,
+    correctTitle: randomMovie.title,
+    summary: randomMovie.summary,
+    poster: randomMovie.poster,
     answers
   };
   return sendResp(resp, quiz);

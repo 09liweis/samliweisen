@@ -27,6 +27,9 @@ class ModelFacade {
   async deleteOne(filter) {
     return await this.model.deleteOne(filter);
   }
+  async aggregate(pipeline) {
+    return await this.model.aggregate(pipeline);
+  }
 }
 
 module.exports = ModelFacade;

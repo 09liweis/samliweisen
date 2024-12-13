@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 const {
+  getQuizMovie,
   getMovieDetail,
   getCelebrities,
   getSummary,
@@ -40,6 +41,8 @@ router.route("/douban/:douban_id/comments").get(getComments);
 router.route("/douban/:douban_id/reviews").get(getReviews);
 
 router.route("/random").get(getRandomMovie);
+
+router.route("/quiz").get(getQuizMovie);
 
 router.route("/upsert").post(upsertVisual);
 

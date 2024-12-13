@@ -79,6 +79,17 @@ async function getMovieByDoubanId(douban_id) {
   return await movieModel.findOne({ douban_id });
 }
 
+exports.getQuizMovie = async (req, resp) => {
+  const randomMovies = await movieModel.aggregate([{ $sample: { size: 4 } }]);
+  const answers = randomMovies.map((movie)=>movie.title);
+  const correct = {
+    title: randomMovies[0].title,
+    summary: randomMovies[0].summary,
+    poster: randomMovies[0].poster,
+  };
+  return sendResp(resp, { answers, correct });
+}
+
 exports.getMovieDetail = async (req, resp) => {
   let { douban_id } = req.params;
   douban_id = douban_id.trim();

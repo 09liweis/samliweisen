@@ -19,7 +19,7 @@ exports.getCurrencyFormat = (value) => {
   if (shortValue % 1 != 0) {
     shortValue = shortValue.toFixed(1);
   }
-  return shortValue + suffixes[suffixNum];
+  return '$' + shortValue + suffixes[suffixNum];
 }
 
 /**

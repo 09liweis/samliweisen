@@ -27,12 +27,15 @@ function getFormatExpenses(inputExpenses) {
 }
 
 exports.getStatistics = (req, resp) => {
-  let { date } = req.body;
+  let { date, categories } = req.body;
   const statistics = { total: 0, incomes: 0, expenses: 0 };
   if (!date) {
     date = getCurrentMonth();
   }
   const filter = { date: new RegExp(date, "i") };
+  if (categories?.length > 0) {
+    filter.category = { $in: categories };
+  }
   statistics.date = date;
   Transaction.find(filter, "_id title price date category")
     .populate("place")

@@ -81,7 +81,7 @@ exports.getStatistics = (req, resp) => {
       statistics.incomes = getFormatPrice(incomes);
       statistics.expenses = getFormatPrice(expenses);
       statistics.categoryPrice = categoryPriceArr;
-      sendResp(resp, statistics);
+      return sendResp(resp, statistics);
     })
     .catch((err) => {
       return sendErr(resp, { err: err.toString() });

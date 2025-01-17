@@ -1,6 +1,6 @@
 var Transaction = require("../models/transaction");
 var Place = require("../models/place");
-const { sendRequest, sendResp, sendErr } = require("../helpers/request");
+const { sendResp, sendErr } = require("../helpers/request");
 
 function getCurrentMonth() {
   const now = new Date();
@@ -223,11 +223,11 @@ exports.remove = async (req, resp) => {
   //Delete transaction
   const user = req.user;
   if (!user) {
-    return resp.status(400).json({ msg: "Login Required" });
+    return sendErr(resp, { msg: "Login Required" });
   }
   try {
     await Transaction.deleteOne({ _id: req.params.id });
-    resp.status(200).json({ ok: 1, msg: "Transaction Deleted" });
+    return sendResp(resp, { msg: "Transaction Deleted" });
   } catch (err) {
     return sendErr(resp, { err });
   }

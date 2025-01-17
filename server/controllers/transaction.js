@@ -129,7 +129,7 @@ exports.findList = (req, resp) => {
       sendResp(resp, transactions);
     })
     .catch((err) => {
-      handleError(resp, err);
+      return sendErr(resp, { err });
     });
 };
 
@@ -139,13 +139,13 @@ exports.category_list = (req, resp) => {
       sendResp(resp, categories);
     })
     .catch((err) => {
-      handleError(resp, err);
+      return sendErr(resp, { err });
     });
 };
 upsertTransaction = async (req, resp) => {
   const user = req.user;
   if (!user) {
-    return resp.status(400).json({ msg: "Login Required" });
+    return sendErr(resp, { msg: "Login Required" });
   }
   const { _id, price, date, category, place, title, uid } = req.body;
   const transactionData = {
@@ -198,7 +198,7 @@ upsertTransaction = async (req, resp) => {
         return sendResp(resp, t);
       })
       .catch((err) => {
-        handleError(resp, err);
+        return sendErr(resp, { err: err.toString() });
       });
   }
 };
@@ -229,12 +229,6 @@ exports.remove = async (req, resp) => {
     await Transaction.deleteOne({ _id: req.params.id });
     resp.status(200).json({ ok: 1, msg: "Transaction Deleted" });
   } catch (err) {
-    handleError(resp, err);
+    return sendErr(resp, { err });
   }
 };
-
-function handleError(res, err) {
-  if (err) {
-    return res.send(err);
-  }
-}

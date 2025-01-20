@@ -26,9 +26,8 @@ function getFormatExpenses(inputExpenses) {
   });
 }
 
-exports.getStatistics = (req, resp) => {
+exports.getStatistics = async (req, resp) => {
   let { date, categories } = req.body;
-  const statistics = { total: 0, incomes: 0, expenses: 0 };
   if (!date) {
     date = getCurrentMonth();
   }
@@ -36,56 +35,60 @@ exports.getStatistics = (req, resp) => {
   if (categories?.length > 0) {
     filter.category = { $in: categories };
   }
-  statistics.date = date;
-  Transaction.find(filter, "_id title price date category")
+  const transactions = await Transaction.find(filter, "_id title price date category")
     .populate("place")
-    .sort("-date")
-    .then((transactions) => {
-      statistics.categoryPrice = {};
-      if (transactions.length == 0) {
-        statistics.total = getFormatPrice(0);
-        statistics.categoryPrice = [];
-        return sendResp(resp, statistics);
-      }
+    .sort("-date");
+  
+  const statistics = {
+    date,
+    total: 0,
+    incomes: 0,
+    expenses: 0,
+    categoryPrice: {},
+  };
 
-      transactions.forEach((transaction) => {
-        let { category, price } = transaction;
-        statistics.total += price;
-        if (price > 0) {
-          statistics.incomes += price;
-        } else {
-          statistics.expenses += price;
-        }
-        if (statistics.categoryPrice[category]) {
-          statistics.categoryPrice[category].total += price;
-          statistics.categoryPrice[category].items.push(transaction);
-        } else {
-          statistics.categoryPrice[category] = {
-            total: price,
-            items: [transaction],
-          };
-        }
-      });
-      const { categoryPrice, incomes, expenses } = statistics;
-      const categoryPriceArr = Object.keys(categoryPrice).map((category) => {
-        const categoryTotal = categoryPrice[category].total;
-        return {
-          category,
-          percentage: `${((categoryTotal / (categoryTotal > 0 ? incomes : expenses)) * 100).toFixed(2)}%`,
-          total: getFormatPrice(categoryTotal),
-          income: categoryTotal > 0,
-          items: getFormatExpenses(categoryPrice[category].items),
-        };
-      });
-      statistics.total = getFormatPrice(statistics.total);
-      statistics.incomes = getFormatPrice(incomes);
-      statistics.expenses = getFormatPrice(expenses);
-      statistics.categoryPrice = categoryPriceArr;
-      return sendResp(resp, statistics);
-    })
-    .catch((err) => {
-      return sendErr(resp, { err: err.toString() });
-    });
+  if (transactions.length == 0) {
+    statistics.total = getFormatPrice(0);
+    statistics.categoryPrice = [];
+    return sendResp(resp, statistics);
+  }
+
+  transactions.forEach((transaction) => {
+    let { category, price } = transaction;
+    statistics.total += price;
+    if (price > 0) {
+      statistics.incomes += price;
+    } else {
+      statistics.expenses += price;
+    }
+    if (statistics.categoryPrice[category]) {
+      statistics.categoryPrice[category].total += price;
+      statistics.categoryPrice[category].items.push(transaction);
+    } else {
+      statistics.categoryPrice[category] = {
+        total: price,
+        items: [transaction],
+      };
+    }
+  });
+
+  const { categoryPrice, incomes, expenses } = statistics;
+  const categoryPriceArr = Object.keys(categoryPrice).map((category) => {
+    const categoryTotal = categoryPrice[category].total;
+    return {
+      category,
+      percentage: `${((categoryTotal / (categoryTotal > 0 ? incomes : expenses)) * 100).toFixed(2)}%`,
+      total: getFormatPrice(categoryTotal),
+      income: categoryTotal > 0,
+      items: getFormatExpenses(categoryPrice[category].items),
+    };
+  });
+
+  statistics.total = getFormatPrice(statistics.total);
+  statistics.incomes = getFormatPrice(incomes);
+  statistics.expenses = getFormatPrice(expenses);
+  statistics.categoryPrice = categoryPriceArr;
+  return sendResp(resp, statistics);
 };
 
 exports.findList = (req, resp) => {

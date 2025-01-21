@@ -35,10 +35,13 @@ exports.getStatistics = async (req, resp) => {
   if (categories?.length > 0) {
     filter.category = { $in: categories };
   }
-  const transactions = await Transaction.find(filter, "_id title price date category")
+  const transactions = await Transaction.find(
+    filter,
+    "_id title price date category",
+  )
     .populate("place")
     .sort("-date");
-  
+
   const statistics = {
     date,
     total: 0,
@@ -145,7 +148,8 @@ exports.category_list = (req, resp) => {
       return sendErr(resp, { err });
     });
 };
-upsertTransaction = async (req, resp) => {
+
+const upsertTransaction = async (req, resp) => {
   const user = req.user;
   if (!user) {
     return sendErr(resp, { msg: "Login Required" });
@@ -165,7 +169,7 @@ upsertTransaction = async (req, resp) => {
   if (typeof place != "undefined") {
     p = await Place.findOne({ place_id: place.place_id });
     if (!p) {
-      p = Place(place);
+      p = new Place(place);
       await p.save();
     } else {
       p.name = place.name;
@@ -176,35 +180,28 @@ upsertTransaction = async (req, resp) => {
     }
     transactionData.place = p._id;
   }
-  let transaction;
-  if (_id) {
-    transaction = transactionData;
-    transaction.update_at = new Date();
-    Transaction.findOneAndUpdate({ _id }, transaction, {
-      returnNewDocument: true,
-      upsert: true,
-    })
-      .then((t) => {
-        console.error(err);
-        t.place = p;
-        return sendResp(resp, t);
-      })
-      .catch((err) => {
-        return sendErr(resp, { err: err.toString() });
-      });
-  } else {
-    transaction = new Transaction(transactionData);
-    transaction
-      .save()
-      .then((t) => {
-        t.place = p;
-        return sendResp(resp, t);
-      })
-      .catch((err) => {
-        return sendErr(resp, { err: err.toString() });
-      });
+  try {
+    let transaction;
+    if (_id) {
+      transaction = await Transaction.findOneAndUpdate(
+        { _id },
+        { ...transactionData, update_at: new Date() },
+        {
+          returnNewDocument: true,
+          upsert: true,
+        },
+      );
+    } else {
+      transaction = await new Transaction(transactionData).save();
+    }
+    transaction.place = p;
+    return sendResp(resp, transaction);
+  } catch (err) {
+    console.error(err);
+    return sendErr(resp, { err: err.toString() });
   }
 };
+
 exports.create = (req, resp) => {
   upsertTransaction(req, resp);
 };

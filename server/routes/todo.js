@@ -3,7 +3,7 @@ var router = express.Router();
 const { verify } = require("../helpers/verifyToken");
 
 const {
-  findTodoList,
+  findTodoLists,
   createTodoList,
   getTodoListDetail,
   updateTodoList,
@@ -16,7 +16,7 @@ const {
 
 router.route("/").get(findList).post(verify, create);
 
-router.route("/lists").get(verify, findTodoList).post(verify, createTodoList);
+router.route("/lists").get(verify, findTodoLists).post(verify, createTodoList);
 
 router
   .route("/lists/:id")

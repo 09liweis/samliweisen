@@ -11,7 +11,7 @@ const STRINGS = {
   STEP_NAME: "Missing step name",
 };
 
-exports.findTodoList = async (req, resp) => {
+exports.findTodoLists = async (req, resp) => {
   try {
     let query = { user: req.user._id };
     const unassignedTodosQuery = { todoList: { $exists: false } };
@@ -157,7 +157,7 @@ exports.findDetail = (req, resp) => {
     if (err) {
       return sendErr(resp, { err });
     }
-    return sendResp(resp, {todo});
+    return sendResp(resp, { todo });
   });
 };
 

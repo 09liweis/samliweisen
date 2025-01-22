@@ -7,14 +7,14 @@ const {
   createTodoList,
   getTodoListDetail,
   updateTodoList,
-  findList,
+  findTodos,
   create,
   findDetail,
   update,
   remove,
 } = require("../controllers/todo.js");
 
-router.route("/").get(findList).post(verify, create);
+router.route("/").get(findTodos).post(verify, create);
 
 router.route("/lists").get(verify, findTodoLists).post(verify, createTodoList);
 

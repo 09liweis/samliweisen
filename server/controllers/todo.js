@@ -76,9 +76,10 @@ exports.updateTodoList = async (req, resp) => {
   }
 };
 
-exports.findTodos = findTodos = async ({ page, limit = 20, status }, cb) => {
+exports.findTodos = findTodos = async (req, resp) => {
+  const { page, limit = 20, status } = req.query;
   let options = { sort: "date" };
-  let query = { todoList: { $exists: false } };
+  let query = {};
   if (status) {
     query.status = status;
   }
@@ -98,19 +99,10 @@ exports.findTodos = findTodos = async ({ page, limit = 20, status }, cb) => {
         todo.is_done = todo.status === "done";
       });
     }
-    cb(null, todos);
-  } catch (err) {
-    cb(err);
-  }
-};
-
-exports.findList = (req, resp) => {
-  findTodos(req.query, (err, todos) => {
-    if (err) {
-      return sendErr(resp, { err });
-    }
     return sendResp(resp, todos);
-  });
+  } catch (err) {
+    return sendErr(resp, { err });
+  }
 };
 
 exports.createTodo = createTodo = (req, cb) => {

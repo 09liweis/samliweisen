@@ -84,7 +84,7 @@ exports.getStatistics = async (req, resp) => {
       percentage: `${((categoryTotal / (categoryTotal > 0 ? incomes : expenses)) * 100).toFixed(2)}%`,
       total: getFormatPrice(categoryTotal),
       income: categoryTotal > 0,
-      items: getFormatExpenses(categoryPrice[category].items),
+      items: user ? getFormatExpenses(categoryPrice[category].items) : [],
     };
   });
 

@@ -27,6 +27,7 @@ function getFormatExpenses(inputExpenses) {
 }
 
 exports.getStatistics = async (req, resp) => {
+  const user = req.user;
   let { date, categories } = req.body;
   if (!date) {
     date = getCurrentMonth();

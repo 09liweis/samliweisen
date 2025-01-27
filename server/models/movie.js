@@ -43,4 +43,4 @@ MovieSchema.pre("save", function (next) {
   next();
 });
 
-module.exports = mongoose.model("Visual", MovieSchema);
+module.exports = mongoose.model("Movie", MovieSchema);

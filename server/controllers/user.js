@@ -1,6 +1,5 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
-const axios = require("axios");
 const { sign } = require("../helpers/verifyToken");
 const { sendErr } = require("../helpers/request");
 

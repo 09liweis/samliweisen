@@ -40,11 +40,8 @@ class ExpressJs {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
 
-    this.app.use("/assets", getPathName("../assets"));
-    this.app.use("/resume", getPathName("../resume"));
-
-    this.app.get("/", (req, res) => {
-      res.sendFile(path.join(__dirname, "../resume/resume.html"));
+    this.app.get("/", (req, resp) => {
+      return resp.json({'msg':'This is a API server'});
     });
 
     const API_PREFIX = "/api";

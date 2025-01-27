@@ -174,8 +174,9 @@ exports.inTheatre = (req, resp) => {
   if (!city) {
     city = "guangzhou";
   }
-  sendRequest({ url: `${DOUBAN_INTHEATRE_URL}${city}` }, function (err, { $ }) {
+  sendRequest({ url: `${DOUBAN_INTHEATRE_URL}${city}` }, function (err, data) {
     if (err) return sendErr(resp, { err: err.toString() });
+    const {$} = data;
     const listItems = $.getNode(".list-item");
     const movies = [];
     if (listItems) {

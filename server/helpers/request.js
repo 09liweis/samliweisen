@@ -22,12 +22,13 @@ const handleRequestResp = (body) => {
   try {
     const statusCode = 200;
     //handle json api result
-    const parseBody = JSON.parse(body);
-    if (typeof parseBody == "object") {
+    try {
+      const parseBody = JSON.parse(body);
       return { body:parseBody };
+    } catch (err) {
+      const $ = new ParseSelector(getCheerio(body));
+      return { statusCode, $, body };
     }
-    const $ = new ParseSelector(getCheerio(body));
-    return { statusCode, $, body };
   } catch (err) {
     return err;
   }

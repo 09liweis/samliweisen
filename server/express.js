@@ -18,8 +18,6 @@ const indexRoute = require("./routes/index"),
   movieRoute = require("./routes/movie"),
   videoRoute = require("./routes/video"),
   categoryRoute = require("./routes/category"),
-  roomRoute = require("./routes/room"),
-  renteeRoute = require("./routes/rentee"),
   contactRoute = require("./routes/contact"),
   foodCourtRoute = require("./routes/foodcourts"),
   statRoute = require("./routes/stat");
@@ -66,8 +64,6 @@ class ExpressJs {
     this.app.use(API_PREFIX + "/user", userRoute);
     this.app.use(API_PREFIX + "/category", categoryRoute);
     this.app.use(API_PREFIX + "/places", placeRoute);
-    this.app.use(API_PREFIX + "/rooms", roomRoute);
-    this.app.use(API_PREFIX + "/rentees", renteeRoute);
     this.app.use(API_PREFIX + "/contacts", contactRoute);
     this.app.use(API_PREFIX + "/stats", statRoute);
 

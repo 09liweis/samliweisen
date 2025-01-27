@@ -150,8 +150,9 @@ exports.getPhotos = (req, resp) => {
     type = type || "C";
   }
   url += `?type=${type}&start=${(page - 1) * NUM_LIMIT}`;
-  sendRequest({ url }, (err, { $ }) => {
+  sendRequest({ url }, (err, data) => {
     if (err) return sendErr(resp, { err: err.toString() });
+    const {$} = data;
     const title = $.getNodeText("#content h1");
     const photos = getPhotos($);
     return sendResp(resp, { title, photos, types, page, type });

@@ -18,16 +18,13 @@ const headers = {
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36",
 };
 
-const handleRequestResp = (resp) => {
+const handleRequestResp = (body) => {
   try {
-    var body = resp.data;
-    let statusCode = 200;
-    if (resp) {
-      statusCode = resp.status;
-    }
+    const statusCode = 200;
     //handle json api result
-    if (body && typeof body == "object") {
-      return { body };
+    const parseBody = JSON.parse(body);
+    if (typeof parseBody == "object") {
+      return { body:parseBody };
     }
     const $ = new ParseSelector(getCheerio(body));
     return { statusCode, $, body };
@@ -41,16 +38,22 @@ const handleRequestResp = (resp) => {
  * @param {function} cb
  */
 exports.sendRequest = async ({ url, method = "GET", body }, cb) => {
-  requestOpt = { url, method, headers };
+  requestOpt = { method, headers };
   if (body) {
-    requestOpt.data = body;
+    requestOpt.data = JSON.stringify(body);
     //for post method
   }
   try {
-    const resp = await axios(requestOpt);
-    const result = handleRequestResp(resp);
-    return cb ? cb(null, result) : result;
+    const resp = await fetch(url, requestOpt);
+    if (resp.ok) {
+      const respData = await resp.text();
+      const result = handleRequestResp(respData);
+      return cb ? cb(null, result) : result;
+    } else {
+      return cb ? cb({err:'Fetch Err'}) : {'err': 'Fetch Err'};
+    }
   } catch (err) {
+    console.error(err);
     return cb ? cb(err) : err;
   }
 };

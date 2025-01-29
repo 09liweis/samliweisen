@@ -9,7 +9,7 @@ const getCheerio = (body) => {
   });
 };
 
-const headers = {
+const REQUEST_HEADERS = {
   "Ocp-Apim-Subscription-Key": "dcdac5601d864addbc2675a2e96cb1f8", //for cineplex
   "Accept-Language": "en-CA,en;q=0.8",
   "Accept-Charset": "utf-8, iso-8859-1;q=0.5",
@@ -38,7 +38,7 @@ const handleRequestResp = (body) => {
  * @param {function} cb
  */
 exports.sendRequest = async ({ url, method = "GET", body }, cb) => {
-  const requestOpt = { method, headers };
+  const requestOpt = { method, headers: REQUEST_HEADERS };
   if (body) {
     requestOpt.data = JSON.stringify(body);
     //for post method

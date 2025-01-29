@@ -71,7 +71,6 @@ class ExpressJs {
       const origins = [
         "https://samliweisen.onrender.com/",
         "https://what-sam-watched.onrender.com/",
-        "https://samliweisen.cyclic.app/",
       ];
       // Website you wish to allow to connect
       if (origins.indexOf(req.headers.origin) > -1) {

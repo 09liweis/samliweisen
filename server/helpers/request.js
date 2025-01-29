@@ -38,7 +38,7 @@ const handleRequestResp = (body) => {
  * @param {function} cb
  */
 exports.sendRequest = async ({ url, method = "GET", body }, cb) => {
-  requestOpt = { method, headers };
+  const requestOpt = { method, headers };
   if (body) {
     requestOpt.data = JSON.stringify(body);
     //for post method

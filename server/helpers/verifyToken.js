@@ -11,6 +11,7 @@ exports.verify = (req, resp, next) => {
     req.user = verified;
     return next();
   } catch (error) {
+    console.error(error);
     resp.status(400).json({ msg: "Invalid token" });
   }
 };

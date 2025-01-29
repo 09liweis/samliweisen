@@ -8,8 +8,8 @@ const {
   getDoubanChart,
   getHongkong,
   getTaiwan,
-  getCineplex,
 } = require("../controllers/visual.js");
+const {getCineplex} = require("../controllers/movies/cineplex.js")
 const { getImdbBoxOffice } = require("../controllers/imdb.js");
 const {
   getPopular,

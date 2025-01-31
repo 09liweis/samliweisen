@@ -14,7 +14,7 @@ const {
 
 router.post("/", verify, findList);
 
-router.post("/statistics", getStatistics);
+router.post("/statistics", verify, getStatistics);
 
 router.post("/new", verify, create);
 

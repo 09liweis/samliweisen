@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const { verify } = require("../helpers/verifyToken");
 
 const {
   getQuizMovie,
@@ -44,10 +45,10 @@ router.route("/random").get(getRandomMovie);
 
 router.route("/quiz").get(getQuizMovie);
 
-router.route("/upsert").post(upsertVisual);
+router.route("/upsert").post(verify, upsertVisual);
 
 router.route("/update_random").put(updateRandomMovie);
 
-router.route("/:douban_id").get(getMovieDetail).put(updateSamMovie).delete(deleteMovie);
+router.route("/:douban_id").get(getMovieDetail).put(updateSamMovie).delete(verify, deleteMovie);
 
 module.exports = router;

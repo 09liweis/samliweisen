@@ -2,7 +2,8 @@ const jwt = require("jsonwebtoken");
 const { token_secret } = require("./constant");
 
 exports.verify = (req, resp, next) => {
-  const token = req.header("auth-token");
+  const headerAuthorization = req.header("Authorization");
+  const token = headerAuthorization && headerAuthorization.split(" ")[1];
   if (!token) {
     return resp.status(401).json({ msg: "Access Denied" });
   }

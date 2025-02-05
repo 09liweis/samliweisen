@@ -8,10 +8,13 @@ exports.getMaoyan = (req, resp) => {
     if (!maoyanMovies) return sendErr(resp, { err: "No Maoyan movies found" });
     const movies = maoyanMovies.map((movie) => {
       return {
+        maoyanId: movie.movieInfo.movieId,
         title: movie.movieInfo.movieName,
         release: movie.movieInfo.releaseInfo,
         totalGross: movie.sumBoxDesc,
-        // currentGross: movie.boxSplitUnit?.num//need font file to display
+        avgSeatView: movie.avgSeatView,
+        boxRate: movie.boxRate,
+        currentGross: movie.boxSplitUnit?.num, //need font file to display
       };
     });
     return sendResp(resp, { movies });

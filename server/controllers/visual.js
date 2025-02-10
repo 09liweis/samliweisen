@@ -81,16 +81,17 @@ async function getMovieByDoubanId(douban_id) {
 
 exports.getQuizMovie = async (req, resp) => {
   const randomMovies = await movieModel.aggregate([{ $sample: { size: 4 } }]);
-  const answers = randomMovies.map((movie)=>movie.title);
-  const randomMovie = randomMovies[Math.floor(Math.random() * randomMovies.length)];
+  const answers = randomMovies.map((movie) => movie.title);
+  const randomMovie =
+    randomMovies[Math.floor(Math.random() * randomMovies.length)];
   const quiz = {
     correctTitle: randomMovie.title,
     summary: randomMovie.summary,
     poster: randomMovie.poster,
-    answers
+    answers,
   };
   return sendResp(resp, quiz);
-}
+};
 
 exports.getMovieDetail = async (req, resp) => {
   let { douban_id } = req.params;
@@ -139,7 +140,7 @@ exports.updateSamMovie = async (req, resp) => {
 exports.deleteMovie = async (req, resp) => {
   try {
     const { douban_id } = req.params;
-    const movie = await movieModel.findOneAndDelete({ douban_id });
+    const movie = await movieModel.deleteOne({ douban_id });
     return sendResp(resp, { msg: "delete movie success" });
   } catch (err) {
     return sendErr(resp, { err: err.toString() });
@@ -176,7 +177,7 @@ exports.inTheatre = (req, resp) => {
   }
   sendRequest({ url: `${DOUBAN_INTHEATRE_URL}${city}` }, function (err, data) {
     if (err) return sendErr(resp, { err: err.toString() });
-    const {$} = data;
+    const { $ } = data;
     const listItems = $.getNode(".list-item");
     const movies = [];
     if (listItems) {

@@ -140,7 +140,7 @@ exports.updateSamMovie = async (req, resp) => {
 exports.deleteMovie = async (req, resp) => {
   try {
     const { douban_id } = req.params;
-    const movie = await movieModel.deleteOne({ douban_id });
+    const movie = await movieModel.findOneAndDelete({ douban_id });
     console.info(movie);
     return sendResp(resp, { msg: "delete movie success" });
   } catch (err) {

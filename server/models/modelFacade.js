@@ -9,7 +9,7 @@ class ModelFacade {
   async create(data) {
     return await this.model.create(data);
   }
-  
+
   async findList(filter, options = {}) {
     const { skip = 0, limit = 10, sort = "-ts" } = options;
     return await this.model.find(filter).skip(skip).limit(limit).sort(sort);
@@ -24,8 +24,8 @@ class ModelFacade {
   async findOneAndUpdate(filter, update, options = { upsert: true }) {
     return await this.model.findOneAndUpdate(filter, update, options);
   }
-  async deleteOne(filter) {
-    return await this.model.deleteOne(filter);
+  async findOneAndDelete(filter) {
+    return await this.model.findOneAndDelete(filter);
   }
   async aggregate(pipeline) {
     return await this.model.aggregate(pipeline);

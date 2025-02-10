@@ -24,8 +24,8 @@ class ModelFacade {
   async findOneAndUpdate(filter, update, options = { upsert: true }) {
     return await this.model.findOneAndUpdate(filter, update, options);
   }
-  async findOneAndDelete(filter) {
-    return await this.model.findOneAndDelete(filter);
+  async deleteOne(filter) {
+    return await this.model.deleteOne(filter);
   }
   async aggregate(pipeline) {
     return await this.model.aggregate(pipeline);

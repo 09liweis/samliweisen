@@ -94,8 +94,7 @@ exports.getQuizMovie = async (req, resp) => {
 };
 
 exports.getMovieDetail = async (req, resp) => {
-  let { douban_id } = req.params;
-  douban_id = douban_id.trim();
+  const douban_id = req.params.douban_id?.trim();
   if (!douban_id) {
     return sendErr(resp, { msg: MISSING_DOUBAN_ID, douban_id });
   }

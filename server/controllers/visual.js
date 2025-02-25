@@ -139,6 +139,9 @@ exports.updateSamMovie = async (req, resp) => {
 exports.deleteMovie = async (req, resp) => {
   try {
     const { douban_id } = req.params;
+    if (!douban_id) {
+      return sendResp(resp, { msg: MISSING_DOUBAN_ID });
+    }
     const movie = await movieModel.deleteOne({ _id: douban_id });
     console.info(movie);
     return sendResp(resp, { msg: "delete movie success" });

@@ -5,6 +5,9 @@ exports.verify = (req, resp, next) => {
   const headerAuthorization = req.header("Authorization");
   const token = headerAuthorization && headerAuthorization.split(" ")[1];
   if (!token) {
+    if (req.url === "/statistics") {
+      return next();
+    }
     return resp.status(401).json({ msg: "Access Denied" });
   }
   try {

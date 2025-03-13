@@ -1,11 +1,13 @@
 const jwt = require("jsonwebtoken");
 const { token_secret } = require("./constant");
 
+const ALLOWED_URLS = ["/statistics"];
+
 exports.verify = (req, resp, next) => {
   const headerAuthorization = req.header("Authorization");
   const token = headerAuthorization && headerAuthorization.split(" ")[1];
   if (!token) {
-    if (req.url === "/statistics") {
+    if (ALLOWED_URLS.includes(req.url) !== -1) {
       return next();
     }
     return resp.status(401).json({ msg: "Access Denied" });

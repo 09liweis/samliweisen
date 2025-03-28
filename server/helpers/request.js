@@ -22,7 +22,7 @@ const handleRequestResp = (body) => {
     //handle json api result
     try {
       const parseBody = JSON.parse(body);
-      return { body:parseBody };
+      return { body: parseBody };
     } catch (err) {
       const $ = new ParseSelector(getCheerio(body));
       return { statusCode, $, body };
@@ -36,10 +36,13 @@ const handleRequestResp = (body) => {
  * @param {object} {url, method, body}
  * @param {function} cb
  */
-exports.sendRequest = async ({ url, method = "GET", body, headers = {} }, cb) => {
-  const requestOpt = { method, headers: {...REQUEST_HEADERS, ...headers} };
+exports.sendRequest = async (
+  { url, method = "GET", body, headers = {} },
+  cb,
+) => {
+  const requestOpt = { method, headers: { ...REQUEST_HEADERS, ...headers } };
   if (body) {
-    requestOpt.data = JSON.stringify(body);
+    requestOpt.body = JSON.stringify(body);
     //for post method
   }
   try {
@@ -49,7 +52,8 @@ exports.sendRequest = async ({ url, method = "GET", body, headers = {} }, cb) =>
       const result = handleRequestResp(respData);
       return cb ? cb(null, result) : result;
     } else {
-      return cb ? cb({err:'Fetch Err'}) : {'err': 'Fetch Err'};
+      console.error(resp);
+      return cb ? cb({ err: "Fetch Err" }) : { err: "Fetch Err" };
     }
   } catch (err) {
     console.error(err);

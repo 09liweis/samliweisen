@@ -53,6 +53,8 @@ exports.getStatistics = async (req, resp) => {
 
   if (transactions.length == 0) {
     statistics.total = getFormatPrice(0);
+    statistics.incomes = getFormatPrice(0);
+    statistics.expenses = getFormatPrice(0);
     statistics.categoryPrice = [];
     return sendResp(resp, statistics);
   }

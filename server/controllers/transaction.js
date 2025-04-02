@@ -132,7 +132,7 @@ exports.findList = (req, resp) => {
     filter.date = new RegExp(date, "i");
   }
   Transaction.find(filter, "_id title price date category", opt)
-    .populate("place", "_id name address lat lng icon")
+    .populate("place", "_id name address")
     .sort("-date")
     .then((transactions) => {
       sendResp(resp, transactions);

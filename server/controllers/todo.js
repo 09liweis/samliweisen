@@ -99,7 +99,7 @@ exports.findTodos = findTodos = async (req, resp) => {
         todo.is_done = todo.status === "done";
       });
     }
-    return sendResp(resp, {todos});
+    return sendResp(resp, { todos });
   } catch (err) {
     return sendErr(resp, { err });
   }

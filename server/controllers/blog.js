@@ -13,7 +13,7 @@ exports.findList = async (req, resp) => {
     blogs.forEach((blog) => {
       blog.content = blog.content.substring(0, 100) + " ...";
     });
-    return sendResp(resp, blogs);
+    return sendResp(resp, { blogs });
   } catch (error) {
     return sendErr(resp, { err: error.toString() });
   }

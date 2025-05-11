@@ -44,9 +44,6 @@ exports.getImdbSummary = async (imdb_id) => {
       // certificate: { rating = "" },
       ratingsSummary: { aggregateRating },
       primaryImage: { url: image },
-      plot: {
-        plotText: { plainText },
-      },
       genres: { genres },
     } = aboveTheFoldData;
     const imdbVideos = mainColumnData?.videoStrip?.edges;
@@ -54,7 +51,7 @@ exports.getImdbSummary = async (imdb_id) => {
     imdbObj.imdb_title = text;
     imdbObj.imdb_rating = aggregateRating;
     imdbObj.imdb_poster = image;
-    imdbObj.imdb_description = plainText;
+    imdbObj.imdb_description = aboveTheFoldData?.plot?.plotText?.plainText;
     imdbObj.imdb_genres = genres.map((genre) => genre.text);
     imdbObj.totalGross = mainColumnData?.worldwideGross?.total?.amount;
     return imdbObj;

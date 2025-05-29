@@ -43,19 +43,19 @@ exports.getImdbSummary = async (imdb_id) => {
       titleText: { text },
       // certificate: { rating = "" },
       ratingsSummary: { aggregateRating },
-      primaryImage: { url: image },
       genres: { genres },
     } = aboveTheFoldData;
     const imdbVideos = mainColumnData?.videoStrip?.edges;
     imdbObj.budget = mainColumnData?.productionBudget?.budget?.amount;
     imdbObj.imdb_title = text;
     imdbObj.imdb_rating = aggregateRating;
-    imdbObj.imdb_poster = image;
+    imdbObj.imdb_poster = aboveTheFoldData?.primaryImage?.url;
     imdbObj.imdb_description = aboveTheFoldData?.plot?.plotText?.plainText;
     imdbObj.imdb_genres = genres.map((genre) => genre.text);
     imdbObj.totalGross = mainColumnData?.worldwideGross?.total?.amount;
     return imdbObj;
   } catch (err) {
+    console.error(err);
     throw err;
   }
 };

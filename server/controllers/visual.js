@@ -143,7 +143,6 @@ exports.deleteMovie = async (req, resp) => {
       return sendResp(resp, { msg: MISSING_DOUBAN_ID });
     }
     const movie = await movieModel.deleteOne({ _id: douban_id });
-    console.info(movie);
     return sendResp(resp, { msg: "delete movie success" });
   } catch (err) {
     return sendErr(resp, { err: err.toString() });
@@ -604,7 +603,6 @@ exports.updateRandomMovie = async (req, resp) => {
       latestMovie,
     );
     if (result.acknowledged) {
-      console.info(movie.title, movie.douban_id, "updated");
       return sendResp(resp, latestMovie);
     } else {
       console.error(result, movie.douban_id);

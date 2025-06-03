@@ -605,7 +605,7 @@ exports.updateRandomMovie = async (req, resp) => {
     if (result.acknowledged) {
       return sendResp(resp, latestMovie);
     } else {
-      console.error(result, movie.douban_id);
+      console.error(result, movie.title, movie.douban_id);
       return sendResp(resp, result);
     }
   } catch (err) {

@@ -213,8 +213,9 @@ exports.getHongkong = (req, resp) => {
   if (!["showing", "coming"].includes(name)) {
     return sendErr(resp, { err: "Invalid api name" });
   }
-  sendRequest({ url: `https://hkmovie6.com/${name}` }, function (err, { $ }) {
+  sendRequest({ url: `https://hkmovie6.com/${name}` }, function (err, result) {
     if (err) return sendErr(resp, { err: err.toString() });
+    const { $ } = result;
     const movieResults = $.getNode(".shows .movie.show");
     let movies = [];
     if (movieResults) {

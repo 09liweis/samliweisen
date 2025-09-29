@@ -2,6 +2,9 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var WebsiteSchema = new Schema({
+  uid: {
+    type: Schema.Types.ObjectId,
+  },
   title: {
     type: String,
     required: "Kindly enter the name of the task",

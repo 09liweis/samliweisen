@@ -20,6 +20,7 @@ const indexRoute = require("./routes/index"),
   categoryRoute = require("./routes/category"),
   contactRoute = require("./routes/contact"),
   foodCourtRoute = require("./routes/foodcourts"),
+  websiteRoute = require("./routes/website"),
   statRoute = require("./routes/stat");
 
 const getPathName = (dir) => {
@@ -41,7 +42,7 @@ class ExpressJs {
     this.app.use(bodyParser.json());
 
     this.app.get("/", (req, resp) => {
-      return resp.json({'msg':'This is a API server'});
+      return resp.json({ msg: "This is a API server" });
     });
 
     const API_PREFIX = "/api";
@@ -63,6 +64,7 @@ class ExpressJs {
     this.app.use(API_PREFIX + "/places", placeRoute);
     this.app.use(API_PREFIX + "/contacts", contactRoute);
     this.app.use(API_PREFIX + "/stats", statRoute);
+    this.app.use(API_PREFIX + "/websites", websiteRoute);
 
     this.app.use(API_PREFIX + "/foodcourts", foodCourtRoute);
 

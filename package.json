@@ -4,9 +4,9 @@
   "version": "20.58.43",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
-  "entrypoint": "server.js",
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "git+https://09liweis@github.com/09liweis/samliwiesen.git"

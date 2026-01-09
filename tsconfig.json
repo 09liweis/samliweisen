@@ -16,6 +16,6 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["server/**/*", "server.js"],
+  "include": ["server/**/*", "index.js"],
   "exclude": ["node_modules", "dist"]
 }

@@ -6,7 +6,7 @@
     "dev": "nodemon server.js",
     "start": "nodemon server.js"
   },
-  "entry": "server.js",
+  "entrypoint": "server.js",
   "repository": {
     "type": "git",
     "url": "git+https://09liweis@github.com/09liweis/samliwiesen.git"

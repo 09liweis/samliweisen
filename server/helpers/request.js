@@ -12,6 +12,7 @@ const getCheerio = (body) => {
 const REQUEST_HEADERS = {
   "Accept-Language": "en-CA,en;q=0.8",
   "Accept-Charset": "utf-8, iso-8859-1;q=0.5",
+  'Referer': 'https://movie.douban.com/',
   "User-Agent":
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36",
 };
@@ -48,15 +49,9 @@ exports.sendRequest = async (
   try {
     const resp = await fetch(url, requestOpt);
     if (resp.ok) {
-      const contentType = resp.headers.get("content-type");
-      let respData;
-      if (contentType && contentType.includes("application/json")) {
-        respData = await resp.json();
-      } else {
-        respData = await resp.text();
-      }
+      const respData = await resp.text();
       console.log(respData);
-      const result = typeof respData === "string" ? handleRequestResp(respData) : { body: respData };
+      const result = handleRequestResp(respData);
       return cb ? cb(null, result) : result;
     } else {
       console.error(resp);

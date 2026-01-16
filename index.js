@@ -1,6 +1,6 @@
 "use strict";
 const DEFAULT_PORT = 8081;
-const port = process.env.PORT || DEFAULT_PORT;
+const port = process.env.PORT || 5000;
 
 const Mongoose = require("./server/mongoose");
 const mongoose = new Mongoose();

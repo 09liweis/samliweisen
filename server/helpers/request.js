@@ -48,8 +48,15 @@ exports.sendRequest = async (
   try {
     const resp = await fetch(url, requestOpt);
     if (resp.ok) {
-      const respData = await resp.text();
-      const result = handleRequestResp(respData);
+      const contentType = resp.headers.get("content-type");
+      let respData;
+      if (contentType && contentType.includes("application/json")) {
+        respData = await resp.json();
+      } else {
+        respData = await resp.text();
+      }
+      console.log(respData);
+      const result = typeof respData === "string" ? handleRequestResp(respData) : { body: respData };
       return cb ? cb(null, result) : result;
     } else {
       console.error(resp);

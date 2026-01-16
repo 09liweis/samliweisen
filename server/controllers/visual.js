@@ -579,7 +579,7 @@ async function getRandomMovieDB() {
       douban_id: { $exists: true },
     });
     var random = Math.floor(Math.random() * count);
-    const movie = await movieModel.findOne(null, { skip: random });
+    const movie = await movieModel.findOne({}, { skip: random });
     return movie;
   } catch (err) {
     return err;

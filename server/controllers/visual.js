@@ -221,7 +221,7 @@ exports.getHongkong = (req, resp) => {
     if (movieResults) {
       movies = movieResults.toArray().map((m) => {
         const movie = $.getNode(m);
-        const poster = movie.find("img").attr("src");
+        const poster = movie.find("img").attr("srcset")?.split(' ')?.[2]; 
         const video = movie.find("video").attr("src");
         const title = movie.find(".posterName").text();
         const release = movie.find(".comingTitle").text();

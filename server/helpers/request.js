@@ -50,7 +50,6 @@ exports.sendRequest = async (
     const resp = await fetch(url, requestOpt);
     if (resp.ok) {
       const respData = await resp.text();
-      console.log(respData);
       const result = handleRequestResp(respData);
       return cb ? cb(null, result) : result;
     } else {

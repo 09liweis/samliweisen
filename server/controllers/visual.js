@@ -241,9 +241,10 @@ exports.getHongkong = (req, resp) => {
 exports.getTaiwan = (req, resp) => {
   const { name } = req.params;
   const movieListId = name === "showing" ? "1" : "2";
+  const domain = "https://www.ambassador.com.tw";
   sendRequest(
     {
-      url: "https://www.ambassador.com.tw/home/MovieList?Type=1",
+      url: `${domain}/home/MovieList?Type=1`,
     },
     function (err, { $ }) {
       let movies = [];
@@ -256,6 +257,7 @@ exports.getTaiwan = (req, resp) => {
             original_title: movie.find(".show-for-large").text(),
             poster: movie.find("img").attr("src"),
             date: movie.find(".date").text(),
+            original_url: domain + movie.find("a").attr("href")
           };
         });
       }

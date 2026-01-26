@@ -213,7 +213,8 @@ exports.getHongkong = (req, resp) => {
   if (!["showing", "coming"].includes(name)) {
     return sendErr(resp, { err: "Invalid api name" });
   }
-  sendRequest({ url: `https://hkmovie6.com/${name}` }, function (err, result) {
+  const domain = "https://www.hkmovie6.com"
+  sendRequest({ url: `${domain}/${name}` }, function (err, result) {
     if (err) return sendErr(resp, { err: err.toString() });
     const { $ } = result;
     const movieResults = $.getNode(".shows .movie.show");
@@ -225,10 +226,11 @@ exports.getHongkong = (req, resp) => {
         const video = movie.find("video").attr("src");
         const title = movie.find(".posterName").text();
         const release = movie.find(".comingTitle").text();
+        const original_url = domain + movie.find("a").attr("href");
         if (video) {
-          return { title, release, video };
+          return { title, release, video, original_url };
         } else {
-          return { title, release, poster };
+          return { title, release, poster, original_url };
         }
       });
     }

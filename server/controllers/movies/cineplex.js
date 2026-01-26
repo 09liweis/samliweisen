@@ -19,6 +19,7 @@ exports.getCineplex = (req, resp) => {
             poster: m.mediumPosterImageUrl,
             release: m.releaseDate.substr(0, 10),
             genres: m.genres,
+            original_url: `https://www.cineplex.com/en/movie/${m.filmUrl}`
           };
         });
       }

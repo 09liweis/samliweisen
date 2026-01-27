@@ -9,6 +9,7 @@ exports.getMaoyan = (req, resp) => {
     const movies = maoyanMovies.map((movie) => {
       return {
         maoyanId: movie.movieInfo.movieId,
+        original_url: `https://piaofang.maoyan.com/i/dashboard/movie?movieId=${movie.movieInfo.movieId}`,
         title: movie.movieInfo.movieName,
         release: movie.movieInfo.releaseInfo,
         totalGross: movie.sumBoxDesc,

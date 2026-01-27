@@ -14,6 +14,7 @@ function getIMDBBoxOffice(moviesData, req) {
       }
       const movie = {
         imdb_id: movieNode.id,
+        original_url: `https://www.imdb.com/title/${movieNode.id}`,
         title: movieNode.titleText?.text,
         original_title: movieNode.originalTitleText?.text,
         poster: movieNode.primaryImage?.url,

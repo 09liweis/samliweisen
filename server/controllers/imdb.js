@@ -53,17 +53,19 @@ const getPoularMovieReleaseDate = (releaseDate) => {
 }
 
 const getCalendarMovie = (moviesData, req) => {
-  return moviesData.map(({group, entries}) => {
-    return entries.map((entry) => {
-      return {
+  const movies = [];
+  moviesData.forEach(({group, entries}) => {
+    entries.forEach((entry) => {
+      movies.push({
         imdb_id: entry.id,
         original_url: `https://www.imdb.com/title/${entry.id}`,
         title: entry.titleText,
         poster: entry.imageModel?.url,
-        release: entry.releaseDate,
-      }
+        release: new Date(entry.releaseDate).toDateString(),
+      });
     })
-  })
+  });
+  return movies;
 }
 
 exports.getImdbBoxOffice = async (req, resp) => {

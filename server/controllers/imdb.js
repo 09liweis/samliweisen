@@ -34,7 +34,6 @@ function getBoxOfficeMovie(moviesData, req) {
 
 const getPopularMovie = (moviesData, req) => {
   return moviesData.map(({ node }) => {
-    console.log(node);
     return {
       imdb_id: node.id,
       original_url: `https://www.imdb.com/title/${node.id}`,
@@ -43,9 +42,14 @@ const getPopularMovie = (moviesData, req) => {
       poster: node.primaryImage?.url,
       imdb_rating: node.ratingsSummary?.aggregateRating,
       vote_count: node.ratingsSummary?.voteCount,
-      release: node.ReleaseDate?.releaseDate,
+      release: getPoularMovieReleaseDate(node.releaseDate),
     }
   });
+}
+
+const getPoularMovieReleaseDate = (releaseDate) => {
+  const {day, month, year} = releaseDate;
+  return `${year}-${month}-${day}`;
 }
 
 exports.getImdbBoxOffice = async (req, resp) => {

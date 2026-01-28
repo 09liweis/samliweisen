@@ -1,10 +1,10 @@
 const { sendRequest, sendResp, sendErr } = require("../helpers/request");
-const {getCurrencyFormat} = require("../helpers/imdb");
+const { getCurrencyFormat } = require("../helpers/imdb");
 const { getFullMovieDetail } = require("../helpers/douban");
 
 const IMDB_BOXOFFICE = "https://www.imdb.com/chart/boxoffice";
 
-function getIMDBBoxOffice(moviesData, req) {
+function getBoxOfficeMovie(moviesData, req) {
   const movies = [];
   moviesData.forEach(({ node }) => {
     try {
@@ -32,23 +32,45 @@ function getIMDBBoxOffice(moviesData, req) {
   return movies;
 }
 
-exports.getImdbBoxOffice = (req, resp) => {
-  let { name } = req.params;
-  sendRequest({ url: IMDB_BOXOFFICE }, (err, { $ }) => {
-    if (err) {
-      return sendErr(resp, err);
+const getPopularMovie = (moviesData, req) => {
+  return moviesData.map(({ node }) => {
+    console.log(node);
+    return {
+      imdb_id: node.id,
+      original_url: `https://www.imdb.com/title/${node.id}`,
+      title: node.titleText?.text,
+      original_title: node.originalTitleText?.text,
+      poster: node.primaryImage?.url,
+      imdb_rating: node.ratingsSummary?.aggregateRating,
+      vote_count: node.ratingsSummary?.voteCount,
+      release: node.ReleaseDate?.releaseDate,
     }
-    const boxOffice = {
-      title: $.getNodeText(".chart-layout-specific-title-text"),
-      date: $.getNodeText(
-        ".chart-layout-specific-title .ipc-title__description",
-      ),
-    };
-    const jsonLdInfo = $.getNodeText('script[type="application/json"]');
-    const json = JSON.parse(jsonLdInfo);
-    const moviesData =
-      json?.props?.pageProps?.pageData?.topGrossingReleases?.edges;
-    boxOffice.movies = getIMDBBoxOffice(moviesData, req);
-    return sendResp(resp, boxOffice);
   });
+}
+
+exports.getImdbBoxOffice = async (req, resp) => {
+  let { name } = req.params;
+  const map = {
+    boxoffice: IMDB_BOXOFFICE,
+    popular: "https://www.imdb.com/chart/moviemeter/",
+  };
+
+  const { $ } = await sendRequest({ url: map[name] });
+  const boxOffice = {
+    title: $.getNodeText(".chart-layout-specific-title-text"),
+    date: $.getNodeText(".chart-layout-specific-title .ipc-title__description"),
+  };
+  const jsonLdInfo = $.getNodeText('script[type="application/json"]');
+  const json = JSON.parse(jsonLdInfo);
+
+  let moviesData = [];
+  if (name === "boxoffice") {
+    moviesData = json?.props?.pageProps?.pageData?.topGrossingReleases?.edges;
+    boxOffice.movies = getBoxOfficeMovie(moviesData, req);
+  } else if (name === "popular") {
+    moviesData = json?.props?.pageProps?.pageData?.chartTitles?.edges;
+    boxOffice.movies = getPopularMovie(moviesData, req);
+  }
+  
+  return sendResp(resp, boxOffice);
 };

@@ -52,11 +52,26 @@ const getPoularMovieReleaseDate = (releaseDate) => {
   return `${year}-${month}-${day}`;
 }
 
+const getCalendarMovie = (moviesData, req) => {
+  return moviesData.map(({group, entries}) => {
+    return entries.map((entry) => {
+      return {
+        imdb_id: entry.id,
+        original_url: `https://www.imdb.com/title/${entry.id}`,
+        title: entry.titleText,
+        poster: entry.imageModel?.url,
+        release: entry.releaseDate,
+      }
+    })
+  })
+}
+
 exports.getImdbBoxOffice = async (req, resp) => {
   let { name } = req.params;
   const map = {
     boxoffice: IMDB_BOXOFFICE,
     popular: "https://www.imdb.com/chart/moviemeter/",
+    calendar: "https://www.imdb.com/calendar/"
   };
 
   const { $ } = await sendRequest({ url: map[name] });
@@ -74,6 +89,9 @@ exports.getImdbBoxOffice = async (req, resp) => {
   } else if (name === "popular") {
     moviesData = json?.props?.pageProps?.pageData?.chartTitles?.edges;
     boxOffice.movies = getPopularMovie(moviesData, req);
+  } else if (name === "calendar") {
+    moviesData = json?.props?.pageProps?.groups;
+    boxOffice.movies = getCalendarMovie(moviesData, req);
   }
   
   return sendResp(resp, boxOffice);

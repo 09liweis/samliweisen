@@ -554,20 +554,29 @@ const getDoubanMovieSummary = async (douban_id) => {
 
 exports.upsertVisual = async (req, resp) => {
   //35376457
-  var { douban_id } = req.body;
+  var { douban_id, title, poster, douban_rating, imdb_id, imdb_rating } = req.body;
   if (!douban_id) {
     return sendErr(resp, { msg: MISSING_DOUBAN_ID, body: req.body });
   }
   try {
-    const movie = await getDoubanMovieSummary(douban_id);
-    if (!movie.douban_id) {
-      return sendErr(resp, { msg: "Can not get movie" });
+    // const movie = await getDoubanMovieSummary(douban_id);
+    // if (!movie.douban_id) {
+    //   return sendErr(resp, { msg: "Can not get movie" });
+    // }
+    // const oldMovie = await movieModel.findOne({ douban_id });
+    // if (!oldMovie) {
+    //   movie.date_watched = new Date();
+    // }
+    // movie.date_updated = new Date();
+    const movie = {
+      douban_id,
+      title,
+      poster,
+      douban_rating,
+      imdb_id,
+      imdb_rating,
+      date_updated: new Date(),
     }
-    const oldMovie = await movieModel.findOne({ douban_id });
-    if (!oldMovie) {
-      movie.date_watched = new Date();
-    }
-    movie.date_updated = new Date();
     const newMovie = await movieModel.findOneAndUpdate({ douban_id }, movie, {
       upsert: true,
     });

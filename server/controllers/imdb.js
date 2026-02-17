@@ -48,6 +48,7 @@ const getPopularMovie = (moviesData, req) => {
 }
 
 const getPoularMovieReleaseDate = (releaseDate) => {
+  if (!releaseDate) return "";
   const {day, month, year} = releaseDate;
   return `${year}-${month}-${day}`;
 }

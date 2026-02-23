@@ -63,6 +63,7 @@ const getCalendarMovie = (moviesData, req) => {
         title: entry.titleText,
         poster: entry.imageModel?.url,
         release: new Date(entry.releaseDate).toDateString(),
+        genres: entry.genres
       });
     })
   });

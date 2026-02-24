@@ -615,7 +615,11 @@ exports.getRandomMovie = async (req, resp) => {
 exports.updateRandomMovie = async (req, resp) => {
   try {
     const movie = await getRandomMovieDB();
-    const latestMovie = await getDoubanMovieSummary(movie.douban_id);
+    const searchMovies = await getDoubanSearchResult(movie.title, req)
+    const latestMovie = searchMovies.find(m => m.douban_id === movie.douban_id)
+    if (!latestMovie) {
+      return sendErr(resp, { msg: "Can not find movie" });
+    }
     const result = await movieModel.updateOne(
       { douban_id: movie.douban_id },
       latestMovie,

@@ -266,33 +266,37 @@ exports.getTaiwan = (req, resp) => {
   );
 };
 
-exports.search = (req, resp) => {
+const getDoubanSearchResult = async (keyword, req) => {
+  const url = `https://m.douban.com/search/?query=${encodeURIComponent(
+    keyword,
+  )}&type=1002`;
+  const { $ } = await sendRequest({ url });
+  const results = $.getNode(".search_results_subjects a");
+  let movies = [];
+  if (results) {
+    movies = results.toArray().map((r) => {
+      const visual = $.getNode(r);
+      const [, , , douban_id] = visual.attr("href").split("/");
+      const movie = {
+        douban_id,
+        poster: visual.find("img").attr("src"),
+        title: visual.find(".subject-title").text(),
+        douban_rating: visual.find(".rating span:nth-child(2)").text(),
+      };
+      return getFullMovieDetail(movie, { req });
+    });
+  }
+  return movies;
+}
+
+exports.search = async (req, resp) => {
   let { keyword } = req.query;
   keyword = keyword?.trim();
   if (!keyword) {
     return sendErr(resp, { msg: "No Keyword" });
   }
-  const url = `https://m.douban.com/search/?query=${encodeURIComponent(
-    keyword,
-  )}&type=1002`;
-  sendRequest({ url }, function (err, { $ }) {
-    if (err) return sendErr(resp, { err: err.toString() });
-    const results = $.getNode(".search_results_subjects a");
-    if (results) {
-      var movies = results.toArray().map((r) => {
-        const visual = $.getNode(r);
-        const [, , , douban_id] = visual.attr("href").split("/");
-        const movie = {
-          douban_id,
-          poster: visual.find("img").attr("src"),
-          title: visual.find(".subject-title").text(),
-          douban_rating: visual.find(".rating span:nth-child(2)").text(),
-        };
-        return getFullMovieDetail(movie, { req });
-      });
-    }
-    sendResp(resp, { keyword, movies });
-  });
+  const movies = await getDoubanSearchResult(keyword, req);
+  sendResp(resp, { keyword, movies });
 };
 
 exports.getCelebrities = (req, resp) => {

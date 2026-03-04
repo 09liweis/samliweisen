@@ -289,6 +289,18 @@ const getDoubanSearchResult = async (keyword, req) => {
   return movies;
 }
 
+const getDoubanSearchEpsodieResult = async (keyword, req) => {
+  const url = `https://movie.douban.com/j/subject_suggest?q=${encodeURIComponent(
+    keyword,
+  )}`;
+  const { $, body } = await sendRequest({ url });
+  let movies = [];
+  if (body) {
+    console.log(body);
+  }
+  return movies;
+}
+
 exports.search = async (req, resp) => {
   let { keyword } = req.query;
   keyword = keyword?.trim();
@@ -615,7 +627,9 @@ exports.getRandomMovie = async (req, resp) => {
 exports.updateRandomMovie = async (req, resp) => {
   try {
     const movie = await getRandomMovieDB();
-    const searchMovies = await getDoubanSearchResult(movie.title, req)
+    const searchMovies = await getDoubanSearchResult(movie.title, req) //to update douban_rating
+    //to update episode https://movie.douban.com/j/subject_suggest?q=
+    const movieWithEpisode = await getDoubanSearchEpsodieResult(movie.title, req)
     const latestMovie = searchMovies.find(m => m.douban_id === movie.douban_id)
     if (!latestMovie) {
       return sendErr(resp, { msg: "Can not find movie" });

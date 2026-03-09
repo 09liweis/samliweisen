@@ -4,7 +4,7 @@ const Transaction = require("../models/transaction");
 exports.category_list = (req, resp) => {
   Category.find()
     .then((categories) => {
-      resp.json(categories);
+      resp.json({categories});
     })
     .catch((err) => {
       handleError(resp, err);

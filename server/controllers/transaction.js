@@ -145,7 +145,7 @@ exports.findList = (req, resp) => {
 exports.category_list = (req, resp) => {
   Transaction.distinct("category")
     .then((categories) => {
-      sendResp(resp, categories);
+      sendResp(resp, { categories });
     })
     .catch((err) => {
       return sendErr(resp, { err });

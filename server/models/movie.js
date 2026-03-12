@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const MovieSchema = new Schema({
   title: String,
+  sub_title: String,
   douban_id: String,
   douban_rating: Number,
   poster: String,

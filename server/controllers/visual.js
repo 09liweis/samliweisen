@@ -296,7 +296,15 @@ const getDoubanSearchEpsodieResult = async (keyword, req) => {
   const { $, body } = await sendRequest({ url });
   let movies = [];
   if (body) {
-    console.log(body);
+    movies = body.map((m) => {
+      return {
+        douban_id: m.id,
+        title: m.title,
+        sub_title: m.sub_title,
+        poster: m.img,
+        episodes: m.episode
+      }
+    })
   }
   return movies;
 }
@@ -628,15 +636,24 @@ exports.updateRandomMovie = async (req, resp) => {
   try {
     const movie = await getRandomMovieDB();
     const searchMovies = await getDoubanSearchResult(movie.title, req) //to update douban_rating
+    
+    const latestMovie = searchMovies.find(m => m.douban_id === movie.douban_id)
+
     //to update episode https://movie.douban.com/j/subject_suggest?q=
     const movieWithEpisode = await getDoubanSearchEpsodieResult(movie.title, req)
-    const latestMovie = searchMovies.find(m => m.douban_id === movie.douban_id)
-    if (!latestMovie) {
-      return sendErr(resp, { msg: "Can not find movie" });
+    const latestMovieWithEpisode = movieWithEpisode.find(m => m.douban_id === movie.douban_id)
+  
+    let updatedMovie = movie;
+    if (latestMovie) {
+      updatedMovie = { ...updatedMovie, ...latestMovie }
     }
+    if (latestMovieWithEpisode) {
+      updatedMovie = { ...updatedMovie, ...latestMovieWithEpisode }
+    }
+
     const result = await movieModel.updateOne(
       { douban_id: movie.douban_id },
-      latestMovie,
+      updatedMovie,
     );
     if (result.acknowledged) {
       return sendResp(resp, latestMovie);

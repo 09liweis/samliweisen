@@ -213,7 +213,7 @@ exports.getHongkong = (req, resp) => {
   if (!["showing", "coming"].includes(name)) {
     return sendErr(resp, { err: "Invalid api name" });
   }
-  const domain = "https://www.hkmovie6.com"
+  const domain = "https://www.hkmovie6.com";
   sendRequest({ url: `${domain}/${name}` }, function (err, result) {
     if (err) return sendErr(resp, { err: err.toString() });
     const { $ } = result;
@@ -222,7 +222,7 @@ exports.getHongkong = (req, resp) => {
     if (movieResults) {
       movies = movieResults.toArray().map((m) => {
         const movie = $.getNode(m);
-        const poster = movie.find("img").attr("srcset")?.split(' ')?.[2]; 
+        const poster = movie.find("img").attr("srcset")?.split(" ")?.[2];
         const video = movie.find("video").attr("src");
         const title = movie.find(".posterName").text();
         const release = movie.find(".comingTitle").text();
@@ -257,7 +257,7 @@ exports.getTaiwan = (req, resp) => {
             original_title: movie.find(".show-for-large").text(),
             poster: movie.find("img").attr("src"),
             date: movie.find(".date").text(),
-            original_url: domain + movie.find("a").attr("href")
+            original_url: domain + movie.find("a").attr("href"),
           };
         });
       }
@@ -287,7 +287,7 @@ const getDoubanSearchResult = async (keyword, req) => {
     });
   }
   return movies;
-}
+};
 
 const getDoubanSearchEpsodieResult = async (keyword, req) => {
   const url = `https://movie.douban.com/j/subject_suggest?q=${encodeURIComponent(
@@ -302,12 +302,12 @@ const getDoubanSearchEpsodieResult = async (keyword, req) => {
         title: m.title,
         sub_title: m.sub_title,
         poster: m.img,
-        episodes: m.episode
-      }
-    })
+        episodes: m.episode,
+      };
+    });
   }
   return movies;
-}
+};
 
 exports.search = async (req, resp) => {
   let { keyword } = req.query;
@@ -578,7 +578,8 @@ const getDoubanMovieSummary = async (douban_id) => {
 
 exports.upsertVisual = async (req, resp) => {
   //35376457
-  var { douban_id, title, poster, douban_rating, imdb_id, imdb_rating } = req.body;
+  var { douban_id, title, poster, douban_rating, imdb_id, imdb_rating } =
+    req.body;
   if (!douban_id) {
     return sendErr(resp, { msg: MISSING_DOUBAN_ID, body: req.body });
   }
@@ -600,7 +601,7 @@ exports.upsertVisual = async (req, resp) => {
       imdb_id,
       imdb_rating,
       date_updated: new Date(),
-    }
+    };
     const newMovie = await movieModel.findOneAndUpdate({ douban_id }, movie, {
       upsert: true,
     });
@@ -635,21 +636,29 @@ exports.getRandomMovie = async (req, resp) => {
 exports.updateRandomMovie = async (req, resp) => {
   try {
     const movie = await getRandomMovieDB();
-    const searchMovies = await getDoubanSearchResult(movie.title, req) //to update douban_rating
-    
-    const latestMovie = searchMovies.find(m => m.douban_id === movie.douban_id)
+    const searchMovies = await getDoubanSearchResult(movie.title, req); //to update douban_rating
+
+    const latestMovie = searchMovies.find(
+      (m) => m.douban_id === movie.douban_id,
+    );
 
     //to update episode https://movie.douban.com/j/subject_suggest?q=
-    const movieWithEpisode = await getDoubanSearchEpsodieResult(movie.title, req)
-    const latestMovieWithEpisode = movieWithEpisode.find(m => m.douban_id === movie.douban_id)
-  
-    let updatedMovie = movie;
+    const movieWithEpisode = await getDoubanSearchEpsodieResult(
+      movie.title,
+      req,
+    );
+    const latestMovieWithEpisode = movieWithEpisode.find(
+      (m) => m.douban_id === movie.douban_id,
+    );
+
+    let updatedMovie = { ...movie._doc };
     if (latestMovie) {
-      updatedMovie = { ...updatedMovie, ...latestMovie }
+      updatedMovie = { ...updatedMovie, ...latestMovie };
     }
     if (latestMovieWithEpisode) {
-      updatedMovie = { ...updatedMovie, ...latestMovieWithEpisode }
+      updatedMovie = { ...updatedMovie, ...latestMovieWithEpisode };
     }
+    console.log(updatedMovie);
 
     const result = await movieModel.updateOne(
       { douban_id: movie.douban_id },
@@ -662,6 +671,7 @@ exports.updateRandomMovie = async (req, resp) => {
       return sendResp(resp, result);
     }
   } catch (err) {
+    console.error(err);
     return sendErr(resp, { err: err.toString() });
   }
 };

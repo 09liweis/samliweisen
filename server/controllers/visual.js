@@ -658,7 +658,6 @@ exports.updateRandomMovie = async (req, resp) => {
     if (latestMovieWithEpisode) {
       updatedMovie = { ...updatedMovie, ...latestMovieWithEpisode };
     }
-    console.log(updatedMovie);
 
     const result = await movieModel.updateOne(
       { douban_id: movie.douban_id },

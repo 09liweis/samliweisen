@@ -35,8 +35,8 @@ exports.getStatistics = async (req, resp) => {
   const filter = { date: new RegExp(date, "i") };
   if (endDate) {
     filter.date = {
-      $gte: new RegExp(date, "i"),
-      $lte: new RegExp(endDate, "i")
+      $gte: date,
+      $lte: endDate
     };
   }
   if (categories?.length > 0) {

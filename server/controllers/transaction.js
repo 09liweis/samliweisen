@@ -59,7 +59,9 @@ exports.getStatistics = async (req, resp) => {
       const price = transaction.price.toFixed(2);
       totalAmount += transaction.price;
 
-      csvContent += `${transaction.date},${transaction.category},"${placeName}","${placeAddress}",${price}\n`;
+      if (price < 0) {
+        csvContent += `${transaction.date},${transaction.category},"${placeName}","${placeAddress}",${price}\n`;
+      }
     });
 
     csvContent += `\nTotal Amount,${totalAmount.toFixed(2)}`;

@@ -28,11 +28,17 @@ function getFormatExpenses(inputExpenses) {
 
 exports.getStatistics = async (req, resp) => {
   const user = req.user;
-  let { date, categories } = req.body;
+  let { date, categories, endDate, downloadCsv } = req.body;
   if (!date) {
     date = getCurrentMonth();
   }
   const filter = { date: new RegExp(date, "i") };
+  if (endDate) {
+    filter.date = {
+      $gte: new RegExp(date, "i"),
+      $lte: new RegExp(endDate, "i")
+    };
+  }
   if (categories?.length > 0) {
     filter.category = { $in: categories };
   }
@@ -42,6 +48,26 @@ exports.getStatistics = async (req, resp) => {
   )
     .populate("place")
     .sort("-date");
+
+  if (downloadCsv) {
+    let csvContent = "Date,Category,Place Name,Place Address,Price\n";
+    let totalAmount = 0;
+
+    transactions.forEach((transaction) => {
+      const placeName = transaction.place ? transaction.place.name : "";
+      const placeAddress = transaction.place ? transaction.place.address : "";
+      const price = transaction.price.toFixed(2);
+      totalAmount += transaction.price;
+
+      csvContent += `${transaction.date},${transaction.category},"${placeName}","${placeAddress}",${price}\n`;
+    });
+
+    csvContent += `\nTotal Amount,${totalAmount.toFixed(2)}`;
+
+    resp.setHeader("Content-Type", "text/csv");
+    resp.setHeader("Content-Disposition", `attachment; filename="transactions-${date}.csv"`);
+    return resp.send(csvContent);
+  }
 
   const statistics = {
     date,

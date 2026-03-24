@@ -43,19 +43,19 @@ const getPopularMovie = (moviesData, req) => {
       imdb_rating: node.ratingsSummary?.aggregateRating,
       vote_count: node.ratingsSummary?.voteCount,
       release: getPoularMovieReleaseDate(node.releaseDate),
-    }
+    };
   });
-}
+};
 
 const getPoularMovieReleaseDate = (releaseDate) => {
   if (!releaseDate) return "";
-  const {day, month, year} = releaseDate;
+  const { day, month, year } = releaseDate;
   return `${year}-${month}-${day}`;
-}
+};
 
 const getCalendarMovie = (moviesData, req) => {
   const movies = [];
-  moviesData.forEach(({group, entries}) => {
+  moviesData.forEach(({ group, entries }) => {
     entries.forEach((entry) => {
       movies.push({
         imdb_id: entry.id,
@@ -63,40 +63,46 @@ const getCalendarMovie = (moviesData, req) => {
         title: entry.titleText,
         poster: entry.imageModel?.url,
         release: new Date(entry.releaseDate).toDateString(),
-        genres: entry.genres
+        genres: entry.genres,
       });
-    })
+    });
   });
   return movies;
-}
+};
 
 exports.getImdbBoxOffice = async (req, resp) => {
-  let { name } = req.params;
-  const map = {
-    boxoffice: IMDB_BOXOFFICE,
-    popular: "https://www.imdb.com/chart/moviemeter/",
-    calendar: "https://www.imdb.com/calendar/"
-  };
+  try {
+    let { name } = req.params;
+    const map = {
+      boxoffice: IMDB_BOXOFFICE,
+      popular: "https://www.imdb.com/chart/moviemeter/",
+      calendar: "https://www.imdb.com/calendar/",
+    };
 
-  const { $ } = await sendRequest({ url: map[name] });
-  const boxOffice = {
-    title: $.getNodeText(".chart-layout-specific-title-text"),
-    date: $.getNodeText(".chart-layout-specific-title .ipc-title__description"),
-  };
-  const jsonLdInfo = $.getNodeText('script[type="application/json"]');
-  const json = JSON.parse(jsonLdInfo);
+    const { $ } = await sendRequest({ url: map[name] });
+    const boxOffice = {
+      title: $.getNodeText(".chart-layout-specific-title-text"),
+      date: $.getNodeText(
+        ".chart-layout-specific-title .ipc-title__description",
+      ),
+    };
+    const jsonLdInfo = $.getNodeText('script[type="application/json"]');
+    const json = JSON.parse(jsonLdInfo);
 
-  let moviesData = [];
-  if (name === "boxoffice") {
-    moviesData = json?.props?.pageProps?.pageData?.topGrossingReleases?.edges;
-    boxOffice.movies = getBoxOfficeMovie(moviesData, req);
-  } else if (name === "popular") {
-    moviesData = json?.props?.pageProps?.pageData?.chartTitles?.edges;
-    boxOffice.movies = getPopularMovie(moviesData, req);
-  } else if (name === "calendar") {
-    moviesData = json?.props?.pageProps?.groups;
-    boxOffice.movies = getCalendarMovie(moviesData, req);
+    let moviesData = [];
+    if (name === "boxoffice") {
+      moviesData = json?.props?.pageProps?.pageData?.topGrossingReleases?.edges;
+      boxOffice.movies = getBoxOfficeMovie(moviesData, req);
+    } else if (name === "popular") {
+      moviesData = json?.props?.pageProps?.pageData?.chartTitles?.edges;
+      boxOffice.movies = getPopularMovie(moviesData, req);
+    } else if (name === "calendar") {
+      moviesData = json?.props?.pageProps?.groups;
+      boxOffice.movies = getCalendarMovie(moviesData, req);
+    }
+
+    return sendResp(resp, boxOffice);
+  } catch (err) {
+    return sendErr(resp, { err: err.toString() });
   }
-  
-  return sendResp(resp, boxOffice);
 };

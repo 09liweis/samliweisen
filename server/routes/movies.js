@@ -8,7 +8,7 @@ const {
   getDoubanChart,
   getHongkong,
   getTaiwan,
-} = require("../controllers/visual.js");
+} = require("../controllers/movies/visual.js");
 const {getCineplex} = require("../controllers/movies/cineplex.js")
 const { getImdbBoxOffice } = require("../controllers/imdb.js");
 const {
@@ -16,7 +16,7 @@ const {
   getTags,
   getCommingMovies,
   getAlltimeBoxOffice,
-} = require("../controllers/douban.js");
+} = require("../controllers/movies/douban.js");
 const { getMaoyan } = require("../controllers/movies/maoyan.js");
 
 router.route("/").get(samVisuals);

@@ -1,4 +1,4 @@
-const { sendRequest, sendResp, sendErr } = require("../helpers/request");
+const { sendRequest, sendResp, sendErr } = require("../../helpers/request");
 const {
   getDoubanUrl,
   getReviews,
@@ -7,10 +7,10 @@ const {
   getDoubanPoster,
   getFullMovieDetail,
   getMovieYear,
-} = require("../helpers/douban");
-const { getImdbSummary, getCurrencyFormat } = require("../helpers/imdb");
-const Movie = require("../models/movie");
-const ModelFacade = require("../models/modelFacade");
+} = require("../../helpers/douban");
+const { getImdbSummary, getCurrencyFormat } = require("../../helpers/imdb");
+const Movie = require("../../models/movie");
+const ModelFacade = require("../../models/modelFacade");
 const movieModel = new ModelFacade(Movie);
 
 const MISSING_DOUBAN_ID = "Missing Douban Id";

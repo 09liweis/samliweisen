@@ -1,4 +1,4 @@
-const { sendRequest, sendResp, sendErr } = require("../helpers/request");
+const { sendRequest, sendResp, sendErr } = require("../../helpers/request");
 const {
   getDoubanUrl,
   DOUBAN_SITE_API,
@@ -6,7 +6,7 @@ const {
   getComments,
   getDoubanPoster,
   getFullMovieDetail,
-} = require("../helpers/douban");
+} = require("../../helpers/douban");
 
 const CAST_DOUBAN_URL = "https://www.douban.com/personage/";
 const SORTS = ["recommend", "time", "rank"];

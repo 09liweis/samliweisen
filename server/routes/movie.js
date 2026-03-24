@@ -15,13 +15,13 @@ const {
   getRandomMovie,
   updateSamMovie,
   deleteMovie,
-} = require("../controllers/visual.js");
+} = require("../controllers/movies/visual.js");
 const {
   getPhotos,
   getVideos,
   getVideo,
   getCast,
-} = require("../controllers/douban.js");
+} = require("../controllers/movies/douban.js");
 
 router.route("/douban/:douban_id").get(getSummary);
 

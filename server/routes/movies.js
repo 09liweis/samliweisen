@@ -17,7 +17,7 @@ const {
   getCommingMovies,
   getAlltimeBoxOffice,
 } = require("../controllers/douban.js");
-const { getMaoyan } = require("../controllers/maoyan.js");
+const { getMaoyan } = require("../controllers/movies/maoyan.js");
 
 router.route("/").get(samVisuals);
 

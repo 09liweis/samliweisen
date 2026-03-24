@@ -1,4 +1,4 @@
-const { sendRequest, sendResp, sendErr } = require("../helpers/request");
+const { sendRequest, sendResp, sendErr } = require("../../helpers/request");
 
 exports.getMaoyan = (req, resp) => {
   const url = "https://piaofang.maoyan.com/dashboard-ajax";

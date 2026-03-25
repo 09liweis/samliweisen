@@ -240,32 +240,31 @@ exports.getHongkong = async (req, resp) => {
   }
 };
 
-exports.getTaiwan = (req, resp) => {
+exports.getTaiwan = async (req, resp) => {
   const { name } = req.params;
   const movieListId = name === "showing" ? "1" : "2";
   const domain = "https://www.ambassador.com.tw";
-  sendRequest(
-    {
-      url: `${domain}/home/MovieList?Type=1`,
-    },
-    function (err, { $ }) {
-      let movies = [];
-      const movieResults = $.getNode(`#tab${movieListId} .movie-list .cell`);
-      if (movieResults) {
-        movies = movieResults.toArray().map((m) => {
-          const movie = $.getNode(m);
-          return {
-            title: movie.find(".title h6").text(),
-            original_title: movie.find(".show-for-large").text(),
-            poster: movie.find("img").attr("src"),
-            date: movie.find(".date").text(),
-            original_url: domain + movie.find("a").attr("href"),
-          };
-        });
-      }
-      return sendResp(resp, { movies });
-    },
-  );
+  try {
+    const { $ } = await sendRequest({ url: `${domain}/home/MovieList?Type=1`, });
+    const movieResults = $.getNode(`#tab${movieListId} .movie-list .cell`);
+    let movies = [];
+    if (movieResults) {
+      movies = movieResults.toArray().map((m) => {
+        const movie = $.getNode(m);
+        return {
+          title: movie.find(".title h6").text(),
+          original_title: movie.find(".show-for-large").text(),
+          poster: movie.find("img").attr("src"),
+          date: movie.find(".date").text(),
+          original_url: domain + movie.find("a").attr("href"),
+        };
+      });
+    }
+    return sendResp(resp, { movies });
+  } catch (err) {
+    console.error(err);
+    return sendErr(resp, { err: err.toString() });
+  }
 };
 
 const getDoubanSearchResult = async (keyword, req) => {

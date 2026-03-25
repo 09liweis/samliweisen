@@ -208,15 +208,14 @@ exports.inTheatre = (req, resp) => {
   });
 };
 
-exports.getHongkong = (req, resp) => {
+exports.getHongkong = async (req, resp) => {
   let { name = "showing" } = req.params;
   if (!["showing", "coming"].includes(name)) {
     return sendErr(resp, { err: "Invalid api name" });
   }
   const domain = "https://www.hkmovie6.com";
-  sendRequest({ url: `${domain}/${name}` }, function (err, result) {
-    if (err) return sendErr(resp, { err: err.toString() });
-    const { $ } = result;
+  try {
+    const { $ } = await sendRequest({ url: `${domain}/${name}` });
     const movieResults = $.getNode(".shows .movie.show");
     let movies = [];
     if (movieResults) {
@@ -235,7 +234,10 @@ exports.getHongkong = (req, resp) => {
       });
     }
     return sendResp(resp, { movies });
-  });
+  } catch (err) {
+    console.error(err);
+    return sendErr(resp, { err: err.toString() });
+  }
 };
 
 exports.getTaiwan = (req, resp) => {

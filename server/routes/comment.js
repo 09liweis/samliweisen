@@ -37,11 +37,15 @@ router.post("/", (req, res, next) => {
     ip: req.ip,
     name: name,
     content: content,
+    created_at: new Date(),
   });
 
-  comment.save()
+  comment
+    .save()
     .then(() => res.send(comment))
-    .catch((err) => { throw err; });
+    .catch((err) => {
+      throw err;
+    });
 });
 
 module.exports = router;

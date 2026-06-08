@@ -39,10 +39,9 @@ router.post("/", (req, res, next) => {
     content: content,
   });
 
-  comment.save((err) => {
-    if (err) throw err;
-    res.send(comment);
-  });
+  comment.save()
+    .then(() => res.send(comment))
+    .catch((err) => { throw err; });
 });
 
 module.exports = router;

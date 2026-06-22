@@ -120,10 +120,10 @@ exports.createTodo = createTodo = (req, cb) => {
   newTodo
     .save()
     .then((todo) => {
-      todoListModel.updateOne(
-        { _id: todoList, user: req.user._id },
-        { $push: { items: newTodo._id } },
-      );
+      // todoListModel.updateOne(
+      //   { _id: todoList, user: req.user._id },
+      //   { $push: { items: newTodo._id } },
+      // );
       cb(null, { msg: "Created", todo });
     })
     .catch((err) => {

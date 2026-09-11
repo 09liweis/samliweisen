@@ -216,6 +216,9 @@ exports.getHongkong = async (req, resp) => {
   const domain = "https://www.hkmovie6.com";
   try {
     const { $ } = await sendRequest({ url: `${domain}/${name}` });
+    if (!$) {
+      return sendErr(resp, { err: 'No $' });
+    }
     const movieResults = $.getNode(".shows .movie.show");
     let movies = [];
     if (movieResults) {

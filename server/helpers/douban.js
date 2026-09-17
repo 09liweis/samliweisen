@@ -62,9 +62,6 @@ exports.getFullMovieDetail = (movie, { req }) => {
 
   if (movie?.douban_id) {
     movie.origin_url = `${DOUBAN_SITE}${movie.douban_id}`;
-    movie.apis = getDoubanMovieAPIs({
-      douban_id: movie.douban_id,
-    });
   }
   if (movie?.imdb_id) {
     const imdb_rating = movie.imdb_rating || 0;
@@ -107,18 +104,6 @@ exports.getMovieYear = (dates) => {
 };
 
 const HOST_URL = process.env["HOST_URL"];
-
-exports.getDoubanMovieAPIs = getDoubanMovieAPIs = ({ douban_id }) => {
-  const summary = `${HOST_URL}/api/movie/douban/${douban_id}`;
-  return {
-    summary,
-    reviews: `${summary}/reviews`,
-    comments: `${summary}/comments`,
-    casts: `${summary}/casts`,
-    photos: `${summary}/photos`,
-    videos: `${summary}/videos`,
-  };
-};
 
 exports.getDoubanCastAPI = getDoubanCastAPI = (cast_id) => {
   return `${HOST_URL}/api/movie/cast/${cast_id}`;
